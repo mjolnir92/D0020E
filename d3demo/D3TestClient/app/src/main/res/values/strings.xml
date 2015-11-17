@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">D3TestClient</string>
+    <string name="send_test">Send Test</string>
+</resources>
