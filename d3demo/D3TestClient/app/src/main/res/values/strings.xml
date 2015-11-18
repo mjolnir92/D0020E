@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">D3TestClient</string>
     <string name="send_test">Send Test</string>
+    <string name="connect">Connect</string>
+    <string name="addr">address:port</string>
 </resources>

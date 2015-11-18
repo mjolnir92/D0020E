@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +25,6 @@ import java.net.UnknownHostException;
 
 public class MainActivity extends Activity implements SensorEventListener {
 
-    static final String testIp = "130.240.152.182";
     static final int testPort = 12345;
     static final int BUFFER_SIZE = 1024;
 
@@ -34,6 +34,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     private JSONObject out;
     private SensorManager mSensorManager;
     private Sensor mLinearSensor;
+    private boolean connected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +46,21 @@ public class MainActivity extends Activity implements SensorEventListener {
 
         this.buffer = new byte[BUFFER_SIZE];
 
-        try {
-            this.out = new JSONObject();
-            this.addr = InetAddress.getByName(testIp);
-            this.socket = new DatagramSocket();
-        } catch (SocketException | UnknownHostException e) {
-            e.printStackTrace();
-        }
+        this.out = new JSONObject();
     }
 
     public void onClick(View view) {
         switch(view.getId()){
-            case R.id.button_test:{
+            case R.id.button_connect:{
+                String addr = ((EditText)findViewById(R.id.edit_host)).getText().toString();
+
+                try {
+                    this.addr = InetAddress.getByName(addr);
+                    this.socket = new DatagramSocket();
+                } catch (UnknownHostException | SocketException e) {
+                    e.printStackTrace();
+                }
+                this.connected = true;
 
                 break;
             }
@@ -64,6 +68,7 @@ public class MainActivity extends Activity implements SensorEventListener {
     }
 
     private void sendMessage(float x, float y, float z) throws IOException, JSONException {
+
 
         this.out.put("x", x);
         this.out.put("y", y);
@@ -86,6 +91,9 @@ public class MainActivity extends Activity implements SensorEventListener {
 
     @Override
     public void onSensorChanged(SensorEvent event) {
+        if (!this.connected){
+            return;
+        }
 
         float x = event.values[0];
         float y = event.values[1];

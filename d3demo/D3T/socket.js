@@ -1,6 +1,7 @@
 module.exports = function(server){
     var io = require('socket.io')(server);
     var udp = require('dgram').createSocket('udp4');
+    var host = '192.168.0.102';
 
     var sockets = [];
 
@@ -15,7 +16,7 @@ module.exports = function(server){
         });
     });
 
-    udp.bind(12345, "130.240.152.182");
+    udp.bind(12345, host);
 
     io.on('connection', function(socket){
         sockets.push(socket);
