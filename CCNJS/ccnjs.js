@@ -102,15 +102,24 @@ ccnjs.Relay = function(args){
 
     function getContent(prefix, callback){
 
-        var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u 127.0.0.1/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
-        var string = S(peekTemplate).template({port: local.udp, prefix: prefix});
-        var process = exec(string);
+        var getHostIp = exec("ifconfig docker0 | sed -n 's/.*inet addr:\(.*\) Bcast.*/\1/p'");
 
-        process.stdout.on('data', callback);
-        process.stderr.on('data', console.log);
+        getHostIp.stdout.on('data', function(host_ip){
+
+            var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
+            var string = S(peekTemplate).template({host: host_ip, port: local.udp, prefix: prefix});
+            var process = exec(string);
+
+            process.stdout.on('data', callback);
+            process.stderr.on('data', console.log);
+
+        });
+
+        getHostIp.stderr.on('data', console.log);
+
 
         //process.stdout.on('data', function(data){
-        //    callback(JSON.parse(data));
+        //    callback(JSON.parse(data))
         //});
         //process.stderr.on('data', function(data){
         //    callback(JSON.parse(data));
