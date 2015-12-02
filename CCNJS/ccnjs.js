@@ -1,4 +1,5 @@
 var exec = require('child_process').exec;
+var networkInterfaces = require('os').networkInterfaces();
 var S = require('string');
 
 var ccnjs = ccnjs || {};
@@ -103,23 +104,23 @@ ccnjs.Relay = function(args){
     function getContent(prefix, callback){
         console.log('getContent()');
 
-        var getHostIp = exec("ifconfig eth0"); // | sed -n 's/.*inet addr:\(.*\) Bcast.*/\1/p'");
+        networkInterfaces['eth0'].forEach(function(iface){
 
-        getHostIp.stdout.on('data', function(host_ip){
+            if ('IPv4' === iface.family && iface.internal === false) {
 
-            console.log('host ip: ' + host_ip);
-            var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
-            var string = S(peekTemplate).template({host: host_ip, port: local.udp, prefix: prefix});
+                console.log('host ip: ' + host_ip);
+                var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
+                var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix});
 
-            console.log(string);
-            var process = exec(string);
+                console.log(string);
+                var process = exec(string);
 
-            process.stdout.on('data', callback);
-            process.stderr.on('data', console.log);
+                process.stdout.on('data', callback);
+                process.stderr.on('data', console.log);
+            }
 
         });
 
-        getHostIp.stderr.on('data', console.log);
 
 
         //process.stdout.on('data', function(data){
