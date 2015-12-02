@@ -108,7 +108,6 @@ ccnjs.Relay = function(args){
 
             if ('IPv4' === iface.family && iface.internal === false) {
 
-                console.log('host ip: ' + host_ip);
                 var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
                 var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix});
 
