@@ -20,8 +20,6 @@ RUN cd ccn-lite/src && make clean all
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN cd /var/workspace/CCNJS && npm rebuild node-sass && npm install
 
-EXPOSE 9999/udp
-EXPOSE 6363/tcp
-EXPOSE 3000/tcp
+EXPOSE 9999/udp 6363/tcp 3000/tcp
 
 CMD /var/workspace/CCNJS/bin/www
