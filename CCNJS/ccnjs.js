@@ -101,8 +101,9 @@ ccnjs.Relay = function(args){
     }
 
     function getContent(prefix, callback){
+        console.log('getContent()');
 
-        var getHostIp = exec("ifconfig eth0 | sed -n 's/.*inet addr:\(.*\) Bcast.*/\1/p'");
+        var getHostIp = exec("ifconfig eth0"); // | sed -n 's/.*inet addr:\(.*\) Bcast.*/\1/p'");
 
         getHostIp.stdout.on('data', function(host_ip){
 
