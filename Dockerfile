@@ -12,6 +12,7 @@ RUN apt-get -y update && apt-get install -y \
     libssl-dev \
     nodejs \
     wget \
+    git \
     npm
 
 ADD . /var/workspace
