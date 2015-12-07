@@ -10,6 +10,7 @@ module.exports = function(server){
                 socket.emit('content', content);
             })
         });
+
         socket.on('addRoute', function(message){
             console.log(message);
             relay.addRoute(message);
@@ -18,6 +19,13 @@ module.exports = function(server){
         socket.on('setContent', function(message){
             console.log(message);
             relay.addContent(message.prefix, message.content);
+        });
+
+        socket.on('clientButton', function(object){
+
+            var out = { calculated: object.value * 4};
+            socket.emit('calculated', out);
+
         });
 
     });

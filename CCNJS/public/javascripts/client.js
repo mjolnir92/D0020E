@@ -4,6 +4,7 @@ var client = function(socket){
     var key_input    = document.getElementById('key');
     var ip_port      = document.getElementById('ip');
     var ul           = document.getElementById('content_list');
+    var div          = document.getElementById('client_div');
 
     socket.on('content', function(content){
         var contentString = JSON.stringify(content);
@@ -12,6 +13,10 @@ var client = function(socket){
         li.innerHTML = contentString;
         ul.appendChild(li);
 
+    });
+
+    socket.on('calculated', function(object){
+        div.innerHTML = object.calculated;
     });
 
     function submitForm(){
@@ -32,7 +37,13 @@ var client = function(socket){
         socket.emit('getContent', {prefix: prefix_input.value});
     }
 
-    return { submitForm: submitForm,
+    function clientButton(){
+        var value = parseInt(div.innerHTML);
+        socket.emit('clientButton', { value: value});
+    }
+
+    return { clientButton: clientButton,
+             submitForm: submitForm,
              getContent: getContent,
              addRoute: addRoute}
 
