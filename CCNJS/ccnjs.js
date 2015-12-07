@@ -1,6 +1,13 @@
 var exec = require('child_process').exec;
 var networkInterfaces = require('os').networkInterfaces();
 var S = require('string');
+var fs = require('fs');
+var path = require('path');
+var flags = {flags: "a"};
+
+var logContent = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'content.log'), flags);
+var logRelay   = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'relay.log'), flags);
+var logCtrl    = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'ctrl.log'), flags);
 
 var ccnjs = ccnjs || {};
 
@@ -22,11 +29,11 @@ ccnjs.Relay = function(args){
 
     var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
     var string = S(relay_template).template(local).s;
-    console.log(string);
     var process = exec(string);
 
-    process.stderr.on('data', console.log);
-    process.stdout.on('data', console.log);
+
+    process.stderr.pipe(logRelay);
+    process.stdout.pipe(logRelay);
 
     process.on('close', function(code){
         console.log('closing with code: ' + code);
@@ -58,35 +65,30 @@ ccnjs.Relay = function(args){
                 string = S(forwarding_template).template({socket: local.socket, prefix: args.prefix, face_id: face_id}).s,
                 set_routing = exec(string);
 
-            set_routing.stdout.on('data', function(data){
-                console.log('stdout: ' + data);
-            });
-
-            set_routing.stderr.on('data', function(data){
-                console.log('stderr: ' + data);
-            });
+            set_routing.stdout.pipe(logCtrl);
+            set_routing.stderr.pipe(logCtrl);
 
         });
 
-        process.stderr.on('data', function(data){
-            console.log(data);
-        });
-
+        process.stderr.pipe(logCtrl);
 
     }
 
     function addContent(prefix, content){
-        var createMkc_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "{{prefix}}" > $CCNL_HOME/test.ndntlv',
+
+        var createMkc_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "{{prefix}}" > $CCNL_HOME/{{file}}.ndntlv',
             command_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} addContentToCache $CCNL_HOME/test.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
 
-        var string = S(createMkc_template).template({prefix: prefix}).s;
+        var file = prefix.replace(/\//,"");
+
+        var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
         var process = exec(string);
 
 
         process.stdin.write(JSON.stringify(content));
 
-        process.stdout.on('data', console.log);
-        process.stderr.on('data', console.log);
+        process.stdout.pipe(logContent);
+        process.stderr.pipe(logContent);
 
         process.on('close', function(code){
 
@@ -94,16 +96,15 @@ ccnjs.Relay = function(args){
             console.log(string2);
             var process2 = exec(string2);
 
-            process2.stdout.on('data', console.log);
-            process2.stderr.on('data', console.log);
+            process2.stdout.pipe(logContent);
+            process2.stderr.pipe(logContent);
+
             process2.on('exit', console.log);
         });
 
     }
 
     function getContent(prefix, callback){
-        console.log('getContent()');
-
         networkInterfaces['eth0'].forEach(function(iface){
 
             if ('IPv4' === iface.family && iface.internal === false) {
@@ -114,20 +115,12 @@ ccnjs.Relay = function(args){
                 console.log(string);
                 var process = exec(string);
 
+
                 process.stdout.on('data', callback);
-                process.stderr.on('data', console.log);
+                process.stderr.pipe(logContent);
             }
 
         });
-
-
-
-        //process.stdout.on('data', function(data){
-        //    callback(JSON.parse(data))
-        //});
-        //process.stderr.on('data', function(data){
-        //    callback(JSON.parse(data));
-        //});
 
     }
 
@@ -137,30 +130,6 @@ ccnjs.Relay = function(args){
         getContent: getContent,
         close: close};
 };
-
-//var node_a = new Relay();
-//var node_b = new Relay({ udp: '9998', socket: '/tmp/mgmt-relay-b.sock', tcp: '6364' });
-//var node_c = new Relay({ udp: '9997', socket: '/tmp/mgmt-relay-c.sock', tcp: '6365' });
-//
-//node_c.addContent('/ndn/yolo', {name: 'node c', service: 'temperature'});
-//node_a.addContent('/ndn/more/', {name: 'node a', service: 'accelerometer'});
-//
-//node_a.addRoute({prefix: '/local', ip: '10.45.108.111', udp: '6363'});
-//
-//node_b.addRoute({prefix: '/ndn',   ip: '127.0.0.1', udp: '9999'});
-//node_b.addRoute({prefix: '/local', ip: '127.0.0.1', udp: '9999'});
-//
-//node_b.getContent('/ndn/yolo', function(obj){
-//    console.log(obj);
-//});
-//node_b.getContent('/local/echo', function(obj){
-//    console.log(obj);
-//});
-//
-//setTimeout(function(){
-//    node_a.close();
-//    node_b.close();
-//}, 5000);
 
 
 module.exports = ccnjs;
