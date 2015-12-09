@@ -11,20 +11,24 @@ var logCtrl    = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'ctrl
 
 var ccnjs = ccnjs || {};
 
-/*
- @arg args.debug = debug level
- @arg args.udp = udp port
- @arg args.socket = unix socket
+/**
+ * @param relay_config Relay connection config.
+ * @param {String} relay_config.debug Debug level.
+ * @param {String} relay_config.udp UDP Port.
+ * @param {String} relay_config.tcp TCP Port for Web-server.
+ * @param {String} relay_config.socket UNIX-socket.
+ * @returns {{addRoute: addRoute, addContent: addContent, getContent: getContent, close: close}}
+ * @constructor
  */
-ccnjs.Relay = function(args){
+ccnjs.Relay = function(relay_config){
 
-    args = args || {};
+    relay_config = relay_config || {};
 
     var local = {
-        debug  : args.debug  || 'debug',
-        udp    : args.udp    || '9999',
-        socket : args.socket || '/tmp/mgmt-relay-a.sock',
-        tcp    : args.tcp    || '6363'
+        debug  : relay_config.debug  || 'debug',
+        udp    : relay_config.udp    || '9999',
+        socket : relay_config.socket || '/tmp/mgmt-relay-a.sock',
+        tcp    : relay_config.tcp    || '6363'
     };
 
     var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
@@ -69,9 +73,7 @@ ccnjs.Relay = function(args){
             set_routing.stderr.pipe(logCtrl);
 
         });
-
         process.stderr.pipe(logCtrl);
-
     }
 
     function addContent(prefix, content){
