@@ -1,13 +1,15 @@
 var exec = require('child_process').exec;
 var networkInterfaces = require('os').networkInterfaces();
+var debug = require('debug')('ccnjs');
 var S = require('string');
 var fs = require('fs');
 var path = require('path');
-var flags = {flags: "a"};
 
-var logContent = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'content.log'), flags);
-var logRelay   = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'relay.log'), flags);
-var logCtrl    = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'ctrl.log'), flags);
+var LOGS = {
+    RELAY : 'relay.log',
+    CTRL  : 'ctrl.log',
+    MKC   : 'mkC.log'
+};
 
 var ccnjs = ccnjs || {};
 
@@ -21,6 +23,24 @@ var ccnjs = ccnjs || {};
  * @constructor
  */
 ccnjs.Relay = function(relay_config){
+    /**
+     * @param {Object} process
+     * @param {String} file_name
+     * @return {Object} process
+     */
+    function toFile(process, file_name){
+        var flags = { flags: 'a' };
+        var out_path = path.join(__dirname, 'public/logs/', file_name);
+        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
+        var stdout = fs.createWriteStream(out_path, flags);
+        var stderr = fs.createWriteStream(err_path, flags);
+
+        process.stdout.pipe(stdout);
+        process.stderr.pipe(stderr);
+
+        return process;
+    }
+
 
     relay_config = relay_config || {};
 
@@ -33,11 +53,9 @@ ccnjs.Relay = function(relay_config){
 
     var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
     var string = S(relay_template).template(local).s;
-    var process = exec(string);
+    var process = toFile(exec(string), LOGS.RELAY);
 
 
-    process.stderr.pipe(logRelay);
-    process.stdout.pipe(logRelay);
 
     process.on('close', function(code){
         console.log('closing with code: ' + code);
@@ -50,57 +68,46 @@ ccnjs.Relay = function(relay_config){
         process.kill('SIGTERM');
     }
 
-    /*
-     @args.prefix = route
-     @args.ip = ip of target
-     @args.udp = port of target
+    /**
+     *
+     * @param {String} route_config.udp udp port of host
+     * @param {String} route_config.ip ip address of host
+     * @param {String} route_config.prefix prefix to host
      */
-    function addRoute(args){
-        args.udp = args.udp || '9999';
+    function addRoute(route_config){
+        route_config.udp = route_config.udp || '9999';
 
         var config_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} newUDPface any {{ip}} {{udp}} | $CCNL_HOME/bin/ccn-lite-ccnb2xml | grep FACEID",
-            string = S(config_template).template({socket: local.socket, ip: args.ip, udp: args.udp}).s,
-            process = exec(string);
+            string = S(config_template).template({socket: local.socket, ip: route_config.ip, udp: route_config.udp}).s,
+            process = toFile(exec(string), LOGS.CTRL);
 
         process.stdout.on('data', function(data){
 
             var forwarding_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} prefixreg {{prefix}} {{face_id}} ndn2013 | $CCNL_HOME/bin/ccn-lite-ccnb2xml",
                 face_id = data.replace(/[^0-9.]/g, ""),
-                string = S(forwarding_template).template({socket: local.socket, prefix: args.prefix, face_id: face_id}).s,
-                set_routing = exec(string);
-
-            set_routing.stdout.pipe(logCtrl);
-            set_routing.stderr.pipe(logCtrl);
-
+                string = S(forwarding_template).template({socket: local.socket, prefix: route_config.prefix, face_id: face_id}).s,
+                set_routing = toFile(exec(string), LOGS.CTRL);
         });
-        process.stderr.pipe(logCtrl);
     }
 
     function addContent(prefix, content){
 
         var createMkc_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "{{prefix}}" > $CCNL_HOME/{{file}}.ndntlv',
-            command_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} addContentToCache $CCNL_HOME/test.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
+            command_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} addContentToCache $CCNL_HOME/{{file}}.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
 
-        var file = prefix.replace(/\//,"");
+        var file = prefix.replace(/\//g,"");
+
+        console.log(file);
 
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
-        var process = exec(string);
-
+        var process = toFile(exec(string), LOGS.MKC);
 
         process.stdin.write(JSON.stringify(content));
 
-        process.stdout.pipe(logContent);
-        process.stderr.pipe(logContent);
-
         process.on('close', function(code){
 
-            var string2 = S(command_template).template({socket: local.socket}).s;
-            console.log(string2);
-            var process2 = exec(string2);
-
-            process2.stdout.pipe(logContent);
-            process2.stderr.pipe(logContent);
-
+            var string2 = S(command_template).template({socket: local.socket, file: file}).s;
+            var process2 = toFile(exec(string2), LOGS.CTRL);
             process2.on('exit', console.log);
         });
 
@@ -112,18 +119,13 @@ ccnjs.Relay = function(relay_config){
             if ('IPv4' === iface.family && iface.internal === false) {
 
                 var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
-                var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix});
+                var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix}).s;
 
                 console.log(string);
                 var process = exec(string);
-
-
                 process.stdout.on('data', callback);
-                process.stderr.pipe(logContent);
             }
-
         });
-
     }
 
     return {

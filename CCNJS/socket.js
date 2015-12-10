@@ -5,7 +5,9 @@ module.exports = function(server){
     io.on('connection', function(socket){
 
         socket.on('getContent', function(message){
+            console.log("getContent{");
             console.log(message);
+            console.log("}getContent");
             relay.getContent(message.prefix, function(content){
                 socket.emit('content', content);
             })
