@@ -1,12 +1,33 @@
 var exec = require('child_process').exec;
 var networkInterfaces = require('os').networkInterfaces();
+var debug = require('debug')('ccnjs');
 var S = require('string');
 var fs = require('fs');
 var path = require('path');
-var flags = {flags: "a"};
 
-var logRelay = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'relay.log'), flags);
+var LOGS = {
+    RELAY : 'relay.log',
+    CTRL  : 'ctrl.log',
+    MKC   : 'mkC.log'
+};
 
+/**
+ * @param {Object} process
+ * @param {String} file_name
+ * @return {Object} process
+ */
+exec.prototype.toFile = function(file_name){
+    var flags = { flags: 'a' };
+    var out_path = path.join(__dirname, 'public/logs/', file_name);
+    var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
+    var stdout = fs.createWriteStream(out_path, flags);
+    var stderr = fs.createWriteStream(err_path, flags);
+
+    this.stdout.pipe(stdout);
+    this.stderr.pipe(stderr);
+
+    return this;
+};
 
 var ccnjs = ccnjs || {};
 
@@ -21,6 +42,7 @@ var ccnjs = ccnjs || {};
  */
 ccnjs.Relay = function(relay_config){
 
+
     relay_config = relay_config || {};
 
     var local = {
@@ -32,11 +54,9 @@ ccnjs.Relay = function(relay_config){
 
     var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
     var string = S(relay_template).template(local).s;
-    var process = exec(string);
+    var process = exec(string).toFile(LOGS.RELAY);
 
 
-    process.stderr.on('data', console.log);
-    process.stdout.on('data', console.log);
 
     process.on('close', function(code){
         console.log('closing with code: ' + code);
@@ -59,7 +79,7 @@ ccnjs.Relay = function(relay_config){
 
         var config_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} newUDPface any {{ip}} {{udp}} | $CCNL_HOME/bin/ccn-lite-ccnb2xml | grep FACEID",
             string = S(config_template).template({socket: local.socket, ip: args.ip, udp: args.udp}).s,
-            process = exec(string);
+            process = exec(string).toFile(LOGS.CTRL);
 
         process.stdout.on('data', function(data){
 
@@ -67,7 +87,6 @@ ccnjs.Relay = function(relay_config){
                 face_id = data.replace(/[^0-9.]/g, ""),
                 string = S(forwarding_template).template({socket: local.socket, prefix: args.prefix, face_id: face_id}).s,
                 set_routing = exec(string);
-
         });
     }
 
@@ -81,7 +100,7 @@ ccnjs.Relay = function(relay_config){
         console.log(file);
 
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
-        var process = exec(string);
+        var process = exec(string).toFile(LOGS.MKC);
 
 
         console.log('mkC: ' + string);
@@ -92,8 +111,7 @@ ccnjs.Relay = function(relay_config){
         process.on('close', function(code){
 
             var string2 = S(command_template).template({socket: local.socket, file: file}).s;
-            console.log("addContent to cache" + string2);
-            var process2 = exec(string2);
+            var process2 = exec(string2).toFile(LOGS.CTRL);
             process2.on('exit', console.log);
         });
 
@@ -111,9 +129,7 @@ ccnjs.Relay = function(relay_config){
                 var process = exec(string);
                 process.stdout.on('data', callback);
             }
-
         });
-
     }
 
     return {
