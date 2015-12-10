@@ -69,7 +69,6 @@ ccnjs.Relay = function(relay_config){
     }
 
     /**
-     *
      * @param {String} route_config.udp udp port of host
      * @param {String} route_config.ip ip address of host
      * @param {String} route_config.prefix prefix to host
