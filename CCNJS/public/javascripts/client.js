@@ -7,6 +7,7 @@ var client = function(socket){
     var div          = document.getElementById('client_div');
 
     socket.on('content', function(content){
+        console.log(content);
         var contentString = JSON.stringify(content);
         var li = document.createElement('LI');
 

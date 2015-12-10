@@ -2,25 +2,36 @@ FROM ubuntu:14.04
 MAINTAINER Magnus Bjoerk <mugsan@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
-ENV CCNL_HOME /var/workspace/ccn-lite
+ENV WS /var/workspace
+ENV CCNL_HOME $WS/ccn-lite
 ENV PATH "$PATH:$CCNL_HOME/bin"
 ENV USE_NFN 1
 
 RUN apt-get -y update && apt-get install -y \
     build-essential \
-    openjdk-7-jre \
     libssl-dev \
     nodejs \
-    wget \
-    git \
     npm
 
-ADD . /var/workspace
-WORKDIR /var/workspace
-RUN cd ccn-lite/src && make clean all
+# install node_modules
 RUN ln -s /usr/bin/nodejs /usr/bin/node
-RUN cd /var/workspace/CCNJS && npm rebuild node-sass && npm install
+ADD ./CCNJS/package.json /tmp/package.json
+RUN cd /tmp && npm install
+RUN mkdir -p $WS/CCNJS \
+    && cp -a /tmp/node_modules $WS/CCNJS
 
-EXPOSE 9999/udp 6363/tcp 3000/tcp
+ADD ./ccn-lite $WS/ccn-lite
+RUN cd $WS/ccn-lite/src \
+    && make clean all
 
-CMD /var/workspace/CCNJS/bin/www
+ADD . $WS
+WORKDIR $WS
+# compile ccn-lite
+
+# add application files
+
+EXPOSE 9999/udp \
+    6363/tcp \
+    3000/tcp
+
+CMD ./CCNJS/bin/www

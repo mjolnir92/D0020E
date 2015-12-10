@@ -5,9 +5,8 @@ var fs = require('fs');
 var path = require('path');
 var flags = {flags: "a"};
 
-var logContent = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'content.log'), flags);
-var logRelay   = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'relay.log'), flags);
-var logCtrl    = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'ctrl.log'), flags);
+var logRelay = fs.createWriteStream(path.join(__dirname, 'public/logs/', 'relay.log'), flags);
+
 
 var ccnjs = ccnjs || {};
 
@@ -36,8 +35,8 @@ ccnjs.Relay = function(relay_config){
     var process = exec(string);
 
 
-    process.stderr.pipe(logRelay);
-    process.stdout.pipe(logRelay);
+    process.stderr.on('data', console.log);
+    process.stdout.on('data', console.log);
 
     process.on('close', function(code){
         console.log('closing with code: ' + code);
@@ -69,38 +68,32 @@ ccnjs.Relay = function(relay_config){
                 string = S(forwarding_template).template({socket: local.socket, prefix: args.prefix, face_id: face_id}).s,
                 set_routing = exec(string);
 
-            set_routing.stdout.pipe(logCtrl);
-            set_routing.stderr.pipe(logCtrl);
-
         });
-        process.stderr.pipe(logCtrl);
     }
 
     function addContent(prefix, content){
 
         var createMkc_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "{{prefix}}" > $CCNL_HOME/{{file}}.ndntlv',
-            command_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} addContentToCache $CCNL_HOME/test.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
+            command_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} addContentToCache $CCNL_HOME/{{file}}.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
 
-        var file = prefix.replace(/\//,"");
+        var file = prefix.replace(/\//g,"");
+
+        console.log(file);
 
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
         var process = exec(string);
 
 
-        process.stdin.write(JSON.stringify(content));
+        console.log('mkC: ' + string);
 
-        process.stdout.pipe(logContent);
-        process.stderr.pipe(logContent);
+
+        process.stdin.write(JSON.stringify(content));
 
         process.on('close', function(code){
 
-            var string2 = S(command_template).template({socket: local.socket}).s;
-            console.log(string2);
+            var string2 = S(command_template).template({socket: local.socket, file: file}).s;
+            console.log("addContent to cache" + string2);
             var process2 = exec(string2);
-
-            process2.stdout.pipe(logContent);
-            process2.stderr.pipe(logContent);
-
             process2.on('exit', console.log);
         });
 
@@ -112,14 +105,11 @@ ccnjs.Relay = function(relay_config){
             if ('IPv4' === iface.family && iface.internal === false) {
 
                 var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
-                var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix});
+                var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix}).s;
 
                 console.log(string);
                 var process = exec(string);
-
-
                 process.stdout.on('data', callback);
-                process.stderr.pipe(logContent);
             }
 
         });
