@@ -11,24 +11,6 @@ var LOGS = {
     MKC   : 'mkC.log'
 };
 
-/**
- * @param {Object} process
- * @param {String} file_name
- * @return {Object} process
- */
-exec.prototype.toFile = function(file_name){
-    var flags = { flags: 'a' };
-    var out_path = path.join(__dirname, 'public/logs/', file_name);
-    var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
-    var stdout = fs.createWriteStream(out_path, flags);
-    var stderr = fs.createWriteStream(err_path, flags);
-
-    this.stdout.pipe(stdout);
-    this.stderr.pipe(stderr);
-
-    return this;
-};
-
 var ccnjs = ccnjs || {};
 
 /**
@@ -41,6 +23,23 @@ var ccnjs = ccnjs || {};
  * @constructor
  */
 ccnjs.Relay = function(relay_config){
+    /**
+     * @param {Object} process
+     * @param {String} file_name
+     * @return {Object} process
+     */
+    function toFile(process, file_name){
+        var flags = { flags: 'a' };
+        var out_path = path.join(__dirname, 'public/logs/', file_name);
+        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
+        var stdout = fs.createWriteStream(out_path, flags);
+        var stderr = fs.createWriteStream(err_path, flags);
+
+        process.stdout.pipe(stdout);
+        process.stderr.pipe(stderr);
+
+        return process;
+    }
 
 
     relay_config = relay_config || {};
@@ -54,7 +53,7 @@ ccnjs.Relay = function(relay_config){
 
     var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
     var string = S(relay_template).template(local).s;
-    var process = exec(string).toFile(LOGS.RELAY);
+    var process = toFile(exec(string), LOGS.RELAY);
 
 
 
@@ -69,24 +68,25 @@ ccnjs.Relay = function(relay_config){
         process.kill('SIGTERM');
     }
 
-    /*
-     @args.prefix = route
-     @args.ip = ip of target
-     @args.udp = port of target
+    /**
+     *
+     * @param {String} route_config.udp udp port of host
+     * @param {String} route_config.ip ip address of host
+     * @param {String} route_config.prefix prefix to host
      */
-    function addRoute(args){
-        args.udp = args.udp || '9999';
+    function addRoute(route_config){
+        route_config.udp = route_config.udp || '9999';
 
         var config_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} newUDPface any {{ip}} {{udp}} | $CCNL_HOME/bin/ccn-lite-ccnb2xml | grep FACEID",
-            string = S(config_template).template({socket: local.socket, ip: args.ip, udp: args.udp}).s,
-            process = exec(string).toFile(LOGS.CTRL);
+            string = S(config_template).template({socket: local.socket, ip: route_config.ip, udp: route_config.udp}).s,
+            process = toFile(exec(string), LOGS.CTRL);
 
         process.stdout.on('data', function(data){
 
             var forwarding_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} prefixreg {{prefix}} {{face_id}} ndn2013 | $CCNL_HOME/bin/ccn-lite-ccnb2xml",
                 face_id = data.replace(/[^0-9.]/g, ""),
-                string = S(forwarding_template).template({socket: local.socket, prefix: args.prefix, face_id: face_id}).s,
-                set_routing = exec(string);
+                string = S(forwarding_template).template({socket: local.socket, prefix: route_config.prefix, face_id: face_id}).s,
+                set_routing = toFile(exec(string), LOGS.CTRL);
         });
     }
 
@@ -100,18 +100,14 @@ ccnjs.Relay = function(relay_config){
         console.log(file);
 
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
-        var process = exec(string).toFile(LOGS.MKC);
-
-
-        console.log('mkC: ' + string);
-
+        var process = toFile(exec(string), LOGS.MKC);
 
         process.stdin.write(JSON.stringify(content));
 
         process.on('close', function(code){
 
             var string2 = S(command_template).template({socket: local.socket, file: file}).s;
-            var process2 = exec(string2).toFile(LOGS.CTRL);
+            var process2 = toFile(exec(string2), LOGS.CTRL);
             process2.on('exit', console.log);
         });
 
