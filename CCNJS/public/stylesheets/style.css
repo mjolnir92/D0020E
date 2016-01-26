@@ -1,9 +1,8 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
 
-a {
-  color: #00B7FF; }
+#wrapper {
+  height: 800px; }
 
 .chart div {
   font: 10px sans-serif;
@@ -12,5 +11,30 @@ a {
   padding: 3px;
   margin: 1px;
   color: white; }
+
+#logo {
+  float: top;
+  height: 200px;
+  width: 100%;
+  background-color: #aaaaaa; }
+
+#indexMeny {
+  float: left;
+  height: 100%;
+  width: 20%;
+  background-color: #4D4E53; }
+
+#mainDiv {
+  background-color: lightgray;
+  width: 80%;
+  height: 100%;
+  float: left; }
+
+.nav-index a {
+  color: white; }
+
+ul.nav a:hover {
+  background-color: #333333 !important;
+  color: #aaaaaa; }
 
 /*# sourceMappingURL=style.css.map */
