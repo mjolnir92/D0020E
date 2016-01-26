@@ -4,13 +4,11 @@ body {
 #wrapper {
   height: 800px; }
 
-.chart div {
-  font: 10px sans-serif;
-  background-color: steelblue;
-  text-align: right;
-  padding: 3px;
-  margin: 1px;
-  color: white; }
+#mainDiv {
+  background-color: lightgray;
+  width: 80%;
+  height: 100%;
+  float: left; }
 
 #logo {
   float: top;
@@ -24,17 +22,29 @@ body {
   width: 20%;
   background-color: #4D4E53; }
 
-#mainDiv {
-  background-color: lightgray;
-  width: 80%;
-  height: 100%;
-  float: left; }
-
 .nav-index a {
   color: white; }
 
 ul.nav a:hover {
   background-color: #333333 !important;
   color: #aaaaaa; }
+
+.chart div {
+  font: 10px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 3px;
+  margin: 1px;
+  color: white; }
+
+#person-search-field {
+  width: 100%;
+  height: 200px;
+  background-color: #00AA00; }
+
+#personal-data {
+  width: 100%;
+  height: 500px;
+  background-color: #0000cc; }
 
 /*# sourceMappingURL=style.css.map */
