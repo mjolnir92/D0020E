@@ -1,54 +1,97 @@
 
-<div id="person-search-field">
-    #välj användare
-</div>
-
-<div id="personal-data">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-5 col-md-offset-2">
-        <div class="sensor" data-id="heartrate">
-          <div class="icon heartrate"></div>
-          <div class="data">80 BPM</div>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="sensor" data-id="battery">
-          <div class="icon battery"></div>
-          <div class="data">95%</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-5 col-md-offset-2">
-        <div class="sensor" data-id="temperature">
-          <div class="icon temperature"></div>
-          <div class="data">16C°</div>
-          
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="sensor">
-          <div class="icon"></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-5 col-md-offset-2">
-        <div class="sensor" data-id="CO">
-          <div class="icon CO"></div>
-        </div>
-      </div>
-      <div class="col-md-5">
-        <div class="sensor">
-          <div class="icon"></div>
-        </div>
-      </div>
-    </div>
+<div id="person-search-field" class="container">
+  <div class="row">
+    <div class="col-md-12">#välj användare</div>
   </div>
 </div>
+
+<div id="personal-data" class="container">
+
+  <div class="row">
+
+    <div class="col-md-4 col-md-offset-2">
+      <div class="sensor" data-id="heartrate">
+        <div class="icon">
+          <div class="heartrate"></div>
+        </div>
+        <div class="data">
+          <div class="main">80 BPM</div>
+          <div class="time-stamp">20-01-2016, 15:38</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-md-offset-1">
+      <div class="sensor" data-id="battery">
+        <div class="icon">
+          <div class="battery"></div>
+        </div>
+        <div class="data">
+          <div class="main">56%</div>
+          <div class="time-stamp">20-01-2016, 15:38</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row">
+
+    <div class="col-md-4 col-md-offset-2">
+      <div class="sensor" data-id="temperature">
+        <div class="icon">
+          <div class="temperature"></div>
+        </div>
+        <div class="data">
+          <div class="main">16C°</div>
+          <div class="time-stamp">20-01-2016, 15:38</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-md-offset-1">
+      <div class="sensor" data-id="CO">
+        <div class="icon">
+          <div class="CO"></div>
+        </div>
+        <div class="data">
+          <div class="main">37ppm</div>
+          <div class="time-stamp">20-01-2016, 15:38</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="notifications">
+
+  <h2>Notifications</h2>
+
+  <div class="notification">
+    <h3>ID 3221 - West activated</h3>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    <div class="time-stamp">2016 -01-20 12:31</div>
+
+    <div class="dropdown">
+      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        <li><a href="#">Archive</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Delete</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+
 
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">

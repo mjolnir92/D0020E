@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="115px" height="115px" viewBox="0 0 115 115" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+<svg width="51px" height="40px" viewBox="0 0 51 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
     <!-- Generator: Sketch 3.5 (25232) - http://www.bohemiancoding.com/sketch -->
-    <title>Group</title>
+    <title>Path 1</title>
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
-        <g id="ccn-lite" sketch:type="MSArtboardGroup" transform="translate(-382.000000, -390.000000)">
+        <g id="ccn-lite" sketch:type="MSArtboardGroup" transform="translate(-414.000000, -431.000000)" fill="#9A9A9A">
             <g id="main-content" sketch:type="MSLayerGroup" transform="translate(382.000000, 112.000000)">
                 <g id="sensor" transform="translate(0.000000, 278.000000)" sketch:type="MSShapeGroup">
                     <g id="heartbeat">
                         <g id="Group">
-                            <circle id="Oval-3" fill="#CAC8C8" cx="57.5" cy="57.5" r="57.5"></circle>
-                            <path d="M57.2378267,48.0528916 C53.7907466,44.9560489 40.6662831,34.5795229 33.3745372,48.7532506 C25.9440684,63.1966285 50.7761761,76.9265389 56.8465167,80.0154285 L56.8461707,80.1772382 C56.8461707,80.1772382 56.9029044,80.1507823 57.0110871,80.0988986 C57.7379541,80.4663517 58.1538293,80.6602815 58.1538293,80.6602815 L58.1514197,79.5334351 C64.2181938,76.4466083 89.0567739,62.7152223 81.6254628,48.2702073 C73.8833094,33.2209755 59.5656158,45.848582 57.2378267,48.0528916 Z" id="Path-1" fill="#9A9A9A"></path>
+                            <path d="M57.2378267,48.0528916 C53.7907466,44.9560489 40.6662831,34.5795229 33.3745372,48.7532506 C25.9440684,63.1966285 50.7761761,76.9265389 56.8465167,80.0154285 L56.8461707,80.1772382 C56.8461707,80.1772382 56.9029044,80.1507823 57.0110871,80.0988986 C57.7379541,80.4663517 58.1538293,80.6602815 58.1538293,80.6602815 L58.1514197,79.5334351 C64.2181938,76.4466083 89.0567739,62.7152223 81.6254628,48.2702073 C73.8833094,33.2209755 59.5656158,45.848582 57.2378267,48.0528916 Z" id="Path-1"></path>
                         </g>
                     </g>
                 </g>
