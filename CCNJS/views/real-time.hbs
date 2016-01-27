@@ -1,6 +1,74 @@
-<div id="person-search-field">
-    personer och sån skit här
-</div>
-<div id="personal-data">
 
+<div id="person-search-field">
+    #välj användare
 </div>
+
+<div id="personal-data">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-5 col-md-offset-2">
+        <div class="sensor" data-id="heartrate">
+          <div class="icon heartrate"></div>
+          <div class="data">80 BPM</div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="sensor" data-id="battery">
+          <div class="icon battery"></div>
+          <div class="data">95%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 col-md-offset-2">
+        <div class="sensor" data-id="temperature">
+          <div class="icon temperature"></div>
+          <div class="data">16C°</div>
+          
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="sensor">
+          <div class="icon"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5 col-md-offset-2">
+        <div class="sensor" data-id="CO">
+          <div class="icon CO"></div>
+        </div>
+      </div>
+      <div class="col-md-5">
+        <div class="sensor">
+          <div class="icon"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="javascripts/real-time.js" charset="utf-8"></script>

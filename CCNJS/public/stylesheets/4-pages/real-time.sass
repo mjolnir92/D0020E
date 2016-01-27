@@ -1,9 +1,56 @@
 #person-search-field
   width: 100%
   height: 200px
-  background-color: #00AA00
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 30px
+  color: #555
+
 
 #personal-data
   width: 100%
   height: 500px
-  background-color: #0000cc
+  padding: 0 50px
+
+  .row
+    margin-bottom: 40px
+
+  .sensor
+    display: flex
+    align-items: center
+
+    .data
+      font-size: 3em
+      margin-left: 20px
+
+    .icon
+      display: block
+      background-color: #CAC7C7
+      border: 2px solid #CAC7C7
+      width: 118px
+      height: 118px
+      border-radius: 100%
+      float: left
+      transition: all .1s ease
+
+      &:hover
+        transform: scale(1.1)
+        cursor: pointer
+        border: 2px solid #7D7D7D
+
+    .heartrate
+      background: url(/images/heartrate.svg)
+      background-repeat: no-repeat
+
+    .battery
+      background: url(/images/battery.svg)
+      background-repeat: no-repeat
+
+    .CO
+      background: url(/images/CO.svg)
+      background-repeat: no-repeat
+
+    .temperature
+      background: url(/images/temperature.svg)
+      background-repeat: no-repeat

@@ -1,33 +1,45 @@
 body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif; }
+  font-family: "Ubuntu", "Lucida Grande", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: #555; }
 
 #wrapper {
   height: 800px; }
 
 #mainDiv {
-  background-color: lightgray;
-  width: 80%;
+  background-color: #EDEDED;
+  width: 85%;
   height: 100%;
   float: left; }
 
 #logo {
-  float: top;
-  height: 200px;
+  height: 150px;
   width: 100%;
-  background-color: #aaaaaa; }
+  background-color: #D8D8D8;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  #logo h2 {
+    margin: 0; }
 
 #indexMeny {
   float: left;
   height: 100%;
-  width: 20%;
-  background-color: #4D4E53; }
+  width: 15%;
+  background-color: #343941; }
 
 .nav-index a {
-  color: white; }
+  color: #8794AA;
+  transition: all .2s ease;
+  font-size: 1.3em; }
 
 ul.nav a:hover {
-  background-color: #333333 !important;
-  color: #aaaaaa; }
+  background-color: #515965;
+  color: #FFF; }
+
+.nav > li > a {
+  padding-left: 30px; }
 
 .chart div {
   font: 10px sans-serif;
@@ -40,11 +52,48 @@ ul.nav a:hover {
 #person-search-field {
   width: 100%;
   height: 200px;
-  background-color: #00AA00; }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  color: #555; }
 
 #personal-data {
   width: 100%;
   height: 500px;
-  background-color: #0000cc; }
+  padding: 0 50px; }
+  #personal-data .row {
+    margin-bottom: 40px; }
+  #personal-data .sensor {
+    display: flex;
+    align-items: center; }
+    #personal-data .sensor .data {
+      font-size: 3em;
+      margin-left: 20px; }
+    #personal-data .sensor .icon {
+      display: block;
+      background-color: #CAC7C7;
+      border: 2px solid #CAC7C7;
+      width: 118px;
+      height: 118px;
+      border-radius: 100%;
+      float: left;
+      transition: all .1s ease; }
+      #personal-data .sensor .icon:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+        border: 2px solid #7D7D7D; }
+    #personal-data .sensor .heartrate {
+      background: url(/images/heartrate.svg);
+      background-repeat: no-repeat; }
+    #personal-data .sensor .battery {
+      background: url(/images/battery.svg);
+      background-repeat: no-repeat; }
+    #personal-data .sensor .CO {
+      background: url(/images/CO.svg);
+      background-repeat: no-repeat; }
+    #personal-data .sensor .temperature {
+      background: url(/images/temperature.svg);
+      background-repeat: no-repeat; }
 
 /*# sourceMappingURL=style.css.map */
