@@ -9,8 +9,8 @@ body {
 #mainDiv {
   background-color: #EDEDED;
   width: 85%;
-  height: 100%;
-  float: left; }
+  margin-left: 15%;
+  overflow: hidden; }
 
 #logo {
   height: 150px;
@@ -24,7 +24,7 @@ body {
     margin: 0; }
 
 #indexMeny {
-  float: left;
+  position: fixed;
   height: 100%;
   width: 15%;
   background-color: #343941; }
@@ -33,6 +33,10 @@ body {
   color: #8794AA;
   transition: all .2s ease;
   font-size: 1.3em; }
+  .nav-index a .badge {
+    font-weight: 300;
+    font-size: 0.8em;
+    background-color: #EE3939; }
 
 ul.nav a:hover {
   background-color: #515965;
@@ -50,50 +54,86 @@ ul.nav a:hover {
   color: white; }
 
 #person-search-field {
-  width: 100%;
   height: 200px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-size: 30px;
-  color: #555; }
+  color: #555;
+  text-align: center; }
 
 #personal-data {
-  width: 100%;
-  height: 500px;
-  padding: 0 50px; }
+  margin-bottom: 50px; }
   #personal-data .row {
     margin-bottom: 40px; }
   #personal-data .sensor {
     display: flex;
     align-items: center; }
     #personal-data .sensor .data {
-      font-size: 3em;
       margin-left: 20px; }
+      #personal-data .sensor .data .main {
+        font-size: 3em; }
+      #personal-data .sensor .data .time-stamp {
+        font-size: 1.1em;
+        color: #666;
+        margin-top: -5px; }
     #personal-data .sensor .icon {
-      display: block;
-      background-color: #CAC7C7;
-      border: 2px solid #CAC7C7;
-      width: 118px;
-      height: 118px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 115px;
+      height: 115px;
       border-radius: 100%;
-      float: left;
+      border: 2px soild #CAC7C7;
+      background: #CAC7C7;
       transition: all .1s ease; }
       #personal-data .sensor .icon:hover {
         transform: scale(1.1);
         cursor: pointer;
         border: 2px solid #7D7D7D; }
+      #personal-data .sensor .icon > div {
+        background-repeat: no-repeat;
+        display: block;
+        text-indent: -9999px; }
     #personal-data .sensor .heartrate {
       background: url(/images/heartrate.svg);
-      background-repeat: no-repeat; }
+      background-size: 51px 51px;
+      width: 51px;
+      height: 51px; }
     #personal-data .sensor .battery {
       background: url(/images/battery.svg);
-      background-repeat: no-repeat; }
+      background-size: 60px 37px;
+      width: 60px;
+      height: 37px; }
     #personal-data .sensor .CO {
       background: url(/images/CO.svg);
-      background-repeat: no-repeat; }
+      background-size: 71px 58px;
+      width: 71px;
+      height: 58px; }
     #personal-data .sensor .temperature {
       background: url(/images/temperature.svg);
-      background-repeat: no-repeat; }
+      background-size: 46px 58px;
+      width: 46px;
+      height: 58px; }
+
+.notifications {
+  max-width: 800px;
+  margin: 0 auto; }
+  .notifications .notification {
+    background-color: #FFF;
+    max-width: 800px;
+    padding: 15px;
+    position: relative;
+    margin-bottom: 20px; }
+    .notifications .notification h3 {
+      margin: 0 0 10px 0; }
+    .notifications .notification p {
+      max-width: 600px; }
+    .notifications .notification .dropdown {
+      position: absolute;
+      right: 0;
+      top: 0;
+      padding: 10px;
+      border: none; }
+      .notifications .notification .dropdown button {
+        border: none;
+        transition: all .1s ease; }
 
 /*# sourceMappingURL=style.css.map */
