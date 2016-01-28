@@ -11,6 +11,17 @@ var LOGS = {
     MKC   : 'mkC.log'
 };
 
+String.prototype.hashCode = function() {
+    var hash = 0, i, chr, len;
+    if (this.length === 0) return hash;
+    for (i = 0, len = this.length; i < len; i++) {
+        chr   = this.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return hash;
+};
+
 var ccnjs = ccnjs || {};
 
 /**
@@ -96,8 +107,7 @@ ccnjs.Relay = function(relay_config){
 
         var file = prefix.replace(/\//g,"");
 
-        console.log(file);
-
+        console.log( file );
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
         var process = toFile(exec(string), LOGS.MKC);
 
@@ -107,7 +117,7 @@ ccnjs.Relay = function(relay_config){
 
             var string2 = S(command_template).template({socket: local.socket, file: file}).s;
             var process2 = toFile(exec(string2), LOGS.CTRL);
-            process2.on('exit', console.log);
+            //process2.on('exit', console.log);
         });
 
     }
@@ -120,7 +130,6 @@ ccnjs.Relay = function(relay_config){
                 var peekTemplate = '$CCNL_HOME/bin/ccn-lite-peek -u {{host}}/{{port}} "{{prefix}}" | $CCNL_HOME/bin/ccn-lite-pktdump -f 2';
                 var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix}).s;
 
-                console.log(string);
                 var process = exec(string);
                 process.stdout.on('data', callback);
             }
@@ -132,6 +141,78 @@ ccnjs.Relay = function(relay_config){
         addContent: addContent,
         getContent: getContent,
         close: close};
+};
+
+
+/**
+ *
+ * @param prefix
+ * @param relay
+ * @returns {{update: update}}
+ * @constructor
+ */
+ccnjs.Simulation = function( prefix ,relay ) {
+    /**
+     *
+     * @param {number} domain.min
+     * @param {number} domain.max
+     * @returns {number} random number between domain.min and domain.max
+     */
+    function randValue( domain ) {
+        return Math.random() * (domain.max - domain.min) + domain.min;
+    }
+
+    function createSensorData( ) {
+        return {
+            time: new Date(),
+            bodyTemp: randValue({min: 29, max: 40}),
+            envTemp: randValue({min: -20, max: 35}),
+            pulse: randValue({min: 40, max: 160}),
+            co2: randValue({min: 0, max: 100})
+        }
+    }
+
+    var mContent = {
+        phoneId: prefix.hashCode( ),
+        sensorData: []
+    };
+
+
+    function update( ) {
+        mContent.sensorData.push(createSensorData());
+        relay.addContent( prefix, mContent);
+    }
+
+    return {
+        update: update
+    }
+};
+
+ccnjs.SimulationManager = function( interval ) {
+    var simulations = [];
+    var intervalId = 0;
+
+    function start( ) {
+        intervalId = setInterval(function( ) {
+            simulations.forEach( function( simulation ) {
+                simulation.update( )
+            } );
+        }, interval );
+    }
+
+    function stop( ) {
+        clearInterval( intervalId );
+    }
+
+    function addSimulation( simulation ) {
+        simulations.push( simulation );
+    }
+
+    return {
+        addSimulation: addSimulation,
+        start: start,
+        stop: stop
+    }
 };
 
 
