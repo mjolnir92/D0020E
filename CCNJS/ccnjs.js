@@ -169,7 +169,7 @@ ccnjs.Simulation = function( prefix ,relay ) {
             envTemp: randValue({min: -20, max: 35}),
             pulse: randValue({min: 40, max: 160}),
             co2: randValue({min: 0, max: 100})
-        }
+        };
     }
 
     var mContent = {
@@ -185,7 +185,7 @@ ccnjs.Simulation = function( prefix ,relay ) {
 
     return {
         update: update
-    }
+    };
 };
 
 ccnjs.SimulationManager = function( interval ) {
@@ -195,7 +195,7 @@ ccnjs.SimulationManager = function( interval ) {
     function start( ) {
         intervalId = setInterval(function( ) {
             simulations.forEach( function( simulation ) {
-                simulation.update( )
+                simulation.update( );
             } );
         }, interval );
     }
@@ -212,7 +212,7 @@ ccnjs.SimulationManager = function( interval ) {
         addSimulation: addSimulation,
         start: start,
         stop: stop
-    }
+    };
 };
 
 
