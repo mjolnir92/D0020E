@@ -10,7 +10,8 @@ body {
   background-color: #EDEDED;
   width: 85%;
   margin-left: 15%;
-  overflow: hidden; }
+  overflow: hidden;
+  padding: 15px; }
 
 #logo {
   height: 150px;
@@ -40,10 +41,12 @@ body {
 
 ul.nav a:hover {
   background-color: #515965;
-  color: #FFF; }
+  color: #FFF;
+  border-right: 15px solid #4A90E2; }
 
 .nav > li > a {
-  padding-left: 30px; }
+  padding-left: 30px;
+  border-radius: 0; }
 
 .chart div {
   font: 10px sans-serif;
@@ -91,7 +94,8 @@ ul.nav a:hover {
       #personal-data .sensor .icon > div {
         background-repeat: no-repeat;
         display: block;
-        text-indent: -9999px; }
+        text-indent: -9999px;
+        transition: all .1s ease; }
     #personal-data .sensor .heartrate {
       background: url(/images/heartrate.svg);
       background-size: 51px 51px;
