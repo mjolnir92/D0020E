@@ -1,0 +1,40 @@
+This is stored data.
+
+
+
+<div class="container">
+  <h2>Inline form with .sr-only class</h2>
+  <p>Make the viewport larger than 768px wide to see that all of the form elements are inline, left aligned, and the labels are alongside.</p>
+  <form class="form-inline" role="form">
+    <div class="form-group-storedData">
+      <label for="sel1">Select data:</label>
+      <select class="form-control" id="selectedStoredData">
+        <option value="oxygen"> Oxygen levels </option>
+        <option value="hearth"> Hearth rates </option>
+        <option value="temperature"> Temperature </option>
+        <option value="battery"> Battery </option>
+    </div>
+    <!-- https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+
+    <label><input type="hidden"></label>
+    <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+
+<head>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+  </script>
+</head>
+<body>
+
+<p>Date: <input type="text" id="datepicker"></p>
+
+
+</body>
