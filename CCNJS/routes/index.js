@@ -11,6 +11,10 @@ router.get('/client', function(req, res, next){
   res.render('client', { value: 400 });
 });
 
+router.get('/storedData', function(req, res, next){
+  res.render('storedData');
+});
+
 router.get('/logs/relay', function(req, res, next){
   console.log(__dirname);
   res.sendFile(path.resolve(path.join(__dirname,'../public/logs/relay.log')));
