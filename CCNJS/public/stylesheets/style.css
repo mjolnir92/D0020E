@@ -48,6 +48,18 @@ body {
   padding-left: 30px;
   border-radius: 0; }
 
+path {
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
 .chart div {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -144,5 +156,8 @@ body {
       .notifications .notification .dropdown button {
         border: none;
         transition: all .1s ease; }
+
+#graph-holder {
+  width: 670px; }
 
 /*# sourceMappingURL=style.css.map */
