@@ -188,11 +188,11 @@ ccnjs.Simulation = function( prefix ,relay ) {
     }
 };
 
-ccnjs.SimulationManager = function( interval ) {
+ccnjs.SimulationManager = function( ) {
     var simulations = [];
     var intervalId = 0;
 
-    function start( ) {
+    function start( interval ) {
         intervalId = setInterval(function( ) {
             simulations.forEach( function( simulation ) {
                 simulation.update( )

@@ -7,7 +7,7 @@ var ccn = require("./ccnjs.js");
 
 var prefix = "/prefix";
 var relay = ccn.Relay();
-var manager = ccn.SimulationManager( 500 );
+var manager = ccn.SimulationManager( );
 var phone = ccn.Simulation( prefix, relay );
 manager.addSimulation( phone );
 
