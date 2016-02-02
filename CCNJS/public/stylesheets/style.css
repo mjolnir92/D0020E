@@ -10,7 +10,8 @@ body {
   background-color: #EDEDED;
   width: 85%;
   margin-left: 15%;
-  overflow: hidden; }
+  overflow: hidden;
+  transition: all .5s ease; }
 
 #logo {
   height: 150px;
@@ -27,7 +28,8 @@ body {
   position: fixed;
   height: 100%;
   width: 15%;
-  background-color: #343941; }
+  background-color: #343941;
+  transition: all .5s ease; }
 
 .nav-index a {
   color: #8794AA;
@@ -37,13 +39,26 @@ body {
     font-weight: 300;
     font-size: 0.8em;
     background-color: #EE3939; }
-
-ul.nav a:hover {
-  background-color: #515965;
-  color: #FFF; }
+  .nav-index a ul.nav a:hover {
+    background-color: #515965;
+    color: #FFF;
+    border-right: 15px solid #4A90E2; }
 
 .nav > li > a {
-  padding-left: 30px; }
+  padding-left: 30px;
+  border-radius: 0; }
+
+path {
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
 
 .chart div {
   font: 10px sans-serif;
@@ -54,10 +69,15 @@ ul.nav a:hover {
   color: white; }
 
 #person-search-field {
-  height: 200px;
-  font-size: 30px;
+  height: 100%;
   color: #555;
-  text-align: center; }
+  text-align: center;
+  position: fixed;
+  width: 15%;
+  background-color: #CAC7C7; }
+
+.nav-real-time {
+  font-size: 1em; }
 
 #personal-data {
   margin-bottom: 50px; }
@@ -91,7 +111,8 @@ ul.nav a:hover {
       #personal-data .sensor .icon > div {
         background-repeat: no-repeat;
         display: block;
-        text-indent: -9999px; }
+        text-indent: -9999px;
+        transition: all .1s ease; }
     #personal-data .sensor .heartrate {
       background: url(/images/heartrate.svg);
       background-size: 51px 51px;
@@ -135,5 +156,8 @@ ul.nav a:hover {
       .notifications .notification .dropdown button {
         border: none;
         transition: all .1s ease; }
+
+#graph-holder {
+  width: 670px; }
 
 /*# sourceMappingURL=style.css.map */
