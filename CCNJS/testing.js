@@ -25,7 +25,8 @@ setTimeout(function() {
     var simulation = manager.getSimulation( prefix );
 
     //getContent returns a content object, see ccnjs.js::ccnjs.Simulation.mContent
-    var array = phone.getContent().sensorData;
+    //sensorData is an array of random values.
+    var array = simulation.getContent().sensorData;
 
     array.forEach( function( element ) {
         console.log( "Body temperature: " + element.bodyTemp );
