@@ -24,6 +24,8 @@ String.prototype.hashCode = function() {
 
 var ccnjs = ccnjs || {};
 
+ccnjs.DOCKER = false;
+
 /**
  * @param relay_config Relay connection config.
  * @param {String} relay_config.debug Debug level.
@@ -39,18 +41,18 @@ ccnjs.Relay = function(relay_config){
      * @param {String} file_name
      * @return {Object} process
      */
-    function toFile(process, file_name){
-        var flags = { flags: 'a' };
-        var out_path = path.join(__dirname, 'public/logs/', file_name);
-        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
-        var stdout = fs.createWriteStream(out_path, flags);
-        var stderr = fs.createWriteStream(err_path, flags);
-
-        process.stdout.pipe(stdout);
-        process.stderr.pipe(stderr);
-
-        return process;
-    }
+    //function toFile(process, file_name){
+    //    var flags = { flags: 'a' };
+    //    var out_path = path.join(__dirname, 'public/logs/', file_name);
+    //    var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
+    //    var stdout = fs.createWriteStream(out_path, flags);
+    //    var stderr = fs.createWriteStream(err_path, flags);
+    //
+    //    process.stdout.pipe(stdout);
+    //    process.stderr.pipe(stderr);
+    //
+    //    return process;
+    //}
 
 
     relay_config = relay_config || {};
@@ -64,7 +66,9 @@ ccnjs.Relay = function(relay_config){
 
     var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
     var string = S(relay_template).template(local).s;
-    var process = toFile(exec(string), LOGS.RELAY);
+
+    exec( string );
+    //var process = toFile(exec(string), LOGS.RELAY);
 
 
 
@@ -75,8 +79,11 @@ ccnjs.Relay = function(relay_config){
         console.log('exiting with code: ' + code);
     });
 
-    function close(){
+    function close( callback ){
         process.kill('SIGTERM');
+        if ( callback ) {
+            callback( );
+        }
     }
 
     /**
@@ -88,15 +95,18 @@ ccnjs.Relay = function(relay_config){
         route_config.udp = route_config.udp || '9999';
 
         var config_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} newUDPface any {{ip}} {{udp}} | $CCNL_HOME/bin/ccn-lite-ccnb2xml | grep FACEID",
-            string = S(config_template).template({socket: local.socket, ip: route_config.ip, udp: route_config.udp}).s,
-            process = toFile(exec(string), LOGS.CTRL);
+            string = S(config_template).template({socket: local.socket, ip: route_config.ip, udp: route_config.udp}).s;
+        exec( string );
+            //process = toFile(exec(string), LOGS.CTRL);
 
         process.stdout.on('data', function(data){
 
             var forwarding_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} prefixreg {{prefix}} {{face_id}} ndn2013 | $CCNL_HOME/bin/ccn-lite-ccnb2xml",
                 face_id = data.replace(/[^0-9.]/g, ""),
-                string = S(forwarding_template).template({socket: local.socket, prefix: route_config.prefix, face_id: face_id}).s,
-                set_routing = toFile(exec(string), LOGS.CTRL);
+                string = S(forwarding_template).template({socket: local.socket, prefix: route_config.prefix, face_id: face_id}).s;
+
+            exec( string );
+                //set_routing = toFile(exec(string), LOGS.CTRL);
         });
     }
 
@@ -109,21 +119,27 @@ ccnjs.Relay = function(relay_config){
 
         console.log( file );
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
-        var process = toFile(exec(string), LOGS.MKC);
+        console.log( string );
+        var process = exec( string );
+        process.stderr.on( 'data', console.log );
+        //var process = toFile(exec(string), LOGS.MKC);
 
         process.stdin.write(JSON.stringify(content));
 
         process.on('close', function(code){
 
             var string2 = S(command_template).template({socket: local.socket, file: file}).s;
-            var process2 = toFile(exec(string2), LOGS.CTRL);
+            var proc2 = exec( string2 );
+            proc2.stderr.on( 'data', console.log );
+            //var process2 = toFile(exec(string2), LOGS.CTRL);
             //process2.on('exit', console.log);
         });
 
     }
 
     function getContent(prefix, callback){
-        networkInterfaces['eth0'].forEach(function(iface){
+        var inter = ( ccnjs.DOCKER ) ? 'eth0' : 'en0';
+        networkInterfaces[ inter ].forEach(function(iface){
 
             if ('IPv4' === iface.family && iface.internal === false) {
 
@@ -131,7 +147,9 @@ ccnjs.Relay = function(relay_config){
                 var string = S(peekTemplate).template({host: iface.address, port: local.udp, prefix: prefix}).s;
 
                 var process = exec(string);
+                process.stderr.on( 'data', console.log );
                 process.stdout.on('data', callback);
+                process.stdout.on('exit', console.log);
             }
         });
     }
@@ -140,7 +158,7 @@ ccnjs.Relay = function(relay_config){
         addRoute: addRoute,
         addContent: addContent,
         getContent: getContent,
-        close: close};
+        close: close };
 };
 
 
@@ -154,21 +172,21 @@ ccnjs.Relay = function(relay_config){
 ccnjs.Simulation = function( prefix ,relay ) {
     /**
      *
-     * @param {number} domain.min
-     * @param {number} domain.max
+     * @param {number} min
+     * @param {number} max
      * @returns {number} random number between domain.min and domain.max
      */
-    function randValue( domain ) {
-        return Math.random() * (domain.max - domain.min) + domain.min;
+    function randValue( min, max ) {
+        return Math.random() * (max - min) + min;
     }
 
     function createSensorData( ) {
         return {
             time: new Date(),
-            bodyTemp: randValue({min: 29, max: 40}),
-            envTemp: randValue({min: -20, max: 35}),
-            pulse: randValue({min: 40, max: 160}),
-            co2: randValue({min: 0, max: 100})
+            bodyTemp: randValue( 29, 40),
+            envTemp: randValue(-20,  35),
+            pulse: randValue( 40, 160),
+            co2: randValue( 0, 100)
         };
     }
 
