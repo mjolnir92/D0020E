@@ -12,10 +12,11 @@ var realTime = function(d3){
     //display data in graph
     $('#myModal').modal('toggle');
     $('.modal-title').html(sensor);
-    $('.modal-body').html("<p>Graph for "+sensor+"</p>");
-    if(sensor == "heartrate"){
-      makeRealTimeGraph();
-    }
+    makeRealTimeGraph();
+    $(function() {
+      $( "#datepicker1" ).datepicker();
+      $( "#datepicker2" ).datepicker();
+    });
 
   });
 
@@ -33,15 +34,27 @@ var realTime = function(d3){
   }
 
   //graph with d3js
-  function makeRealTimeGraph() {
-    var data = [
-      {date:"1-May-12",close:"58.13"},
-      {date:"30-Apr-12",close:"53.98"},
-      {date:"27-Apr-12",close:"67.00"},
-      {date:"26-Apr-12",close:"89.70"},
-      {date:"25-Apr-12",close:"99.00"}
-    ];
-
+  function makeRealTimeGraph(sensor) {
+    $("#graph-area").html("");
+    if(sensor == "heartrate") { // check wich sensor it should get data from
+      var data = [
+        {date: "1-May-12", close: "58.13"}, // dummy data
+        {date: "30-Apr-12", close: "53.98"},
+        {date: "27-Apr-12", close: "67.00"},
+        {date: "26-Apr-12", close: "89.70"},
+        {date: "25-Apr-12", close: "99.00"}
+      ];
+    }
+    else{//atm it shows same data for each sensor...
+      var data = [
+        {date: "1-May-12", close: "58.13"},
+        {date: "30-Apr-12", close: "53.98"},
+        {date: "27-Apr-12", close: "67.00"},
+        {date: "26-Apr-12", close: "89.70"},
+        {date: "25-Apr-12", close: "99.00"}
+      ];
+    }
+  //margins for graph
     var margin = {top: 30, right: 20, bottom: 30, left: 50},
         width = 600 - margin.left - margin.right,
         height = 270 - margin.top - margin.bottom;
@@ -67,7 +80,7 @@ var realTime = function(d3){
         .y(function(d) { return y(d.close); });
 
 
-    var svg = d3.select(".modal-body")
+    var svg = d3.select("#graph-area") //create the svg in the modal-body
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
