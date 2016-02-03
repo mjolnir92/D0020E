@@ -161,15 +161,15 @@ ccnjs.Relay = function(relay_config){
         close: close };
 };
 
-
 /**
  *
- * @param prefix
- * @param relay
+ * @param {string} param.prefix Prefix to phone.
+ * @param {ccnjs.Relay} [param.relay] Relay with contentStore.
+ * @param {number} param.values Amount of data elements to keep
  * @returns {{update: update}}
  * @constructor
  */
-ccnjs.Simulation = function( prefix, relay, values ) {
+ccnjs.Simulation = function( param ) {
     /**
      *
      * @param {number} min
@@ -184,40 +184,46 @@ ccnjs.Simulation = function( prefix, relay, values ) {
         return {
             time: new Date(),
             bodyTemp: randValue( 29, 40),
-            envTemp: randValue(-20,  35),
-            pulse: randValue( 40, 160),
-            co2: randValue( 0, 100)
+            envTemp:  randValue(-20, 35),
+            pulse:    randValue( 40, 160),
+            co2:      randValue(  0, 100)
         };
     }
 
     var mContent = {
-        phoneId: prefix.hashCode( ),
+        phoneId: param.prefix.hashCode( ),
         sensorData: []
     };
 
-
     function update( ) {
         mContent.sensorData.push(createSensorData());
-        if( mContent.sensorData.length > values ) {
+        if( mContent.sensorData.length > param.values ) {
             mContent.sensorData.shift();
         }
-        relay.addContent( prefix, mContent);
+        if ( param.relay ) {
+            param.relay.addContent( param.prefix, mContent);
+        }
+    }
+
+    function getContent( ) {
+        return mContent;
     }
 
     return {
-        update: update
+        update: update,
+        getContent: getContent
     };
 };
 
 ccnjs.SimulationManager = function( ) {
-    var simulations = [];
+    var simulations = {};
     var intervalId = 0;
 
     function start( interval ) {
         intervalId = setInterval(function( ) {
-            simulations.forEach( function( simulation ) {
-                simulation.update( );
-            } );
+            for( var prefix in simulations ) {
+                simulations[ prefix ].update();
+            }
         }, interval );
     }
 
@@ -227,10 +233,15 @@ ccnjs.SimulationManager = function( ) {
     }
 
     function addSimulation( simulation ) {
-        simulations.push( simulation );
+        simulations[ simulation.prefix ] = simulation;
+    }
+
+    function getSimulation( prefix ) {
+        return simulations[ prefix ];
     }
 
     return {
+        getSimulation: getSimulation,
         addSimulation: addSimulation,
         start: start,
         stop: stop

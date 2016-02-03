@@ -3,40 +3,40 @@
  *
  * Created by magnusbjork on 1/27/16.
  */
-
 var ccn = require("./ccnjs.js");
-var local = {
-    debug  : 'debug',
-    udp    : '9998',
-    socket : '/tmp/mgmt-relay-b.sock',
-    tcp    : '6362'
-};
-
 var prefix = "/prefix/content";
-var relay = ccn.Relay(  );
-//var relay2 = ccn.Relay( local );
-//relay.addRoute({udp: '9998', ip: '192.168.192.0.23', prefix: '/prefix' });
-//relay2.addContent( prefix, "Hello World");
+
+//values how many values to store at most.
+var phone = ccn.Simulation({ prefix: prefix, values: 30 });
+
 var manager = ccn.SimulationManager( );
-var phone = ccn.Simulation( prefix, relay, 10 );
 manager.addSimulation( phone );
 
-
+//500 is the interval to update the simulation. ( in millisec. )
 manager.start(500);
 
+/*
+ setTimeout will call a callback function after a set value,
+ in this case the function will be called after 10000ms.
+ */
 setTimeout(function() {
-    //manager.stop();
-    relay.getContent( prefix, function( content ) {
-        console.log( 'got content: ' );
-        console.log( content );
-        manager.stop( function( ) {
-            relay.close( function( ) {
-                console.log( "relay closed." );
-            })
-        });
-        //relay.close( function( ) {
-        //    console.log("relay closed.!");
-        //} )
-    });
+
+    //get a simulation added to the manager, var simulation == var phone
+    var simulation = manager.getSimulation( prefix );
+
+    //getContent returns a content object, see ccnjs.js::ccnjs.Simulation.mContent
+    var array = phone.getContent().sensorData;
+
+    array.forEach( function( element ) {
+        console.log( "Body temperature: " + element.bodyTemp );
+        console.log( "Environment temperature: " + element.envTemp );
+        console.log( "Pulse: " + element.pulse );
+        console.log( "CO2: " + element.co2 );
+    } );
+
+    //stop the simulation
+    manager.stop( function( ) {
+        console.log( "simulation stopped." );
+    })
 }, 10000);
 
