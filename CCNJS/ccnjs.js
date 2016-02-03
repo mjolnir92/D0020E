@@ -80,10 +80,12 @@ ccnjs.Relay = function(relay_config){
     });
 
     function close( callback ){
-        process.kill('SIGTERM');
-        if ( callback ) {
-            callback( );
-        }
+        var template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} debug halt | $CCNL_HOME/bin/ccn-lite-ccnb2xml";
+        var string = S( template ).template( { socket: local.socket });
+        var proc = exec( string );
+        proc.stdout.on( 'data', function( data ) {
+            callback();
+        });
     }
 
     /**
@@ -117,9 +119,7 @@ ccnjs.Relay = function(relay_config){
 
         var file = prefix.replace(/\//g,"");
 
-        console.log( file );
         var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
-        console.log( string );
         var process = exec( string );
         process.stderr.on( 'data', console.log );
         //var process = toFile(exec(string), LOGS.MKC);
@@ -169,7 +169,7 @@ ccnjs.Relay = function(relay_config){
  * @returns {{update: update}}
  * @constructor
  */
-ccnjs.Simulation = function( prefix ,relay ) {
+ccnjs.Simulation = function( prefix, relay, values ) {
     /**
      *
      * @param {number} min
@@ -198,6 +198,9 @@ ccnjs.Simulation = function( prefix ,relay ) {
 
     function update( ) {
         mContent.sensorData.push(createSensorData());
+        if( mContent.sensorData.length > values ) {
+            mContent.sensorData.shift();
+        }
         relay.addContent( prefix, mContent);
     }
 
@@ -218,8 +221,9 @@ ccnjs.SimulationManager = function( ) {
         }, interval );
     }
 
-    function stop( ) {
+    function stop( callback ) {
         clearInterval( intervalId );
+        callback();
     }
 
     function addSimulation( simulation ) {
