@@ -74,7 +74,10 @@ path {
   text-align: center;
   position: fixed;
   width: 15%;
-  background-color: #CAC7C7; }
+  background-color: #CAC7C7;
+  -webkit-box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75);
+  box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75); }
 
 .nav-real-time {
   font-size: 1em; }
@@ -101,7 +104,7 @@ path {
       width: 115px;
       height: 115px;
       border-radius: 100%;
-      border: 2px soild #CAC7C7;
+      border: 2px solid #CAC7C7;
       background: #CAC7C7;
       transition: all .1s ease; }
       #personal-data .sensor .icon:hover {
@@ -159,5 +162,10 @@ path {
 
 #graph-holder {
   width: 670px; }
+
+#worker-info {
+  padding: 20px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #CAC7C7; }
 
 /*# sourceMappingURL=style.css.map */

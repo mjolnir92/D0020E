@@ -20,12 +20,20 @@ var realTime = function(d3){
 
   });
 
+  // when a worker is selected, change to his information(more to be added)
+  $(".workers").click(function(){
+    var person = $(this).html();
+    $("#worker-name").html(person);
+  })
 
+  //makes the navbar smaller when visiting real-time page
   function minimizeNavBar(){
     $("#indexmeny").css('width', "10%");
     $("#mainDiv").css('margin-left', "10%");
     $("#mainDiv").css('width', "90%");
   }
+
+  minimizeNavBar();
 
   function maximizeNavBar(){
     $("#indexmeny").css('width', "15%");
