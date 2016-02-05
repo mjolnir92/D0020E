@@ -189,6 +189,7 @@ ccnjs.Simulation = function( param ) {
             co2:      randValue(  0, 100)
         };
     }
+    var prefix = param.prefix;
 
     var mContent = {
         phoneId: param.prefix.hashCode( ),
@@ -205,11 +206,12 @@ ccnjs.Simulation = function( param ) {
         }
     }
 
-    function getContent( ) {
-        return mContent;
+    function getContent( callback ) {
+        callback( mContent );
     }
 
     return {
+        prefix: prefix,
         update: update,
         getContent: getContent
     };
@@ -237,6 +239,7 @@ ccnjs.SimulationManager = function( ) {
     }
 
     function getSimulation( prefix ) {
+        console.log( prefix );
         return simulations[ prefix ];
     }
 

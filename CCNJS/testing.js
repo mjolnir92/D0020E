@@ -26,18 +26,20 @@ setTimeout(function() {
 
     //getContent returns a content object, see ccnjs.js::ccnjs.Simulation.mContent
     //sensorData is an array of random values.
-    var array = simulation.getContent().sensorData;
+    simulation.getContent( function( content ) {
+        content.sensorData.forEach( function( element ) {
+            console.log( "Body temperature: " + element.bodyTemp );
+            console.log( "Environment temperature: " + element.envTemp );
+            console.log( "Pulse: " + element.pulse );
+            console.log( "CO2: " + element.co2 );
+        } );
 
-    array.forEach( function( element ) {
-        console.log( "Body temperature: " + element.bodyTemp );
-        console.log( "Environment temperature: " + element.envTemp );
-        console.log( "Pulse: " + element.pulse );
-        console.log( "CO2: " + element.co2 );
-    } );
+        //stop the simulation
+        manager.stop( function( ) {
+            console.log( "simulation stopped." );
+        })
 
-    //stop the simulation
-    manager.stop( function( ) {
-        console.log( "simulation stopped." );
-    })
+    });
+
 }, 10000);
 
