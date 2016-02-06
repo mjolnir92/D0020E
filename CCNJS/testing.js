@@ -3,6 +3,7 @@
  *
  * Created by magnusbjork on 1/27/16.
  */
+
 var ccn = require("./ccnjs.js");
 var prefix = "/prefix/content";
 
