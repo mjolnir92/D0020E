@@ -8,7 +8,7 @@ var ccn = require("./ccnjs.js");
 var prefix = "/prefix/content";
 
 //values how many values to store at most.
-var phone = ccn.Simulation({ prefix: prefix, values: 30 });
+var phone = ccn.Simulation({ prefix: prefix, values: 30 }, true);
 
 var manager = ccn.SimulationManager( );
 manager.addSimulation( phone );
@@ -29,10 +29,11 @@ setTimeout(function() {
     //sensorData is an array of random values.
     simulation.getContent( function( content ) {
         content.sensorData.forEach( function( element ) {
+            console.log( "Date and Time: " + element.time);
             console.log( "Body temperature: " + element.bodyTemp );
             console.log( "Environment temperature: " + element.envTemp );
             console.log( "Pulse: " + element.pulse );
-            console.log( "CO2: " + element.co2 );
+            console.log( "CO2: " + element.co2 + "\n");
         } );
 
         //stop the simulation
@@ -43,4 +44,3 @@ setTimeout(function() {
     });
 
 }, 10000);
-

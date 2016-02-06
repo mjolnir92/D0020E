@@ -166,10 +166,11 @@ ccnjs.Relay = function(relay_config){
  * @param {string} param.prefix Prefix to phone.
  * @param {ccnjs.Relay} [param.relay] Relay with contentStore.
  * @param {number} param.values Amount of data elements to keep
+ * @param devLogging Enables dev, realtime console logging
  * @returns {{update: update}}
  * @constructor
  */
-ccnjs.Simulation = function( param ) {
+ccnjs.Simulation = function( param , logging) {
     /**
      *
      * @param {number} min
@@ -180,14 +181,31 @@ ccnjs.Simulation = function( param ) {
         return Math.random() * (max - min) + min;
     }
 
+    /*
+    Realtime console logging for created element
+    */
+    var elementCounter = 0;
+    function logElement() {
+      elementCounter++;
+      console.log("-------Element " + elementCounter + "-------");
+      for (var e in element){
+        console.log(e + ": " + element[e]);
+      }
+      console.log("");
+    }
+
     function createSensorData( ) {
-        return {
+        element = {
             time: new Date(),
             bodyTemp: randValue( 29, 40),
             envTemp:  randValue(-20, 35),
             pulse:    randValue( 40, 160),
             co2:      randValue(  0, 100)
         };
+        if (logging){
+          logElement();
+        }
+        return element;
     }
     var prefix = param.prefix;
 
