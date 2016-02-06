@@ -32,4 +32,8 @@ router.get('/logs/content', function(req, res, next){
   res.sendFile(path.resolve(path.join(__dirname,'../public/logs/content.log')));
 });
 
+router.get('/d3', function( req, res ) {
+    res.render( 'd3test' );
+} );
+
 module.exports = router;

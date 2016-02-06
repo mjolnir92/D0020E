@@ -23,6 +23,10 @@ var client = function(socket, d3){
         div.innerHTML = object.calculated;
     });
 
+    socket.on( 'phoneData', function( phoneData ) {
+        console.log( phoneData );
+    } );
+
     function submitForm(){
         var sendThis = {};
         sendThis[key_input.value] = value_input.value;
@@ -88,14 +92,20 @@ var client = function(socket, d3){
 
     }
 
+    function logData( ) {
+        socket.emit( 'getPhoneData' );
+    }
 
 
-    return { createBarChart: createBarChart,
-             createGraph: createGraph,
-             clientButton: clientButton,
-             submitForm: submitForm,
-             getContent: getContent,
-             addRoute: addRoute}
+    return {
+        createBarChart: createBarChart,
+        createGraph: createGraph,
+        clientButton: clientButton,
+        submitForm: submitForm,
+        getContent: getContent,
+        addRoute: addRoute,
+        logData: logData
+    }
 
 }(io(), d3);
 
