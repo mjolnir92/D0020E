@@ -184,7 +184,7 @@ ccnjs.Simulation = function( param , logging) {
      * @returns {number} random number between domain.min and domain.max
      */
     function randValue( min, max, last ) {
-        var value = Math.random() * max + min;
+        var value = Math.random() * (max - min )+ min;
         value = .1 * value + .9 * last;
         return value;
     }

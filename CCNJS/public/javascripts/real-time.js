@@ -12,10 +12,6 @@ var realTime = function(d3){
     //display data in graph
     $('#myModal').modal('toggle');
     $('.modal-title').html(sensor);
-    $(function() {
-      $( "#datepicker1" ).datepicker();
-      $( "#datepicker2" ).datepicker();
-    });
 
   });
 
@@ -135,6 +131,13 @@ var realTime = function(d3){
 
   client.socket.on( 'phoneData', function(phoneData){
       makeRealTimeGraph(phoneData, sensor);
+      var len = phoneData.sensorData.length;
+      $("#pulse").html(Math.round(phoneData.sensorData[len-1]['pulse']) + "BPM");
+      $("#co2").html(Math.round(phoneData.sensorData[len-1]['co2']) + "PPM");
+      $("#envTemp").html(Math.round(phoneData.sensorData[len-1]['envTemp']) + "C°");
+      $("#bodyTemp").html(Math.round(phoneData.sensorData[len-1]['bodyTemp']) + "C°");
+      $(".time-stamp").html(phoneData.sensorData[len-1]['time']);
+      $("#phoneId").html("id = " +phoneData.phoneId);
   } );
 
   return {minimizeNavBar: minimizeNavBar,
