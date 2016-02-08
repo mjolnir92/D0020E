@@ -34,12 +34,9 @@ module.exports = function(server){
             relay.addContent(message.prefix, message.content);
         });
 
-        socket.on('clientButton', function(object){
-
-            var out = { calculated: object.value * 4};
-            socket.emit('calculated', out);
-
-        });
+        socket.on('getDemoData', function() {
+            socket.emit( 'demoData', phone.content );
+        })
 
     });
 };

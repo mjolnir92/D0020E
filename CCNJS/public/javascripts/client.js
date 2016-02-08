@@ -19,6 +19,10 @@ var client = function(socket, d3){
 
     });
 
+    socket.on( 'demoData', function( data ) {
+        console.log( data );
+    } );
+
     socket.on('calculated', function(object){
         div.innerHTML = object.calculated;
     });
@@ -90,7 +94,7 @@ var client = function(socket, d3){
     }
 
     function logData( ) {
-        socket.emit( 'getPhoneData' );
+        socket.emit( 'getDemoData' );
     }
 
 
