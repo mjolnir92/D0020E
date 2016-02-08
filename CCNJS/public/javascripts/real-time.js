@@ -44,6 +44,28 @@ var realTime = function(d3){
   function makeRealTimeGraph(phoneData, sensor) {
     $("#graph-area").html("");
     var data = phoneData.sensorData;
+      //bodyTemp: randValue( 29, 40, last.bodyTemp),
+      //    envTemp:  randValue(-20, 35, last.envTemp),
+      //    pulse:    randValue( 40, 160, last.pulse),
+      //    co2:      randValue(  0, 100, last.co2)
+      var defaults = {
+            bodyTemp:{
+              min: 29,
+              max: 40
+            },
+            envTemp:{
+              min: -20,
+              max: 160
+            },
+            pulse: {
+                min: 40,
+                max: 160
+            },
+            co2:{
+                min: 0,
+                max: 100
+            }
+        }
 
     var margin = {
             top: 30,
@@ -94,7 +116,7 @@ var realTime = function(d3){
 
       // Scale the range of the data
       x.domain(d3.extent(data, function(d) { return d.time; }));
-      y.domain(d3.extent(data, function(d) { return d[sensor]; }));
+      y.domain([defaults[sensor].min, defaults[sensor].max]);
 
       svg.append("path")		// Add the valueline path.
           .attr("class", "line")
