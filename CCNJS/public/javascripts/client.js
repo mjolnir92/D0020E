@@ -23,9 +23,6 @@ var client = function(socket, d3){
         div.innerHTML = object.calculated;
     });
 
-    socket.on( 'phoneData', function( phoneData ) {
-        console.log( phoneData );
-    } );
 
     function submitForm(){
         var sendThis = {};
@@ -104,7 +101,8 @@ var client = function(socket, d3){
         submitForm: submitForm,
         getContent: getContent,
         addRoute: addRoute,
-        logData: logData
+        logData: logData,
+        socket: socket
     }
 
 }(io(), d3);

@@ -229,6 +229,7 @@ ccnjs.Simulation = function( param , logging) {
     }
 
     return {
+        content: mContent,
         prefix: prefix,
         update: update,
         getContent: getContent
@@ -239,10 +240,14 @@ ccnjs.SimulationManager = function( ) {
     var simulations = {};
     var intervalId = 0;
 
-    function start( interval ) {
+    function start( interval, callback ) {
         intervalId = setInterval(function( ) {
             for( var prefix in simulations ) {
-                simulations[ prefix ].update();
+                var simulation = simulations[ prefix ];
+                simulation.update();
+                if ( callback ){
+                    callback( simulation );
+                }
             }
         }, interval );
     }
