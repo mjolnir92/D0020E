@@ -11,6 +11,10 @@ var LOGS = {
     MKC   : 'mkC.log'
 };
 
+Array.prototype.last = function(){
+    return this[ this.length - 1 ];
+};
+
 String.prototype.hashCode = function() {
     var hash = 0, i, chr, len;
     if (this.length === 0) return hash;
@@ -171,39 +175,41 @@ ccnjs.Relay = function(relay_config){
  * @constructor
  */
 ccnjs.Simulation = function( param , logging) {
+    var elementCounter = 0;
     /**
      *
      * @param {number} min
      * @param {number} max
+     * @param {number} last
      * @returns {number} random number between domain.min and domain.max
      */
-    function randValue( min, max ) {
-        return Math.random() * (max - min) + min;
+    function randValue( min, max, last ) {
+        var value = Math.random() * max + min;
+        value = .1 * value + .9 * last;
+        return value;
     }
 
-    /*
-    Realtime console logging for created element
-    */
-    var elementCounter = 0;
-    function logElement() {
-      elementCounter++;
-      console.log("-------Element " + elementCounter + "-------");
-      for (var e in element){
-        console.log(e + ": " + element[e]);
-      }
-      console.log("");
-    }
+    function createSensorData( last ) {
+        last = last || {
+                bodyTemp: 37,
+                envTemp: 22,
+                pulse: 60,
+                co2: 30
+            };
 
-    function createSensorData( ) {
-        element = {
+        var element = {
             time: new Date(),
-            bodyTemp: randValue( 29, 40),
-            envTemp:  randValue(-20, 35),
-            pulse:    randValue( 40, 160),
-            co2:      randValue(  0, 100)
+            bodyTemp: randValue( 29, 40, last.bodyTemp),
+            envTemp:  randValue(-20, 35, last.envTemp),
+            pulse:    randValue( 40, 160, last.pulse),
+            co2:      randValue(  0, 100, last.co2)
         };
         if (logging){
-          logElement();
+            console.log("-------Element " + elementCounter++ + "-------");
+            for (var e in element){
+                console.log(e + ": " + element[e]);
+            }
+            console.log("");
         }
         return element;
     }
@@ -215,7 +221,9 @@ ccnjs.Simulation = function( param , logging) {
     };
 
     function update( ) {
-        mContent.sensorData.push(createSensorData());
+        var last = mContent.sensorData.last();
+        var data = createSensorData( last );
+        mContent.sensorData.push( data );
         if( mContent.sensorData.length > param.values ) {
             mContent.sensorData.shift();
         }
