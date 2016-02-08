@@ -40,10 +40,6 @@ var realTime = function(d3){
   function makeRealTimeGraph(phoneData, sensor) {
     $("#graph-area").html("");
     var data = phoneData.sensorData;
-      //bodyTemp: randValue( 29, 40, last.bodyTemp),
-      //    envTemp:  randValue(-20, 35, last.envTemp),
-      //    pulse:    randValue( 40, 160, last.pulse),
-      //    co2:      randValue(  0, 100, last.co2)
       var defaults = {
             bodyTemp:{
               min: 29,
@@ -61,7 +57,7 @@ var realTime = function(d3){
                 min: 0,
                 max: 100
             }
-        }
+        };
 
     var margin = {
             top: 30,
@@ -105,20 +101,22 @@ var realTime = function(d3){
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
 
-    data.forEach(function(d) {
-      d.time = parseDate(d.time);
-      d[sensor] = +d[sensor];
-    });
+      data.forEach(function(d) {
+          d.time = parseDate(d.time);
+          d[sensor] = +d[sensor];
+      });
 
-      // Scale the range of the data
       x.domain(d3.extent(data, function(d) { return d.time; }));
       y.domain([defaults[sensor].min, defaults[sensor].max]);
 
-      svg.append("path")		// Add the valueline path.
-          .attr("class", "line")
-          .attr("d", valueline(data));
+      svg.append("defs").append("clipPath")
+          .attr("id", "clip")
+          .append("rect")
+          .attr("width", width)
+          .attr("height", height);
 
-      svg.append("g")			// Add the X Axis
+      var x_handle = svg.append("g")			// Add the X Axis
+          .attr("clip-path", "url(#clip)")
           .attr("class", "x axis")
           .attr("transform", "translate(0," + height + ")")
           .call(xAxis);
@@ -126,6 +124,23 @@ var realTime = function(d3){
       svg.append("g")			// Add the Y Axis
           .attr("class", "y axis")
           .call(yAxis);
+
+      var part = width / data.length;
+
+      var path = svg.append("g")
+          .attr("clip-path", "url(#clip)")
+          .append("path")
+          .attr("class", "line")
+          .attr("d", valueline(data));
+          //.transition()
+          //.attr( 'transform', 'translate( ' + -part + ', 0 )' )
+          //.duration( 2000 )
+          //.ease( 'linear' );
+
+      //x_handle.transition()
+      //    .attr( 'transform', 'translate( ' + -part + ', ' + height +' )' )
+      //    .duration( 2000 )
+      //    .ease( 'linear' );
 
   }
 
