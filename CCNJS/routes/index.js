@@ -24,6 +24,10 @@ router.get('/real-time', function(req, res, next){
   res.render('real-time');
 });
 
+router.get('/alarms', function(req, res, next){
+  res.render('alarms');
+});
+
 router.get('/logs/ctrl', function(req, res, next){
   res.sendFile(path.resolve(path.join(__dirname,'../public/logs/ctrl.log')));
 });
