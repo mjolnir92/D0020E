@@ -144,9 +144,68 @@ var realTime = function(d3){
 
   }
 
+  function setIconColor(phoneData){
+      var warnings = {
+          bodyTemp:{
+              min: 34,
+              max: 37
+          },
+          envTemp:{
+              min: -7,
+              max: 45
+          },
+          pulse: {
+              min: 50,
+              max: 145
+          },
+          co2:{
+              min: 10,
+              max: 30
+          }
+      };
+      var pData = phoneData.sensorData[phoneData.sensorData.length-1];
+      var ok = 0;
+      if(warnings['pulse'].min < pData['pulse'] && pData['pulse'] < warnings['pulse'].max){
+          $("#pulse-icon").css("background", "green");
+          ok += 1;
+      }
+      else{
+          $("#pulse-icon").css("background", "red");
+      }
+      if(warnings['bodyTemp'].min < pData['bodyTemp'] && pData['bodyTemp'] < warnings['bodyTemp'].max){
+          $("#bodyTemp-icon").css("background", "green");
+          ok += 1;
+      }
+      else{
+          $("#bodyTemp-icon").css("background", "red");
+      }
+      if(warnings['envTemp'].min < pData['envTemp'] && pData['envTemp'] < warnings['envTemp'].max){
+          $("#envTemp-icon").css("background", "green");
+          ok += 1;
+      }
+      else{
+          $("#envTemp-icon").css("background", "red");
+      }
+      if(pData['co2'] < warnings['co2'].max){
+          $("#co2-icon").css("background", "green");
+          ok += 1;
+      }
+      else{
+          $("#co2-icon").css("background", "red");
+
+      }
+      if(ok == 4){
+          $("#health-status").html("Health status OK!");
+      }
+      else{
+          $("#health-status").html("Health status <b>not</b> OK!");
+      }
+  }
+
   client.socket.on( 'phoneData', function(phoneData){
       makeRealTimeGraph(phoneData, sensor);
       var len = phoneData.sensorData.length;
+      setIconColor(phoneData);
       $("#pulse").html(Math.round(phoneData.sensorData[len-1]['pulse']) + "BPM");
       $("#co2").html(Math.round(phoneData.sensorData[len-1]['co2']) + "PPM");
       $("#envTemp").html(Math.round(phoneData.sensorData[len-1]['envTemp']) + "C°");
