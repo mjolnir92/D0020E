@@ -1,7 +1,6 @@
 var realTime = function(d3){
   var sensor = "pulse";
-  $(".icon").on("click", function () {
-
+  $(".more-info").on("click", function () {
     sensor = $(this).parent().attr("data-id");
 
     //Server call to get data from sensor (AJAX?)
@@ -14,27 +13,6 @@ var realTime = function(d3){
     $('.modal-title').html(sensor);
 
   });
-
-  // when a worker is selected, change to his information(more to be added)
-  $(".workers").click(function(){
-    var person = $(this).html();
-    $("#worker-name").html(person);
-  })
-
-  //makes the navbar smaller when visiting real-time page
-  function minimizeNavBar(){
-    $("#indexmeny").css('width', "10%");
-    $("#mainDiv").css('margin-left', "10%");
-    $("#mainDiv").css('width', "90%");
-  }
-
-  minimizeNavBar();
-
-  function maximizeNavBar(){
-    $("#indexmeny").css('width', "15%");
-    $("#mainDiv").css('margin-left', "15%");
-    $("#mainDiv").css('width', "85%");
-  }
 
   //graph with d3js
   function makeRealTimeGraph(phoneData, sensor) {
@@ -158,7 +136,3 @@ var realTime = function(d3){
   return {minimizeNavBar: minimizeNavBar,
         maximizeNavBar: maximizeNavBar};
 }(d3);
-
-
-
-

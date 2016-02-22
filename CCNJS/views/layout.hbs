@@ -24,22 +24,22 @@
     <script src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="javascripts/client.js"></script>
-    <div id="wrapper">
-        <div id="indexMeny">
-            <div id="logo">
-                <h2>LogoType</h2>
-            </div>
-            <ul class="nav nav-pills nav-stacked nav-index" role="tablist">
-                <li><a href="/real-time" onclick="realTime.minimizeNavBar()">Realtime</a></li>
-                <li><a href="#" onclick="realTime.maximizeNavBar()">Workers</a></li>
-                <li><a href="/storedData" onclick="realTime.maximizeNavBar()">Stored data</a></li>
-                <li><a href="/alarms" onclick="realTime.maximizeNavBar()">Alarms <span class="badge">42</span></a></li>
-                <li><a href="#" onclick="realTime.maximizeNavBar()">more...</a></li>
-            </ul>
+
+
+
+    <div id="indexMeny">
+        <div id="logo">
+            <h2>LogoType</h2>
         </div>
-        <div id="mainDiv">
-            {{{body}}}
-        </div>
+        <ul class="nav nav-pills nav-stacked nav-index" role="tablist">
+            <li><a href="/real-time" onclick="realTime.minimizeNavBar()">Realtime</a></li>
+            <li><a href="/alarms" onclick="realTime.maximizeNavBar()">Alarms <span class="badge">42</span></a></li>
+        </ul>
     </div>
+    <div id="mainDiv">
+        {{{body}}}
+    </div>
+
+
   </body>
 </html>

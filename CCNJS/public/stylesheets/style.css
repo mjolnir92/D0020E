@@ -3,26 +3,27 @@ body {
   font-size: 14px;
   color: #555; }
 
-#wrapper {
-  height: 800px; }
-
 #mainDiv {
-  background-color: #EDEDED;
+  background-color: #F4F4F4;
   width: 85%;
   margin-left: 15%;
-  overflow: hidden;
-  transition: all .5s ease; }
+  padding: 0 40px;
+  overflow: hidden; }
+
+h2, h1, h3 {
+  margin: 0; }
 
 #logo {
   height: 150px;
   width: 100%;
-  background-color: #D8D8D8;
+  background-color: #39B4EE;
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
   align-items: center; }
   #logo h2 {
-    margin: 0; }
+    margin: 0;
+    color: #FFF; }
 
 #indexMeny {
   position: fixed;
@@ -60,6 +61,24 @@ path {
   stroke-width: 1;
   shape-rendering: crispEdges; }
 
+#search-bar {
+  display: block;
+  width: 400px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #979797;
+  background-color: #ECEAEA;
+  color: #8A8A8A;
+  font-size: 1.4em;
+  text-align: center;
+  padding-left: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all .3s ease; }
+  #search-bar:focus {
+    outline: none;
+    color: #666;
+    background-color: #FFF; }
+
 .chart div {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -68,74 +87,105 @@ path {
   margin: 1px;
   color: white; }
 
-#person-search-field {
-  height: 100%;
-  color: #555;
-  text-align: center;
-  position: fixed;
-  width: 15%;
-  background-color: #CAC7C7;
-  -webkit-box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75);
-  -moz-box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75);
-  box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75); }
+#search-bar {
+  margin: 0 auto;
+  margin-top: 40px; }
 
-.nav-real-time {
-  font-size: 1em; }
+#sensor-info .info {
+  max-width: 800px;
+  background-color: #FFF;
+  margin: 15px auto;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  padding: 20px; }
 
-#personal-data {
-  margin-bottom: 50px; }
-  #personal-data .row {
-    margin-bottom: 40px; }
-  #personal-data .sensor {
-    display: flex;
-    align-items: center; }
-    #personal-data .sensor .data {
-      margin-left: 20px; }
-      #personal-data .sensor .data .main {
-        font-size: 3em; }
-      #personal-data .sensor .data .time-stamp {
-        font-size: 1.1em;
-        color: #666;
-        margin-top: -5px; }
-    #personal-data .sensor .icon {
+.sensors .sensor {
+  margin: 0 auto;
+  background-color: #FFF;
+  margin-bottom: 15px;
+  max-width: 800px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.2s ease-in-out; }
+  .sensors .sensor .info {
+    transition: max-height .6s ease;
+    overflow: hidden;
+    max-height: 90px;
+    padding: 0 20px; }
+    .sensors .sensor .info .preview {
+      margin-top: 5px;
+      height: 90px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 115px;
-      height: 115px;
-      border-radius: 100%;
-      border: 2px solid #CAC7C7;
-      background: #CAC7C7;
-      transition: all .1s ease; }
-      #personal-data .sensor .icon:hover {
-        transform: scale(1.1);
-        cursor: pointer;
-        border: 2px solid #7D7D7D; }
-      #personal-data .sensor .icon > div {
-        background-repeat: no-repeat;
+      align-items: center; }
+      .sensors .sensor .info .preview .data {
+        margin-left: 20px; }
+        .sensors .sensor .info .preview .data .main {
+          font-size: 3em;
+          width: 180px; }
+        .sensors .sensor .info .preview .data .time-stamp {
+          font-size: 1.1em;
+          color: #666;
+          margin-top: -5px; }
+      .sensors .sensor .info .preview .icon {
+        width: 80px;
+        display: flex;
+        justify-content: center;
+        align-items: center; }
+        .sensors .sensor .info .preview .icon > div {
+          background-repeat: no-repeat;
+          display: block;
+          text-indent: -9999px;
+          transition: all .1s ease; }
+      .sensors .sensor .info .preview .heartrate {
+        background: url(/images/heartrate.svg);
+        background-size: 70px 70px;
+        width: 70px;
+        height: 70px; }
+      .sensors .sensor .info .preview .battery {
+        background: url(/images/battery.svg);
+        background-size: 60px 37px;
+        width: 60px;
+        height: 37px; }
+      .sensors .sensor .info .preview .CO {
+        background: url(/images/CO.svg);
+        background-size: 71px 58px;
+        width: 71px;
+        height: 58px; }
+      .sensors .sensor .info .preview .temperature {
+        background: url(/images/temperature.svg);
+        background-size: 46px 58px;
+        width: 46px;
+        height: 58px; }
+      .sensors .sensor .info .preview .progress {
         display: block;
-        text-indent: -9999px;
-        transition: all .1s ease; }
-    #personal-data .sensor .heartrate {
-      background: url(/images/heartrate.svg);
-      background-size: 51px 51px;
-      width: 51px;
-      height: 51px; }
-    #personal-data .sensor .battery {
-      background: url(/images/battery.svg);
-      background-size: 60px 37px;
-      width: 60px;
-      height: 37px; }
-    #personal-data .sensor .CO {
-      background: url(/images/CO.svg);
-      background-size: 71px 58px;
-      width: 71px;
-      height: 58px; }
-    #personal-data .sensor .temperature {
-      background: url(/images/temperature.svg);
-      background-size: 46px 58px;
-      width: 46px;
-      height: 58px; }
+        width: 600px;
+        margin: 0 0 0 30px;
+        float: right; }
+      .sensors .sensor .info .preview .status {
+        font-size: 2em; }
+  .sensors .sensor .maximized {
+    max-height: 800px; }
+  .sensors .sensor .more-info {
+    display: flex;
+    justify-content: center;
+    height: 35px;
+    width: 100px;
+    width: auto;
+    transition: all .3s ease; }
+    .sensors .sensor .more-info:hover {
+      background-color: #F1F1F1;
+      cursor: pointer; }
+    .sensors .sensor .more-info .arrow {
+      position: relative;
+      top: -2px;
+      display: block;
+      margin: 10px auto;
+      width: 25px;
+      height: 25px;
+      background: url(/images/arrow.svg);
+      background-size: 25px 22px;
+      transition: all .3s ease; }
+    .sensors .sensor .more-info .rotated {
+      top: -6px;
+      transform: rotate(180deg); }
 
 .notifications {
   max-width: 800px;

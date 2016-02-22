@@ -1,86 +1,126 @@
-#person-search-field
-  height: 100%
-  color: #555
-  text-align: center
-  position: fixed
-  width: 15%
-  background-color: #CAC7C7
-  -webkit-box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75)
-  -moz-box-shadow:    -6px -1px 6px 0px rgba(50, 50, 50, 0.75)
-  box-shadow:         -6px -1px 6px 0px rgba(50, 50, 50, 0.75)
+#search-bar
+  margin: 0 auto
+  margin-top: 40px
 
-.nav-real-time
- font-size: 1em
+#sensor-info .info
+  max-width: 800px
+  background-color: #FFF
+  margin: 15px auto
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  padding: 20px
 
 
-#personal-data
-  margin-bottom: 50px
-
-  .row
-    margin-bottom: 40px
+.sensors
 
   .sensor
-    display: flex
-    align-items: center
+    margin: 0 auto
+    background-color: #FFF
+    margin-bottom: 15px
+    max-width: 800px
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+    transition: all 0.2s ease-in-out
 
-    .data
-      margin-left: 20px
+    .info
+      transition: max-height .6s ease
+      overflow: hidden
+      max-height: 90px
+      padding: 0 20px
 
-      .main
-        font-size: 3em
+      .preview
+        margin-top: 5px
+        height: 90px
+        display: flex
+        align-items: center
 
-      .time-stamp
-        font-size: 1.1em
-        color: #666
-        margin-top: -5px
+        .data
+          margin-left: 20px
 
-    .icon
+          .main
+            font-size: 3em
+            width: 180px
+
+          .time-stamp
+            font-size: 1.1em
+            color: #666
+            margin-top: -5px
+
+        .icon
+          width: 80px
+          display: flex
+          justify-content: center
+          align-items: center
+
+          &>div
+            background-repeat: no-repeat
+            display: block
+            text-indent: -9999px
+            transition: all .1s ease
+
+        .heartrate
+          background: url(/images/heartrate.svg)
+          background-size: 70px 70px
+          width: 70px
+          height: 70px
+
+
+        .battery
+          background: url(/images/battery.svg)
+          background-size: 60px 37px
+          width: 60px
+          height: 37px
+
+        .CO
+          background: url(/images/CO.svg)
+          background-size: 71px 58px
+          width: 71px
+          height: 58px
+
+        .temperature
+          background: url(/images/temperature.svg)
+          background-size: 46px 58px
+          width: 46px
+          height: 58px
+
+        .progress
+          display: block
+          width: 600px
+          margin: 0 0 0 30px
+          float: right
+
+        .status
+          font-size: 2em
+
+      .details
+
+    .maximized
+      max-height: 800px
+
+    .more-info
       display: flex
       justify-content: center
-      align-items: center
-      width: 115px
-      height: 115px
-      border-radius: 100%
-      border: 2px solid #CAC7C7
-      background: #CAC7C7
-      transition: all .1s ease
+      height: 35px
+      width: 100px
+      width: auto
+      transition: all .3s ease
 
       &:hover
-        transform: scale(1.1)
+        background-color: #F1F1F1
         cursor: pointer
-        border: 2px solid #7D7D7D
 
-      &>div
-        background-repeat: no-repeat
+      .arrow
+        position: relative
+        top: -2px
         display: block
-        text-indent: -9999px
-        transition: all .1s ease
+        margin: 10px auto
+        width: 25px
+        height: 25px
+        background: url(/images/arrow.svg)
+        background-size: 25px 22px
+        transition: all .3s ease
 
-    .heartrate
-      background: url(/images/heartrate.svg)
-      background-size: 51px 51px
-      width: 51px
-      height: 51px
-
-
-    .battery
-      background: url(/images/battery.svg)
-      background-size: 60px 37px
-      width: 60px
-      height: 37px
-
-    .CO
-      background: url(/images/CO.svg)
-      background-size: 71px 58px
-      width: 71px
-      height: 58px
-
-    .temperature
-      background: url(/images/temperature.svg)
-      background-size: 46px 58px
-      width: 46px
-      height: 58px
-
+      .rotated
+        top: -6px
+        transform: rotate(180deg)
 
 .notifications
   max-width: 800px
@@ -117,5 +157,3 @@
   padding: 20px
   margin-bottom: 15px
   border-bottom: 1px solid #CAC7C7
-
-
