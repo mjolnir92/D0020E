@@ -2,6 +2,14 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+    host     : '130.240.5.59',
+    user     : 'CCNusr',
+    password : 'd0020eccnusr',
+    database : 'my_db'
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('real-time');
