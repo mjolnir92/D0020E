@@ -1,14 +1,12 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var controllers = {
+    events: require( '../controllers/events.js' )()
+};
 
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-    host     : '130.240.5.59',
-    user     : 'CCNusr',
-    password : 'd0020eccnusr',
-    database : 'my_db'
-});
+router.post( '/event', controllers.events.post );
+router.get( '/event', controllers.events.post );
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
