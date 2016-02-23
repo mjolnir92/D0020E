@@ -1,114 +1,432 @@
 <input type="text" placeholder="Search" id="search-bar">
 
-<section id="sensor-info">
-  <div class="info">
-   <h1 id="worker-name">Person</h1>
-    <p>Working in section d</p>
-    <p>health status OK!</p>
-    <p id="phoneId">id = NAN</p>
-    <div class="time-stamp"></div>
+<section class="result">
+  <div class="expandbox">
+    <div class="info">
+      <div class="preview">
+        <h1 id="worker-name">Person 1</h1>
+         <p>Working in section d</p>
+         <p>health status OK!</p>
+         <p id="phoneId">id = NAN</p>
+         <div class="time-stamp"></div>
+      </div>
+      <div class="details">
+
+        <div class="expandbox sensor" data-id="pulse">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="heartrate"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="pulse">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="bodyTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="bodyTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+        <div class="expandbox sensor" data-id="envTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="envTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="co2">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="CO"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="co2">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="more-info">
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <div class="expandbox">
+    <div class="info">
+      <div class="preview">
+        <h1 id="worker-name">Person 2</h1>
+         <p>Working in section d</p>
+         <p>health status OK!</p>
+         <p id="phoneId">id = NAN</p>
+         <div class="time-stamp"></div>
+      </div>
+      <div class="details">
+
+        <div class="expandbox sensor" data-id="pulse">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="heartrate"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="pulse">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="bodyTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="bodyTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+        <div class="expandbox sensor" data-id="envTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="envTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="co2">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="CO"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="co2">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="more-info">
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <div class="expandbox">
+    <div class="info">
+      <div class="preview">
+        <h1 id="worker-name">Person 3</h1>
+         <p>Working in section d</p>
+         <p>health status OK!</p>
+         <p id="phoneId">id = NAN</p>
+         <div class="time-stamp"></div>
+      </div>
+      <div class="details">
+
+        <div class="expandbox sensor" data-id="pulse">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="heartrate"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="pulse">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="bodyTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="bodyTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+        <div class="expandbox sensor" data-id="envTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="envTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="co2">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="CO"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="co2">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="more-info">
+      <div class="arrow"></div>
+    </div>
+  </div>
+
+  <div class="expandbox">
+    <div class="info">
+      <div class="preview">
+        <h1 id="worker-name">Person 4</h1>
+         <p>Working in section d</p>
+         <p>health status OK!</p>
+         <p id="phoneId">id = NAN</p>
+         <div class="time-stamp"></div>
+      </div>
+      <div class="details">
+
+        <div class="expandbox sensor" data-id="pulse">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="heartrate"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="pulse">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="bodyTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="bodyTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+        <div class="expandbox sensor" data-id="envTemp">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="temperature"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="envTemp">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+
+        <div class="expandbox sensor" data-id="co2">
+          <div class="info">
+            <div class="preview">
+              <div class="icon">
+                <div class="CO"></div>
+              </div>
+              <div class="data">
+                <div class="main" id="co2">NAN</div>
+              </div>
+              <span class="status">Status: OK</span>
+            </div>
+            <div class="details">
+              <h2>Graph</h2>
+              <div id="graph-area"></div>
+            </div>
+          </div>
+          <div class="more-info">
+            <div class="arrow"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="more-info">
+      <div class="arrow"></div>
+    </div>
   </div>
 </section>
 
-  <section class="sensors">
-
-    <div class="sensor" data-id="pulse">
-
-      <div class="info">
-        <div class="preview">
-          <div class="icon">
-            <div class="heartrate"></div>
-          </div>
-          <div class="data">
-            <div class="main" id="pulse">NAN</div>
-          </div>
-          <span class="status">Status: OK</span>
-        </div>
-        <div class="details">
-          <h2>Graph</h2>
-          <div id="graph-area"></div>
-        </div>
-      </div>
-      <div class="more-info">
-        <div class="arrow"></div>
-      </div>
-    </div>
-
-
-    <div class="sensor" data-id="bodyTemp">
-
-      <div class="info">
-        <div class="preview">
-          <div class="icon">
-            <div class="temperature"></div>
-          </div>
-          <div class="data">
-            <div class="main" id="bodyTemp">NAN</div>
-          </div>
-          <span class="status">Status: OK</span>
-        </div>
-        <div class="details">
-          <h2>Graph</h2>
-          <div id="graph-area"></div>
-        </div>
-      </div>
-      <div class="more-info">
-        <div class="arrow"></div>
-      </div>
-    </div>
-
-    <div class="sensor" data-id="envTemp">
-
-      <div class="info">
-        <div class="preview">
-          <div class="icon">
-            <div class="temperature"></div>
-          </div>
-          <div class="data">
-            <div class="main" id="envTemp">NAN</div>
-          </div>
-          <span class="status">Status: OK</span>
-        </div>
-        <div class="details">
-          <h2>Graph</h2>
-          <div id="graph-area"></div>
-        </div>
-      </div>
-      <div class="more-info">
-        <div class="arrow"></div>
-      </div>
-    </div>
-
-
-    <div class="sensor" data-id="co2">
-
-      <div class="info">
-        <div class="preview">
-          <div class="icon">
-            <div class="CO"></div>
-          </div>
-          <div class="data">
-            <div class="main" id="co2">NAN</div>
-          </div>
-          <span class="status">Status: OK</span>
-        </div>
-        <div class="details">
-          <h2>Graph</h2>
-          <div id="graph-area"></div>
-        </div>
-      </div>
-      <div class="more-info">
-        <div class="arrow"></div>
-      </div>
-    </div>
-
-
-
-</section>
 
 
 
 
+
+
+
+
+<!--
 <div class="notifications">
 
   <h2>Notifications</h2>
@@ -167,6 +485,8 @@
 
 
 </div>
+
+-->
 
 
 

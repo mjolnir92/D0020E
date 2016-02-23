@@ -1,7 +1,8 @@
 body {
   font-family: "Ubuntu", "Lucida Grande", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  color: #555; }
+  color: #555;
+  background-color: #F4F4F4; }
 
 #mainDiv {
   background-color: #F4F4F4;
@@ -79,6 +80,49 @@ path {
     color: #666;
     background-color: #FFF; }
 
+.expandbox {
+  background-color: #FFF;
+  margin-bottom: 15px;
+  max-width: 1500px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.5s ease; }
+  .expandbox .info {
+    transition: max-height .6s ease;
+    overflow: hidden;
+    max-height: 165px;
+    padding: 0 20px;
+    transition: all 0.5s ease; }
+    .expandbox .info .preview {
+      margin-top: 5px;
+      height: 160px; }
+  .expandbox .maximized {
+    transition: all 0.5s ease;
+    max-height: 3000px;
+    background-color: #EFEFEF; }
+  .expandbox .more-info {
+    display: flex;
+    justify-content: center;
+    height: 35px;
+    width: 100px;
+    width: auto;
+    transition: all .5s ease; }
+    .expandbox .more-info:hover {
+      background-color: #F1F1F1;
+      cursor: pointer; }
+    .expandbox .more-info .arrow {
+      position: relative;
+      top: -2px;
+      display: block;
+      margin: 10px auto;
+      width: 25px;
+      height: 25px;
+      background: url(/images/arrow.svg);
+      background-size: 25px 22px;
+      transition: all .5s ease; }
+    .expandbox .more-info .rotated {
+      top: -6px;
+      transform: rotate(180deg); }
+
 .chart div {
   font: 10px sans-serif;
   background-color: steelblue;
@@ -89,103 +133,95 @@ path {
 
 #search-bar {
   margin: 0 auto;
-  margin-top: 40px; }
+  margin-top: 80px; }
 
-#sensor-info .info {
+.result {
   max-width: 800px;
-  background-color: #FFF;
-  margin: 15px auto;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  padding: 20px; }
-
-.sensors .sensor {
   margin: 0 auto;
-  background-color: #FFF;
-  margin-bottom: 15px;
+  margin-top: 50px; }
+
+.sensor {
+  margin: 0 auto;
   max-width: 800px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.2s ease-in-out; }
-  .sensors .sensor .info {
+  margin-bottom: 10px; }
+  .sensor .info {
     transition: max-height .6s ease;
     overflow: hidden;
-    max-height: 90px;
+    max-height: 60px;
     padding: 0 20px; }
-    .sensors .sensor .info .preview {
+    .sensor .info .preview {
       margin-top: 5px;
-      height: 90px;
+      height: 55px;
       display: flex;
       align-items: center; }
-      .sensors .sensor .info .preview .data {
-        margin-left: 20px; }
-        .sensors .sensor .info .preview .data .main {
+      .sensor .info .preview .data {
+        margin-left: 20px;
+        font-size: 0.8em; }
+        .sensor .info .preview .data .main {
           font-size: 3em;
           width: 180px; }
-        .sensors .sensor .info .preview .data .time-stamp {
+        .sensor .info .preview .data .time-stamp {
           font-size: 1.1em;
           color: #666;
           margin-top: -5px; }
-      .sensors .sensor .info .preview .icon {
+      .sensor .info .preview .icon {
         width: 80px;
         display: flex;
         justify-content: center;
         align-items: center; }
-        .sensors .sensor .info .preview .icon > div {
+        .sensor .info .preview .icon > div {
           background-repeat: no-repeat;
           display: block;
           text-indent: -9999px;
           transition: all .1s ease; }
-      .sensors .sensor .info .preview .heartrate {
+      .sensor .info .preview .heartrate {
         background: url(/images/heartrate.svg);
-        background-size: 70px 70px;
-        width: 70px;
-        height: 70px; }
-      .sensors .sensor .info .preview .battery {
+        background-size: 50px 50px;
+        width: 50px;
+        height: 50px; }
+      .sensor .info .preview .battery {
         background: url(/images/battery.svg);
         background-size: 60px 37px;
         width: 60px;
         height: 37px; }
-      .sensors .sensor .info .preview .CO {
+      .sensor .info .preview .CO {
         background: url(/images/CO.svg);
-        background-size: 71px 58px;
-        width: 71px;
-        height: 58px; }
-      .sensors .sensor .info .preview .temperature {
+        background-size: 65px 52px;
+        width: 65px;
+        height: 52px; }
+      .sensor .info .preview .temperature {
         background: url(/images/temperature.svg);
-        background-size: 46px 58px;
-        width: 46px;
-        height: 58px; }
-      .sensors .sensor .info .preview .progress {
-        display: block;
-        width: 600px;
-        margin: 0 0 0 30px;
-        float: right; }
-      .sensors .sensor .info .preview .status {
+        background-size: 40px 52px;
+        width: 40px;
+        height: 52px; }
+      .sensor .info .preview .status {
         font-size: 2em; }
-  .sensors .sensor .maximized {
-    max-height: 800px; }
-  .sensors .sensor .more-info {
-    display: flex;
-    justify-content: center;
-    height: 35px;
-    width: 100px;
-    width: auto;
-    transition: all .3s ease; }
-    .sensors .sensor .more-info:hover {
-      background-color: #F1F1F1;
-      cursor: pointer; }
-    .sensors .sensor .more-info .arrow {
-      position: relative;
-      top: -2px;
-      display: block;
-      margin: 10px auto;
-      width: 25px;
-      height: 25px;
-      background: url(/images/arrow.svg);
-      background-size: 25px 22px;
+  .sensor .maximized {
+    max-height: 800px;
+    background-color: #FFF; }
+    .sensor .maximized .more-info {
+      display: flex;
+      justify-content: center;
+      height: 35px;
+      width: 100px;
+      width: auto;
       transition: all .3s ease; }
-    .sensors .sensor .more-info .rotated {
-      top: -6px;
-      transform: rotate(180deg); }
+      .sensor .maximized .more-info:hover {
+        background-color: #F1F1F1;
+        cursor: pointer; }
+      .sensor .maximized .more-info .arrow {
+        position: relative;
+        top: -2px;
+        display: block;
+        margin: 10px auto;
+        width: 25px;
+        height: 25px;
+        background: url(/images/arrow.svg);
+        background-size: 25px 22px;
+        transition: all .3s ease; }
+      .sensor .maximized .more-info .rotated {
+        top: -6px;
+        transform: rotate(180deg); }
 
 .notifications {
   max-width: 800px;
@@ -212,11 +248,6 @@ path {
 
 #graph-holder {
   width: 670px; }
-
-#worker-info {
-  padding: 20px;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #CAC7C7; }
 
 .alarmDiv {
   width: 100%;
