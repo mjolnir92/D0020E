@@ -1,5 +1,5 @@
 var alarms = function() {
-    // get alarms from database and display the data on website.
+    // get alarms from database and display the data on website. repeat function for all alarms.
     function displayOneAlarm(){
         //sql to get data
         var name = "batman";
@@ -16,7 +16,6 @@ var alarms = function() {
     $("#alarms_search_field").keyup(function(event){
         if(event.keyCode == 13){
             var name = $("#workers-alarms").val();
-            $("#workers-alarms").val("enter name");
             //filter out alarms associated with that person.
         }
     });

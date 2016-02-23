@@ -19,7 +19,26 @@ var realTime = function(d3){
   $(".workers").click(function(){
     var person = $(this).html();
     $("#worker-name").html(person);
-  })
+  });
+    //search for workers
+  $("#search-workers").keyup(function(event){
+      if(event.keyCode == 13){
+          $("#workers-list").empty();
+          //repeat following for all matches, add when database ready
+          var name = $("#search-workers").val();
+          var li = document.createElement("li");
+          var a = document.createElement("a");
+          $(a).attr("class", "workers");
+          $(a).attr("href", "#");
+          $(a).html(name);
+          $(li).append(a);
+          $("#workers-list").append(li);
+          $(".workers").click(function(){
+              var person = $(this).html();
+              $("#worker-name").html(person);
+          });
+      }
+  });
 
   //makes the navbar smaller when visiting real-time page
   function minimizeNavBar(){
