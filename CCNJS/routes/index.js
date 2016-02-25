@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var connection = require('../testingSQL');
 var controllers = {
     events: require( '../controllers/events.js' )()
 };
@@ -45,5 +46,13 @@ router.get('/logs/content', function(req, res, next){
 router.get('/d3', function( req, res ) {
     res.render( 'd3test' );
 } );
+
+//-----SQL------
+router.post('/all_alarms', function(req, res){
+  connection.query("SELECT * FROM events", function(err, rows){
+    console.log(err);
+    res.json(rows);
+  });
+})
 
 module.exports = router;

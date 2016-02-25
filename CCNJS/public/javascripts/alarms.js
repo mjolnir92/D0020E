@@ -19,4 +19,11 @@ var alarms = function() {
             //filter out alarms associated with that person.
         }
     });
+    $.ajax({
+        url: "/all_alarms",
+        type: "POST",
+        dataType: "json",
+        success: function(result){
+            console.log("det funka!");
+    }});
 }();
