@@ -20,12 +20,12 @@ String.prototype.hashCode = function() {
 /**
  *
  * @param param Simulation options
- * @param {string} [param.prefix] Prefix to phone.
+ * @param {string} [param.prefix] Prefix of ccn-node.
  * @param {number} [param.length] Amount of data elements to keep
  * @returns {{update: update}}
  * @constructor
  */
-module.exports = function( param ) {
+module.exports = function( param, callback ) {
 
     function randomMac() {
         return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
@@ -54,15 +54,12 @@ module.exports = function( param ) {
         var element = { };
 
         for( var k in last ) {
-            element[k] = .9 * last[k] + .1 * target[k];
+            element[k] = Math.round(.7 * last[k] + .3 * target[k]);
         }
-
+        element.T = new Date();
         return element;
     }
 
-    function setTarget( key, value ) {
-        target[ key ] = value;
-    }
 
     function update( ) {
 
@@ -73,23 +70,16 @@ module.exports = function( param ) {
         if( content.data.sensors.length > param.length ) {
             content.data.sensors.shift();
         }
-    }
 
-    function getContent( callback ) {
-        callback( content );
-    }
-
-    function generateContent( times ) {
-        for ( var i = 0; i < times; i++ ){
-            update();
+        if( callback ){
+            callback( this, data );
         }
     }
 
     return {
-        mac: content.mac,
-        update: update,
-        generate: generateContent,
-        getContent: getContent
+        target: target,
+        content: content,
+        update: update
     };
 };
 

@@ -23,17 +23,16 @@ module.exports = function( ) {
     }
 
     function addSimulation( simulation ) {
-        simulations[ simulation.mac ] = simulation;
+        simulations[ simulation.content.mac ] = simulation;
     }
 
-    function getSimulation( mac ) {
-        console.log( mac );
-        return simulations[ mac ];
+    function delSimulation( simulation ) {
+        delete simulations[ simulation.content.mac ];
     }
 
     return {
-        getSimulation: getSimulation,
         addSimulation: addSimulation,
+        delSimulation: delSimulation,
         start: start,
         stop: stop
     };

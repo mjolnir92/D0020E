@@ -18,9 +18,12 @@ var client = function( socket, http ) {
 
     } );
 
-    socket.on( 'connection', function( argument ) {
+    socket.on( 'update', function( data ) {
+        console.log( data );
+    } );
+
+    socket.on( 'connect', function( ) {
         console.log( 'connected' );
-        console.log( argument );
     } )
 
 }( io() );
