@@ -45,18 +45,18 @@ ccnjs.Relay = function(relay_config){
      * @param {String} file_name
      * @return {Object} process
      */
-    //function toFile(process, file_name){
-    //    var flags = { flags: 'a' };
-    //    var out_path = path.join(__dirname, 'public/logs/', file_name);
-    //    var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
-    //    var stdout = fs.createWriteStream(out_path, flags);
-    //    var stderr = fs.createWriteStream(err_path, flags);
-    //
-    //    process.stdout.pipe(stdout);
-    //    process.stderr.pipe(stderr);
-    //
-    //    return process;
-    //}
+    function toFile(process, file_name){
+        var flags = { flags: 'a' };
+        var out_path = path.join(__dirname, 'public/logs/', file_name);
+        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
+        var stdout = fs.createWriteStream(out_path, flags);
+        var stderr = fs.createWriteStream(err_path, flags);
+
+        process.stdout.pipe(stdout);
+        process.stderr.pipe(stderr);
+
+        return process;
+    }
 
 
     relay_config = relay_config || {};
