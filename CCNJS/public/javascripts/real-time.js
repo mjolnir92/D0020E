@@ -23,22 +23,79 @@ var realTime = function(d3){
     //search for workers
   $("#search-workers").keyup(function(event){
       if(event.keyCode == 13){
-          $("#workers-list").empty();
           //repeat following for all matches, add when database ready
-          var name = $("#search-workers").val();
-          var li = document.createElement("li");
-          var a = document.createElement("a");
-          $(a).attr("class", "workers");
-          $(a).attr("href", "#");
-          $(a).html(name);
-          $(li).append(a);
-          $("#workers-list").append(li);
-          $(".workers").click(function(){
-              var person = $(this).html();
-              $("#worker-name").html(person);
-          });
+          var fullName = $("#search-workers").val();
+          var res = fullName.split(" ");
+          var fName = res[0];
+          if(res[0] != null) {
+              var lName = res[1];
+              $.ajax({
+                  url: "/search_workers_two_names",
+                  type: "POST",
+                  dataType: "json",
+                  data: {
+                      firstName: fName,
+                      lastName: lName
+                  },
+                  success: function (result) {
+                      if(result.length) {
+                          $("#workers-list").empty();
+                          result.forEach(function (item) {
+                              var name = item.firstName + " " + item.lastName;
+                              makeNewWorkersList(name);
+                          });
+                          $(".workers").click(function () {
+                              var person = $(this).html();
+                              $("#worker-name").html(person);
+                          });
+                      }
+                      else{
+                          alert("No such person employed here!");
+                      }
+                  }
+              });
+          }
+          else{
+              $.ajax({
+                  url: "/search_workers_one_name",
+                  type: "POST",
+                  dataType: "json",
+                  data: {
+                      Name: fullName
+                  },
+                  success: function (result) {
+                      if(result.length) {
+                          $("#workers-list").empty();
+                          console.log(result[0]);
+                          result.forEach(function (item) {
+                              var name = item.firstName + " " + item.lastName;
+                              makeNewWorkersList(name);
+                          });
+                          $(".workers").click(function () {
+                              var person = $(this).html();
+                              $("#worker-name").html(person);
+                          });
+                      }
+                      else{
+                          alert("No such person employed here!");
+                      }
+                  }
+              });
+          }
+
       }
   });
+
+    function makeNewWorkersList(name){
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        $(a).attr("class", "workers");
+        $(a).attr("href", "#");
+        $(a).html(name);
+        $(li).append(a);
+        $("#workers-list").append(li);
+
+    }
 
   //makes the navbar smaller when visiting real-time page
   function minimizeNavBar(){
