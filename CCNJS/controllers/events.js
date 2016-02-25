@@ -12,6 +12,8 @@ module.exports = function() {
     return {
         post: function( req, res ) {
             console.log( 'hello world' );
+            console.log( req.body );
+            res.json( { thank: 'you' } );
         }
     }
 };
