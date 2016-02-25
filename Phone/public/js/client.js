@@ -3,9 +3,7 @@
  * Created by magnusbjork on 2/25/16.
  */
 
-var client = function( socket, http ) {
-    console.log('yolo');
-
+var client = function( socket, http, d3 ) {
     $(document).ready( function() {
 
         $('.slider').on( "slidestop", function( event ){
@@ -15,6 +13,11 @@ var client = function( socket, http ) {
             };
             socket.emit( 'slidestop', data );
         });
+
+        d3.select('#d3').append('svg')
+            .attr( "width", "100%" )
+            .attr( "height", "100%" )
+            .attr( "background", 'red');
 
     } );
 
@@ -26,5 +29,5 @@ var client = function( socket, http ) {
         console.log( 'connected' );
     } )
 
-}( io() );
+}( io(), null, d3 );
 
