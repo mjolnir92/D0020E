@@ -57,7 +57,6 @@ ccnjs.Relay = function(relay_config){
 
     var template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
 
-    console.log( local );
     var command = S( template ).template( local ).s;
     var process = exec( command );
     toFile( process, LOGS.RELAY );
@@ -133,8 +132,6 @@ ccnjs.Relay = function(relay_config){
         var make_content_command = S( make_content_template ).template( config ).s;
         var make_content_process = exec( make_content_command );
 
-        console.log( make_content_command );
-
         toFile( make_content_process, LOGS.MKC );
 
         make_content_process.stdin.write(JSON.stringify( config.content ));
@@ -145,7 +142,6 @@ ccnjs.Relay = function(relay_config){
             var add_content_process = exec( add_content_command );
             toFile( add_content_process, LOGS.CTRL );
 
-            console.log( add_content_command );
         });
 
     }
