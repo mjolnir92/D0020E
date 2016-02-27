@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-var connection = require('../testingSQL');
+var connection = require('../tests/testingSQL');
 var controllers = {
     events: require( '../controllers/events.js' )()
 };

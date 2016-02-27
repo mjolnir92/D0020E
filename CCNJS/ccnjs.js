@@ -33,8 +33,9 @@ ccnjs.Relay = function(relay_config){
      */
     function toFile(process, file_name){
         var flags = { flags: 'a' };
-        var out_path = path.join(__dirname, 'public/logs/', file_name);
-        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name);
+        var now = new Date();
+        var out_path = path.join(__dirname, 'public/logs/', file_name, now);
+        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name, now);
         var stdout = fs.createWriteStream(out_path, flags);
         var stderr = fs.createWriteStream(err_path, flags);
 
@@ -54,28 +55,26 @@ ccnjs.Relay = function(relay_config){
         tcp    : relay_config.tcp    || '6363'
     };
 
-    var relay_template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
-    var string = S(relay_template).template(local).s;
+    var template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
 
-    exec( string );
-    //var process = toFile(exec(string), LOGS.RELAY);
+    var command = S( template ).template( local ).s;
+    var process = exec( command );
+    toFile( process, LOGS.RELAY );
 
-
-
-    process.on('close', function(code){
+    process.on('close', function( code ){
         console.log('closing with code: ' + code);
     });
-    process.on('exit', function(code){
+    process.on('exit', function( code ){
         console.log('exiting with code: ' + code);
     });
 
     function close( callback ){
-        var template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} debug halt | $CCNL_HOME/bin/ccn-lite-ccnb2xml";
-        var string = S( template ).template( { socket: local.socket });
-        var proc = exec( string );
-        proc.stdout.on( 'data', function( data ) {
-            callback();
-        });
+        var template = "$CCNL_HOME/bin/ccn-lite-ctrl -x " +
+            "{{socket}} debug halt | $CCNL_HOME/bin/ccn-lite-ccnb2xml";
+
+        var command = S( template ).template( local );
+        var process = exec( command );
+        process.stdout.on( 'data', callback );
     }
 
     /**
@@ -85,44 +84,60 @@ ccnjs.Relay = function(relay_config){
      */
     function addRoute(route_config){
         route_config.udp = route_config.udp || '9999';
+        route_config.socket = local.socket;
 
-        var config_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} newUDPface any {{ip}} {{udp}} | $CCNL_HOME/bin/ccn-lite-ccnb2xml | grep FACEID",
-            string = S(config_template).template({socket: local.socket, ip: route_config.ip, udp: route_config.udp}).s;
-        exec( string );
-            //process = toFile(exec(string), LOGS.CTRL);
+        var template = "$CCNL_HOME/bin/ccn-lite-ctrl -x " +
+            "{{socket}} newUDPface any " +
+            "{{ip}} " +
+            "{{udp}} | $CCNL_HOME/bin/ccn-lite-ccnb2xml | grep FACEID";
 
-        process.stdout.on('data', function(data){
+        var command  = S(template).template( route_config ).s;
+        var process = exec( command );
+        toFile( process, LOGS.CTRL );
 
-            var forwarding_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} prefixreg {{prefix}} {{face_id}} ndn2013 | $CCNL_HOME/bin/ccn-lite-ccnb2xml",
-                face_id = data.replace(/[^0-9.]/g, ""),
-                string = S(forwarding_template).template({socket: local.socket, prefix: route_config.prefix, face_id: face_id}).s;
+        process.stdout.on('data', function( data ){
+            route_config.face_id = data.replace(/[^0-9.]/g, "");
 
-            exec( string );
-                //set_routing = toFile(exec(string), LOGS.CTRL);
+            var forwarding_template = "$CCNL_HOME/bin/ccn-lite-ctrl -x " +
+                "{{socket}} prefixreg " +
+                "{{prefix}} " +
+                "{{face_id}} ndn2013 | $CCNL_HOME/bin/ccn-lite-ccnb2xml";
+
+            var command = S(forwarding_template).template( route_config ).s;
+            var process = exec( command );
+            toFile( process, LOGS.CTRL );
         });
     }
 
-    function addContent(prefix, content){
+    /**
+     *
+     * @param {string} config.prefix content addr
+     * @param {string} config.content JSON-object
+     */
+    function addContent( config ){
+        config.file_name = config.prefix.replace(/\//g,"");
+        config.socket = local.socket;
 
-        var createMkc_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "{{prefix}}" > $CCNL_HOME/{{file}}.ndntlv',
-            command_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x {{socket}} addContentToCache $CCNL_HOME/{{file}}.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
+        var make_content_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "' +
+            '{{prefix}}" > $CCNL_HOME/' +
+            '{{file_name}}.ndntlv';
 
-        var file = prefix.replace(/\//g,"");
+        var add_content_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x ' +
+            '{{socket}} addContentToCache $CCNL_HOME/' +
+            '{{file_name}}.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
 
-        var string = S(createMkc_template).template({prefix: prefix, file: file}).s;
-        var process = exec( string );
-        process.stderr.on( 'data', console.log );
-        //var process = toFile(exec(string), LOGS.MKC);
 
-        process.stdin.write(JSON.stringify(content));
+        var make_content_command = S( make_content_template ).template( make_content_template ).s;
+        var make_content_process = exec( make_content_command );
+        toFile( make_content_process, LOGS.MKC );
 
-        process.on('close', function(code){
+        make_content_process.stdin.write(JSON.stringify( config.content ));
 
-            var string2 = S(command_template).template({socket: local.socket, file: file}).s;
-            var proc2 = exec( string2 );
-            proc2.stderr.on( 'data', console.log );
-            //var process2 = toFile(exec(string2), LOGS.CTRL);
-            //process2.on('exit', console.log);
+        make_content_process.on('close', function(){
+
+            var add_content_command = S( add_content_template ).template( config ).s;
+            var add_content_process = exec( add_content_command );
+            toFile( add_content_process, LOGS.CTRL );
         });
 
     }
