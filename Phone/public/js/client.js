@@ -30,8 +30,12 @@ var client = function( socket, http, d3 ) {
     } );
 
     socket.on( 'loggedOn', function( data ) {
+        $.mobile.changePage( "#page2", { transition: 'slideup' } );
+
         console.log( data );
     } );
+
+
 
     return {
         logon: function( form ) {
