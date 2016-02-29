@@ -72,9 +72,9 @@ router.post('/all_alarms', function(req, res){
 });
 
 router.post('/search_workers_two_names', function(req, res){
-  var sql = "SELECT * FROM phones WHERE firstName LIKE ? OR firstName LIKE ? " +
-      "OR lastName LIKE ? OR lastName LIKE ?";
-  var arr = [req.body.firstName+"%", "% "+req.body.firstName+"%", req.body.lastName+"%", "% "+req.body.lastName+"%"];
+  var sql = "SELECT * FROM phones WHERE (firstName LIKE ? OR firstName LIKE ?) " +
+      "AND (lastName LIKE ? OR lastName LIKE ?) ";
+  var arr = [req.body.firstName+"%", req.body.lastName+"%", req.body.lastName+"%", req.body.firstName+"%"];
   sql = connection.format(sql, arr);
   connection.query(sql, function(err, rows){
     console.log(err);
