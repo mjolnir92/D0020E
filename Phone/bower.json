@@ -1,0 +1,22 @@
+{
+  "name": "Phone",
+  "description": "",
+  "main": "./bin/www",
+  "authors": [
+    "Magnus Bjork <mugsan@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/nevvi/D0020E",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery.serializeJSON": "^2.7.2"
+  }
+}

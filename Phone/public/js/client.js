@@ -27,7 +27,18 @@ var client = function( socket, http, d3 ) {
 
     socket.on( 'connect', function( ) {
         console.log( 'connected' );
-    } )
+    } );
+
+    socket.on( 'loggedOn', function( data ) {
+        console.log( data );
+    } );
+
+    return {
+        logon: function( form ) {
+            var json = $( form).serializeJSON();
+            socket.emit( 'logon', json );
+        }
+    }
 
 }( io(), null, d3 );
 
