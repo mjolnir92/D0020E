@@ -55,7 +55,11 @@ ccnjs.Relay = function(relay_config){
         tcp    : relay_config.tcp    || '6363'
     };
 
-    var template = "$CCNL_HOME/bin/ccn-lite-relay -v {{debug}} -s ndn2013 -u {{udp}} -t {{tcp}} -x {{socket}}";
+    var template = "$CCNL_HOME/bin/ccn-lite-relay -v " +
+        "{{debug}} -s ndn2013 -u " +
+        "{{udp}} -t " +
+        "{{tcp}} -x " +
+        "{{socket}}";
 
     var command = S( template ).template( local ).s;
     var process = exec( command );
@@ -166,11 +170,11 @@ ccnjs.Relay = function(relay_config){
                 var process = exec( command );
 
                 process.stderr.on( 'data', console.log );
-                process.stdout.on('data', function( data ) {
+                process.stdout.on( 'data', function( data ) {
                     var json = JSON.parse( data );
                     callback( json );
                 });
-                process.stdout.on('exit', console.log);
+                process.stdout.on( 'exit', console.log );
             }
         });
     }
