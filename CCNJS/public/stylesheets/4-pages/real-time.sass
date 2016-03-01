@@ -1,86 +1,113 @@
-#person-search-field
-  height: 100%
-  color: #555
-  text-align: center
-  position: fixed
-  width: 15%
-  background-color: #CAC7C7
-  -webkit-box-shadow: -6px -1px 6px 0px rgba(50, 50, 50, 0.75)
-  -moz-box-shadow:    -6px -1px 6px 0px rgba(50, 50, 50, 0.75)
-  box-shadow:         -6px -1px 6px 0px rgba(50, 50, 50, 0.75)
+#search-bar
+  margin: 0 auto
+  margin-top: 80px
 
-.nav-real-time
- font-size: 1em
+.result
+  max-width: 800px
+  margin: 0 auto
+  margin-top: 50px
 
+.sensor
+  margin: 0 auto
+  max-width: 800px
+  margin-bottom: 10px
 
-#personal-data
-  margin-bottom: 50px
+  .info
+    transition: max-height .6s ease
+    overflow: hidden
+    max-height: 60px
+    padding: 0 20px
 
-  .row
-    margin-bottom: 40px
+    .preview
+      margin-top: 5px
+      height: 55px
+      display: flex
+      align-items: center
 
-  .sensor
-    display: flex
-    align-items: center
+      .data
+        margin-left: 20px
+        font-size: 0.8em
 
-    .data
-      margin-left: 20px
+        .main
+          font-size: 3em
+          width: 180px
 
-      .main
-        font-size: 3em
+        .time-stamp
+          font-size: 1.1em
+          color: #666
+          margin-top: -5px
 
-      .time-stamp
-        font-size: 1.1em
-        color: #666
-        margin-top: -5px
+      .icon
+        width: 80px
+        display: flex
+        justify-content: center
+        align-items: center
 
-    .icon
+        &>div
+          background-repeat: no-repeat
+          display: block
+          text-indent: -9999px
+          transition: all .1s ease
+
+      .heartrate
+        background: url(/images/heartrate.svg)
+        background-size: 50px 50px
+        width: 50px
+        height: 50px
+
+      .battery
+        background: url(/images/battery.svg)
+        background-size: 60px 37px
+        width: 60px
+        height: 37px
+
+      .CO
+        background: url(/images/CO.svg)
+        background-size: 65px 52px
+        width: 65px
+        height: 52px
+
+      .temperature
+        background: url(/images/temperature.svg)
+        background-size: 40px 52px
+        width: 40px
+        height: 52px
+
+      .status
+        font-size: 2em
+
+    .details
+
+  .maximized
+    max-height: 800px
+    background-color: #FFF
+
+    .more-info
       display: flex
       justify-content: center
-      align-items: center
-      width: 115px
-      height: 115px
-      border-radius: 100%
-      border: 2px solid #CAC7C7
-      background: #CAC7C7
-      transition: all .1s ease
+      height: 35px
+      width: 100px
+      width: auto
+      transition: all .3s ease
 
       &:hover
-        transform: scale(1.1)
+        background-color: #F1F1F1
         cursor: pointer
-        border: 2px solid #7D7D7D
 
-      &>div
-        background-repeat: no-repeat
+      .arrow
+        position: relative
+        top: -2px
         display: block
-        text-indent: -9999px
-        transition: all .1s ease
+        margin: 10px auto
+        width: 25px
+        height: 25px
+        background: url(/images/arrow.svg)
+        background-size: 25px 22px
+        transition: all .3s ease
 
-    .heartrate
-      background: url(/images/heartrate.svg)
-      background-size: 51px 51px
-      width: 51px
-      height: 51px
-
-
-    .battery
-      background: url(/images/battery.svg)
-      background-size: 60px 37px
-      width: 60px
-      height: 37px
-
-    .CO
-      background: url(/images/CO.svg)
-      background-size: 71px 58px
-      width: 71px
-      height: 58px
-
-    .temperature
-      background: url(/images/temperature.svg)
-      background-size: 46px 58px
-      width: 46px
-      height: 58px
-
+      .rotated
+        top: -6px
+        transform: rotate(180deg)
 
 .notifications
   max-width: 800px
@@ -112,10 +139,3 @@
 
 #graph-holder
   width: 670px
-
-#worker-info
-  padding: 20px
-  margin-bottom: 15px
-  border-bottom: 1px solid #CAC7C7
-
-
