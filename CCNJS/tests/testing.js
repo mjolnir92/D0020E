@@ -4,7 +4,7 @@
  * Created by magnusbjork on 1/27/16.
  */
 
-var ccn = require("./ccnjs.js");
+var ccn = require("./../ccnjs.js");
 var prefix = "/prefix/content";
 
 //values how many values to store at most.

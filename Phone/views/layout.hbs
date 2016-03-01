@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Phone Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css" />
+  <link rel="stylesheet" href="/vendor/waves/waves.min.css" />
+  <link rel="stylesheet" href="/vendor/wow/animate.css" />
+  <link rel="stylesheet" href="/css/nativedroid2.css" />
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+</head>
+<body>
+
+<div data-role="page" id="page1">
+
+  <div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
+    <a href="#bottomsheetlist" class="ui-btn ui-btn-right wow fadeIn" data-wow-delay='1.2s'><i class="zmdi zmdi-more-vert"></i></a>
+    <a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+    <h1 class="wow fadeIn" data-wow-delay='0.4s'>Phone Simulator</h1>
+  </div>
+
+  <div data-role="panel" id="bottomsheetlist" class="ui-bottom-sheet ui-bottom-sheet-list" data-animate="false" data-position='bottom' data-display="overlay">
+    <div class='row around-xs'>
+      <div class='col-xs-auto'>
+        <a href='#' class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button' data-ajax='false'><i class='zmdi zmdi-edit zmd-2x'></i><strong>Compose Report</strong></a>
+      </div>
+      <div class='col-xs-auto'>
+        <a href='#' class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button' data-ajax='false'><i class='zmdi zmdi-fire zmd-2x'></i><strong>Hot Stuff</strong></a>
+      </div>
+    </div>
+  </div>
+
+  <div data-role="main" class="ui-content" data-inset="false">
+    <form action="/events/logon" method="post">
+      <label for="page1FirstName">Name</label>
+      <input name="firstName" id="page1FirstName">
+      <label for="page1LastName">Surname</label>
+      <input name="lastName" id="page1LastName">
+      <button type="button" onclick="client.logon( this.form )">Login</button>
+    </form>
+  </div>
+
+
+</div>
+<div data-role="page" id="page2">
+
+  <div data-role="header" data-position="fixed" class="wow fadeInDown" data-wow-delay="0.2s">
+    <a href="#bottomsheetlist" class="ui-btn ui-btn-right wow fadeIn" data-wow-delay='1.2s'><i class="zmdi zmdi-more-vert"></i></a>
+    <a href="#leftpanel" class="ui-btn ui-btn-left wow fadeIn" data-wow-delay='0.8s'><i class="zmdi zmdi-menu"></i></a>
+    <h1 class="wow fadeIn" data-wow-delay='0.4s'>Phone Simulator</h1>
+  </div>
+
+  <div data-role="panel" id="leftpanel" data-display="overlay" data-position-fixed="true" >
+    leftPanel
+  </div>
+
+  <div data-role="panel" id="bottomsheetlist" class="ui-bottom-sheet ui-bottom-sheet-list" data-animate="false" data-position='bottom' data-display="overlay">
+    <div class='row around-xs'>
+      <div class='col-xs-auto'>
+        <a href='#' class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button' data-ajax='false'><i class='zmdi zmdi-edit zmd-2x'></i><strong>Compose Report</strong></a>
+      </div>
+      <div class='col-xs-auto'>
+        <a href='#' class='ui-bottom-sheet-link ui-btn ui-btn-inline waves-effect waves-button waves-effect waves-button' data-ajax='false'><i class='zmdi zmdi-fire zmd-2x'></i><strong>Hot Stuff</strong></a>
+      </div>
+    </div>
+  </div>
+
+  <div role="main" class="ui-content" data-inset="false">
+    <form action="/events" method="post" enctype="application/x-www-form-urlencoded">
+      <label for="url" >Server: </label>
+      <input type="url" name="host" placeholder="URL to server" />
+
+      <div id="d3"></div>
+
+      <label for="slider-1">Body temp:</label>
+      <input class="slider" type="range" name="A" id="slider-1" value="60" min="0" max="100" />
+
+      <label for="slider-2">Environment temp:</label>
+      <input class="slider" type="range" name="B" id="slider-2" value="60" min="0" max="100" />
+
+      <label for="slider-3">Toxic gas: </label>
+      <input class="slider" type="range" name="C" id="slider-3" value="60" min="0" max="100" />
+
+      <label for="slider-4">Harmful things: </label>
+      <input class="slider" type="range" name="D" id="slider-4" value="60" min="0" max="100" />
+
+      <label for="slider-5">Fall injuries: </label>
+      <input class="slider" type="range" name="L" id="slider-5" value="60" min="0" max="100" />
+
+      <div data-role='rangeslider'>
+        <label for='rangeslider1a'>RangeSlider:</label>
+        <input type='range' name='range1a' id='range1a' min='0' max='100' value='40'>
+        <label for='rangeslider1b'>RangeSlider:</label>
+        <input type='range' name='range1b' id='range1b' min='0' max='100' value='80'>
+      </div>
+
+      <button type="submit">Submit</button>
+    </form>
+
+    <p>This is a paragraph holding some text.</p>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+<script src="/vendor/waves/waves.min.js"></script>
+<script src="/vendor/wow/wow.min.js"></script>
+<script src="/js/nativedroid2.js"></script>
+<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+<script src="/vendor/jquery.serializeJSON/jquery.serializejson.min.js"></script>
+<script src="/js/client.js"></script>
+
+</body>
+</html>
