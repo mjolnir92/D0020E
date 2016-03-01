@@ -1,7 +1,6 @@
 var realTime = function(d3){
   var sensor = "pulse";
-  $(".icon").on("click", function () {
-
+  $(".more-info").on("click", function () {
     sensor = $(this).parent().attr("data-id");
 
     //Server call to get data from sensor (AJAX?)
@@ -418,7 +417,3 @@ var realTime = function(d3){
   return {minimizeNavBar: minimizeNavBar,
         maximizeNavBar: maximizeNavBar};
 }(d3);
-
-
-
-

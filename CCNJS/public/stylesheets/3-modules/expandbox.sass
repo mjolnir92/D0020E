@@ -1,0 +1,50 @@
+.expandbox
+  background-color: #FFF
+  margin-bottom: 15px
+  max-width: 1500px
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24)
+  transition: all 0.5s ease
+
+
+  .info
+    transition: max-height .6s ease
+    overflow: hidden
+    max-height: 165px
+    padding: 0 20px
+    transition: all 0.5s ease
+
+    .preview
+      margin-top: 5px
+      height: 160px
+
+  .maximized
+    transition: all 0.5s ease
+    max-height: 3000px
+    background-color: #EFEFEF
+
+  .more-info
+    display: flex
+    justify-content: center
+    height: 35px
+    width: 100px
+    width: auto
+    transition: all .5s ease
+
+    &:hover
+      background-color: #F1F1F1
+      cursor: pointer
+
+    .arrow
+      position: relative
+      top: -2px
+      display: block
+      margin: 10px auto
+      width: 25px
+      height: 25px
+      background: url(/images/arrow.svg)
+      background-size: 25px 22px
+      transition: all .5s ease
+
+    .rotated
+      top: -6px
+      transform: rotate(180deg)
