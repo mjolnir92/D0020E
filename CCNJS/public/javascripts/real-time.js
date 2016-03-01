@@ -37,10 +37,10 @@ var realTime = function(d3){
     $("#worker-name").html(person);
   });
     //search for workers
-  $("#search-workers").keyup(function(event){
+  $("#search-bar").keyup(function(event){
       if(event.keyCode == 13){
           //repeat following for all matches, add when database ready
-          var fullName = $("#search-workers").val();
+          var fullName = $("#search-bar").val();
           var res = fullName.split(" ");
           var fName = res[0];
           if(res[1] != null) {
@@ -112,20 +112,6 @@ var realTime = function(d3){
 
     }
 
-  //makes the navbar smaller when visiting real-time page
-  function minimizeNavBar(){
-    $("#indexmeny").css('width', "10%");
-    $("#mainDiv").css('margin-left', "10%");
-    $("#mainDiv").css('width', "90%");
-  }
-
-  minimizeNavBar();
-
-  function maximizeNavBar(){
-    $("#indexmeny").css('width', "15%");
-    $("#mainDiv").css('margin-left', "15%");
-    $("#mainDiv").css('width', "85%");
-  }
 
   //graph with d3js
   function makeRealTimeGraph(phoneData, sensor) {
