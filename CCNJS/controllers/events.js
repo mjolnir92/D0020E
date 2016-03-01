@@ -4,16 +4,11 @@
 
 module.exports = function() {
 
-
-
-
-
-
     return {
         post: function( req, res ) {
-            console.log( 'hello world' );
+            console.log( 'incoming request:' );
             console.log( req.body );
-            res.json( { thank: 'you' } );
+            res.json( { msg: 'Welcome!' } );
         }
     }
 };

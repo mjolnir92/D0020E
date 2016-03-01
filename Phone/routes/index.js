@@ -12,7 +12,10 @@ router.get('/', function(req, res, next) {
 router.post( '/events', function( req, res ) {
     console.log( req.body );
     console.log( "host:" + req.body );
-    connection.query( 'select aposidjfapsoidjfpj')
+} );
+
+router.post( '/events/logon', function( req, res ) {
+    console.log( 'logon' );
 } );
 
 module.exports = router;

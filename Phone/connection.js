@@ -10,7 +10,7 @@ module.exports = function( http, options ){
 
             var data = JSON.stringify(json);
 
-            var options = {
+            var config = {
                 host: options.host,
                 port: options.port,
                 path: path,
@@ -21,7 +21,7 @@ module.exports = function( http, options ){
                 }
             };
 
-            var req = http.request(options, function(res) {
+            var req = http.request( config, function(res) {
                 res.setEncoding('utf8');
                 res.on('data', callback);
             });

@@ -35,5 +35,13 @@ module.exports = function( io, server ) {
         socket.on( 'slidestop', function( data ){
             phone.target[ data.slider ] = data.value;
         });
+
+        socket.on( 'logon', function( data ) {
+            data.mac = phone.content.mac;
+            console.log( data );
+            server.post( '/events', data, function( response ) {
+                socket.emit( 'loggedOn', response );
+            } );
+        })
     })
 };
