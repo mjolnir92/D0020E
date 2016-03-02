@@ -12,6 +12,15 @@ router.get( '/users', function( req, res ) {
     res.render( 'users' );
 });
 
+router.post( '/getSensorData', function( req, res ) {
+    var mac = req.body.mac;
+    console.log( mac );
+    var prefix = '/ltu/' + mac;
+    controllers.events.f( prefix, function( data ) {
+        res.json( data );
+    } );
+} );
+
 router.post( '/users', function( req, res ) {
     var names = req.body.name.split(/[ ,]+/);
     console.log( names );
@@ -122,11 +131,11 @@ router.post('/search_workers_two_names', function(req, res){
       "AND (lastName LIKE ? OR lastName LIKE ?) ";
   var arr = [req.body.firstName+"%", req.body.lastName+"%", req.body.lastName+"%", req.body.firstName+"%"];
   sql = connection.format(sql, arr);
-  connection.query(sql, function(err, rows){
-    console.log(err);
-    res.json(rows);
-  });
-});
+  connection.query( sql, function( err, rows ){
+    console.log( err );
+    res.json( rows );
+  } );
+} );
 
 router.post('/search_workers_one_name', function(req, res){
   var sql = "SELECT * FROM phones WHERE firstName LIKE ? OR lastName LIKE ?";
