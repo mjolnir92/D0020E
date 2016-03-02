@@ -2,22 +2,9 @@
 
 $(document).ready( function() {
 
+
+
 //Expands expandbox:s when '.more-info' is clicked.
-<<<<<<< HEAD
-function addListener() {
-  $(".more-info").on("click", function () {
-    var sensor = $(this).parent();
-    var sensorInfo = sensor.children(".info");
-    var arrow = $(this).children(".arrow");
-
-    sensorInfo.toggleClass("maximized");
-    arrow.toggleClass("rotated");
-
-  });
-}
-addListener();
-
-=======
     $(".more-info").on("click", function () {
 
         var sensor = $(this).parent();
@@ -51,7 +38,6 @@ addListener();
         });
 
     });
->>>>>>> 3cb3d14a933df0caee350a78767f4e8e948fcd51
 
 
 //Click outside expandbox:s invokes this function. Minimizes all expandbox:s.
@@ -80,4 +66,4 @@ addListener();
         }
     });
 
-})
+});

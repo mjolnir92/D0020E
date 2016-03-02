@@ -39,7 +39,7 @@ var alarms = function() {
                 $(infoDiv).append(detailDiv);
             var moreDiv = document.createElement("div");
             $(moreDiv).attr("class", "more-info");
-            addListenerSql(id, moreDiv);
+            addListenerMoreInfo(id, moreDiv);
 
                 var arrowDiv = document.createElement("div");
                 $(arrowDiv).attr("class", "arrow");
@@ -72,7 +72,6 @@ var alarms = function() {
                     makeAlarmBox(item.firstName+" "+item.lastName, item.time, item.type, item.eventId);
                 }
             });
-            addListener();
         }
     });
 
@@ -88,10 +87,9 @@ var alarms = function() {
             result.forEach(function(item){
                 makeAlarmBox(item.firstName+" "+item.lastName, item.time, item.type, item.eventId);
             });
-            addListener();
     }});
 //Get sensor data to alarms from database, and display it when more info is clicked on alarm.
-    function addListenerSql(eventID, div){
+    function addListenerMoreInfo(eventID, div){
         $(div).click(function(){
             $.ajax({
                 url: "/get_alarm_data",
@@ -100,9 +98,14 @@ var alarms = function() {
                 data: {eventId: eventID},
                 success: function(result){
                     //console.log(result[0]);
-                    var locationString = "Location: "
+                    var sensor = $(this).parent();
+                    var sensorInfo = sensor.children(".info");
+                    var arrow = $(this).children(".arrow");
+                    sensorInfo.toggleClass("maximized");
+                    arrow.toggleClass("rotated");
                     result.forEach(function(item){
                         console.log(item);
+
 
                         $(div).parent().children(".info").children(".details").html(item.A); //children(".preview")
                     });
