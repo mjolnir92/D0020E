@@ -123,7 +123,7 @@ function printPersons(result) {
     $(infoDiv).append(detailDiv);
 
     var moreDiv = document.createElement("div");
-    $(moreDiv).attr("class", "more-info");
+    $(moreDiv).attr("class", "more-info more-real-time");
 
     var arrowDiv = document.createElement("div");
     $(arrowDiv).attr("class", "arrow");
