@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:400,300,700,400italic);
 body {
   font-family: "Ubuntu", "Lucida Grande", Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -10,6 +11,79 @@ body {
   margin-left: 15%;
   padding: 0 40px;
   overflow: hidden; }
+
+path {
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none; }
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: grey;
+  stroke-width: 1;
+  shape-rendering: crispEdges; }
+
+.expandbox {
+  background-color: #FFF;
+  margin-bottom: 15px;
+  max-width: 1500px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all 0.5s ease; }
+  .expandbox .info {
+    transition: max-height .6s ease;
+    overflow: hidden;
+    max-height: 220px;
+    padding: 0 0;
+    transition: all 0.5s ease; }
+    .expandbox .info .preview {
+      height: 160px;
+      padding: 10px; }
+  .expandbox .maximized {
+    transition: all 0.5s ease;
+    max-height: 3000px;
+    background-color: #EFEFEF; }
+  .expandbox .more-info {
+    display: flex;
+    justify-content: center;
+    height: 35px;
+    width: 100px;
+    width: auto;
+    transition: all .5s ease; }
+    .expandbox .more-info:hover {
+      background-color: #F1F1F1;
+      cursor: pointer; }
+    .expandbox .more-info .arrow {
+      position: relative;
+      top: -2px;
+      display: block;
+      margin: 10px auto;
+      width: 25px;
+      height: 25px;
+      background: url(/images/arrow.svg);
+      background-size: 25px 22px;
+      transition: all .5s ease; }
+    .expandbox .more-info .rotated {
+      top: -6px;
+      transform: rotate(180deg); }
+
+#search-bar {
+  display: block;
+  width: 400px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #979797;
+  background-color: #ECEAEA;
+  color: #8A8A8A;
+  font-size: 1.4em;
+  text-align: center;
+  padding-left: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  transition: all .3s ease; }
+  #search-bar:focus {
+    outline: none;
+    color: #666;
+    background-color: #FFF; }
 
 #logo {
   height: 150px;
@@ -47,78 +121,10 @@ body {
   padding-left: 30px;
   border-radius: 0; }
 
-path {
-  stroke: steelblue;
-  stroke-width: 2;
-  fill: none; }
-
-.axis path,
-.axis line {
-  fill: none;
-  stroke: grey;
-  stroke-width: 1;
-  shape-rendering: crispEdges; }
-
-#search-bar {
-  display: block;
-  width: 400px;
-  height: 40px;
-  border-radius: 5px;
-  border: 1px solid #979797;
-  background-color: #ECEAEA;
-  color: #8A8A8A;
-  font-size: 1.4em;
-  text-align: center;
-  padding-left: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all .3s ease; }
-  #search-bar:focus {
-    outline: none;
-    color: #666;
-    background-color: #FFF; }
-
-.expandbox {
-  background-color: #FFF;
-  margin-bottom: 15px;
-  max-width: 1500px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-  transition: all 0.5s ease; }
-  .expandbox .info {
-    transition: max-height .6s ease;
-    overflow: hidden;
-    max-height: 165px;
-    padding: 0 20px;
-    transition: all 0.5s ease; }
-    .expandbox .info .preview {
-      margin-top: 5px;
-      height: 160px; }
-  .expandbox .maximized {
-    transition: all 0.5s ease;
-    max-height: 3000px;
-    background-color: #EFEFEF; }
-  .expandbox .more-info {
-    display: flex;
-    justify-content: center;
-    height: 35px;
-    width: 100px;
-    width: auto;
-    transition: all .5s ease; }
-    .expandbox .more-info:hover {
-      background-color: #F1F1F1;
-      cursor: pointer; }
-    .expandbox .more-info .arrow {
-      position: relative;
-      top: -2px;
-      display: block;
-      margin: 10px auto;
-      width: 25px;
-      height: 25px;
-      background: url(/images/arrow.svg);
-      background-size: 25px 22px;
-      transition: all .5s ease; }
-    .expandbox .more-info .rotated {
-      top: -6px;
-      transform: rotate(180deg); }
+.alarmDiv {
+  width: 100%;
+  height: 100px;
+  border-bottom: solid 1px black; }
 
 .chart div {
   font: 10px sans-serif;
@@ -147,10 +153,11 @@ path {
     max-height: 60px;
     padding: 0 20px; }
     .sensor .info .preview {
-      margin-top: 5px;
       height: 55px;
       display: flex;
       align-items: center; }
+      .sensor .info .preview h1 {
+        margin: 0; }
       .sensor .info .preview .data {
         margin-left: 20px;
         font-size: 0.8em; }
@@ -220,35 +227,7 @@ path {
         top: -6px;
         transform: rotate(180deg); }
 
-.notifications {
-  max-width: 800px;
-  margin: 0 auto; }
-  .notifications .notification {
-    background-color: #FFF;
-    max-width: 800px;
-    padding: 15px;
-    position: relative;
-    margin-bottom: 20px; }
-    .notifications .notification h3 {
-      margin: 0 0 10px 0; }
-    .notifications .notification p {
-      max-width: 600px; }
-    .notifications .notification .dropdown {
-      position: absolute;
-      right: 0;
-      top: 0;
-      padding: 10px;
-      border: none; }
-      .notifications .notification .dropdown button {
-        border: none;
-        transition: all .1s ease; }
-
 #graph-holder {
   width: 670px; }
-
-.alarmDiv {
-  width: 100%;
-  height: 100px;
-  border-bottom: solid 1px black; }
 
 /*# sourceMappingURL=style.css.map */

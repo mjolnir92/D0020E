@@ -1,5 +1,8 @@
 var realTime = function(d3){
+
+
   var sensor = "pulse";
+
   $(".more-info").on("click", function () {
     sensor = $(this).parent().attr("data-id");
     var gArea = $(this).parent().children(".details").children("#graphArea");
