@@ -23,7 +23,7 @@ var server = http.createServer(app);
 
 var io = require( 'socket.io' )( server );
 var connection_opts = { host: 'localhost', port: 3000 };
-var connection = require( '../connection' )( http, connection_opts );
+var connection = require( '../protocol' )( http, connection_opts );
 var io_config = require( '../socket' )( io, connection );
 
 

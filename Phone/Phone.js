@@ -22,19 +22,16 @@ String.prototype.hashCode = function() {
  * @param param Simulation options
  * @param {string} [param.prefix] Prefix of ccn-node.
  * @param {number} [param.length] Amount of data elements to keep
+ * @param {object} param.socket Socket.io socket
+ * @param {object} param.relay ccnjs Relay
+ * @param {object} param.protocol server protocol
+ * @param {string} param.mac mac-address
  * @returns {{update: update}}
  * @constructor
  */
-module.exports = function( param, callback ) {
-
-    function randomMac() {
-        return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
-            return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
-        });
-    }
-
+module.exports = function( param ) {
     var content = {
-        mac: randomMac(),
+        prefix: '',
         data: {
             sensors: []
         }
@@ -47,6 +44,28 @@ module.exports = function( param, callback ) {
         C: 37,
         D: 37
     };
+
+    var initialized = false;
+
+
+    param.socket.on( 'slidestop', function( data ) {
+        phone.target[ data.slider ] = data.value;
+    });
+
+    param.socket.on( 'logon', function( data ) {
+        console.log( 'logon' );
+        data.mac = param.mac;
+        console.log( data );
+        param.protocol.hello( data, function( res ) {
+            console.log( res );
+            content.prefix = res.prefix;
+            param.protocol.ack( res.prefix, function( res ) {
+                initialized = true;
+                param.socket.emit( 'loggedOn', res );
+            } );
+        } );
+    } );
+
 
     function createSensorData( last ) {
         last = last || target;
@@ -62,6 +81,7 @@ module.exports = function( param, callback ) {
 
 
     function update( ) {
+        if ( !initialized ) return;
 
         var last = content.data.sensors.last();
         var data = createSensorData( last );
@@ -71,14 +91,12 @@ module.exports = function( param, callback ) {
             content.data.sensors.shift();
         }
 
-        if( callback ){
-            callback( this, data );
-        }
+        param.socket.emit( 'update', data );
+        param.relay.addContent( { prefix: content.prefix, content: content.data.sensors } );
     }
 
     return {
-        target: target,
-        content: content,
+        mac: param.mac,
         update: update
     };
 };

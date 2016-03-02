@@ -1,0 +1,14 @@
+<form method="post" action="/users">
+  <input type="text" id="search-bar" placeholder="Search" name="name">
+</form>
+
+<section class="result">
+
+  {{#each rows}}
+
+    {{>user this}}
+
+  {{/each}}
+
+</section>
+

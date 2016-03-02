@@ -3,45 +3,42 @@
  * Created by magnusbjork on 2/25/16.
  */
 
-var PhoneManager = require( './PhoneManager');
-var Phone = require( './Phone');
-var PREFIX = '/ltu';
+var PhoneManager = require( './PhoneManager' );
+var Phone = require( './Phone' );
+var ccnjs = require( './ccnjs' );
+var protocol = require( './protocol' );
+
 var LENGTH = 40;
 
-module.exports = function( io, server ) {
+module.exports = function( io, protocol ) {
     var phoneManager = PhoneManager();
+    var relay = ccnjs.Relay( { udp: '9998', socket: '/tmp/b.sock', tcp: '8888'} );
 
     phoneManager.start( 5000 );
 
     io.on( 'connection', function( socket ) {
 
+        function randomMac() {
+            return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
+                return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+            });
+        }
+
         var param = {
             length: LENGTH,
-            prefix: PREFIX
+            socket: socket,
+            relay: relay,
+            protocol: protocol,
+            mac: randomMac()
         };
 
-        var phone = new Phone( param, function( phone, data ) {
-            socket.emit( 'update', data );
-            console.log( 'updated phone: ' + phone.content.mac );
-        });
+        var phone = new Phone( param );
 
         phoneManager.addSimulation( phone );
 
-        socket.on( 'disconnect', function(){
+        socket.on( 'disconnect', function() {
             phoneManager.delSimulation( phone );
             console.log( 'user disconnected' );
         });
-
-        socket.on( 'slidestop', function( data ){
-            phone.target[ data.slider ] = data.value;
-        });
-
-        socket.on( 'logon', function( data ) {
-            data.mac = phone.content.mac;
-            console.log( data );
-            server.post( '/events', data, function( response ) {
-                socket.emit( 'loggedOn', response );
-            } );
-        })
     })
 };

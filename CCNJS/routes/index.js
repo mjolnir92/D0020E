@@ -6,8 +6,63 @@ var controllers = {
     events: require( '../controllers/events.js' )()
 };
 
-router.post( '/events', controllers.events.post )
-      .get( '/events', controllers.events.post );
+router.post( '/events', controllers.events.post );
+
+router.get( '/users', function( req, res ) {
+    res.render( 'users' );
+});
+
+router.post( '/getSensorData', function( req, res ) {
+    var mac = req.body.mac;
+    console.log( mac );
+    var prefix = '/ltu/' + mac;
+    controllers.events.f( prefix, function( data ) {
+        res.json( data );
+    } );
+} );
+
+router.post( '/users', function( req, res ) {
+    var names = req.body.name.split(/[ ,]+/);
+    console.log( names );
+    var sql = '';
+    var arr = [];
+
+    if ( names.length > 1){
+
+        sql = "SELECT * FROM phones WHERE (firstName LIKE ? OR firstName LIKE ?) " +
+            "AND (lastName LIKE ? OR lastName LIKE ?) ";
+
+        arr = [
+            names[0] + "%",
+            names[1] + "%",
+            names[1] + "%",
+            names[0] + "%"
+        ];
+
+    } else {
+        sql = "SELECT * FROM phones WHERE firstName LIKE ?";
+        arr = [
+            names + "%"
+        ];
+    }
+
+    if ( sql !== '') {
+        sql = connection.format( sql, arr );
+        console.log( sql );
+        connection.query( sql, function( err, rows ) {
+            console.log( err );
+            console.log( rows );
+            res.render( 'users', { rows: rows } );
+        } );
+    }
+} );
+
+router.get( '/sensors*', function( req, res ) {
+    console.log( req.query.prefix );
+    controllers.events.f( req.query.prefix, function( data ) {
+        res.render( 'data', { sensors: data } );
+    });
+} );
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -58,7 +113,7 @@ router.post('/search_alarms', function(req, res){
     connection.query(sql2 , function(err, rows){
       res.json(rows);
     });
-  })
+  });
 
 });
 
@@ -76,11 +131,11 @@ router.post('/search_workers_two_names', function(req, res){
       "AND (lastName LIKE ? OR lastName LIKE ?) ";
   var arr = [req.body.firstName+"%", req.body.lastName+"%", req.body.lastName+"%", req.body.firstName+"%"];
   sql = connection.format(sql, arr);
-  connection.query(sql, function(err, rows){
-    console.log(err);
-    res.json(rows);
-  });
-});
+  connection.query( sql, function( err, rows ){
+    console.log( err );
+    res.json( rows );
+  } );
+} );
 
 router.post('/search_workers_one_name', function(req, res){
   var sql = "SELECT * FROM phones WHERE firstName LIKE ? OR lastName LIKE ?";
