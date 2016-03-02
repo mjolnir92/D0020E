@@ -33,54 +33,103 @@ var realTime = function(d3){
   });
 
 
-    //search for workers
-  $("#search-bar").keyup(function(event){
-      if(event.keyCode == 13){
-          //repeat following for all matches, add when database ready
-          var fullName = $("#search-bar").val();
-          var res = fullName.split(" ");
-          var fName = res[0];
-          if(res[1] != null) {
-              var lName = res[1];
-              $.ajax({
-                  url: "/search_workers_two_names",
-                  type: "POST",
-                  dataType: "json",
-                  data: {
-                      firstName: fName,
-                      lastName: lName
-                  },
-                  success: function (result) {
-                      if(result.length) {
-                          //make expandboxes
-                      }
-                      else{
-                          alert("No such person employed here!");
-                      }
-                  }
-              });
-          }
-          else{
-              $.ajax({
-                  url: "/search_workers_one_name",
-                  type: "POST",
-                  dataType: "json",
-                  data: {
-                      Name: fullName
-                  },
-                  success: function (result) {
-                      if(result.length) {
-                          //TODO make expandaboxes
-                      }
-                      else{
-                          alert("No such person employed here!");
-                      }
-                  }
-              });
-          }
+/*************
+SEARCH FOR WORKERS
+**************/
+$("#search-bar").keyup(function(event){
+    if(event.keyCode == 13){
 
-      }
+        //Store result from search-bar
+        var fullName = $("#search-bar").val();
+        var res = fullName.split(" ");
+        var fName = res[0];
+
+        //clear old result
+        $(".result").html("");
+        $("#search-bar").val("");
+
+        //repeat following for all matches, add when database ready
+        if(res[1] != null) {
+            var lName = res[1];
+            $.ajax({
+                url: "/search_workers_two_names",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    firstName: fName,
+                    lastName: lName
+                },
+                success: function (result) {
+                    if(result.length) {
+                        printPersons(result);
+                    }
+                    else{
+                        alert("No such person employed here!");
+                    }
+                }
+            });
+        }
+        else{
+            $.ajax({
+                url: "/search_workers_one_name",
+                type: "POST",
+                dataType: "json",
+                data: {
+                    Name: fullName
+                },
+                success: function (result) {
+                    if(result.length) {
+                      printPersons(result);
+                    }
+                    else{
+                        alert("No such person employed here!");
+                    }
+                }
+            });
+        }
+
+    }
+});
+
+function printPersons(result) {
+  result.forEach(function(item) {
+
+    var wrapperDiv = document.createElement("div");
+    $(wrapperDiv).attr("class", "expandbox");
+
+    var infoDiv = document.createElement("div");
+    $(infoDiv).attr("class", "info");
+    $(wrapperDiv).append(infoDiv);
+
+    var previewDiv = document.createElement("div");
+    $(previewDiv).attr("class", "preview");
+    $(infoDiv).append(previewDiv);
+
+    var workerName = document.createElement("h1");
+    $(workerName).attr("class", "worker-name");
+    $(workerName).html(item.firstName + " " + item.lastName);
+    $(previewDiv).append(workerName);
+
+    var phoneId = document.createElement("p");
+    $(phoneId).html("MAC: " + item.mac);
+    $(previewDiv).append(phoneId);
+
+    var detailDiv = document.createElement("div");
+    $(detailDiv).attr("class", "details");
+    $(infoDiv).append(detailDiv);
+
+    var moreDiv = document.createElement("div");
+    $(moreDiv).attr("class", "more-info");
+
+    var arrowDiv = document.createElement("div");
+    $(arrowDiv).attr("class", "arrow");
+    $(moreDiv).append(arrowDiv);
+    $(wrapperDiv).append(moreDiv);
+
+    $(".result").append(wrapperDiv);
+
   });
+}
 
   function makeLineGraphArray(data, sensorOriginal){
       $("#graph-area").html("");

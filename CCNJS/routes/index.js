@@ -70,7 +70,7 @@ router.post('/search_alarms', function(req, res){
     connection.query(sql2 , function(err, rows){
       res.json(rows);
     });
-  })
+  });
 
 });
 
