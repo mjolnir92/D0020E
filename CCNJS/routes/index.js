@@ -6,8 +6,7 @@ var controllers = {
     events: require( '../controllers/events.js' )()
 };
 
-router.post( '/events', controllers.events.post )
-      .get( '/events', controllers.events.post );
+router.post( '/events', controllers.events.post );
 
 /* GET home page. */
 router.get('/', function(req, res, next) {

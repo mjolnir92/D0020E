@@ -27,12 +27,12 @@ module.exports = function( io, server ) {
 
         phoneManager.addSimulation( phone );
 
-        socket.on( 'disconnect', function(){
+        socket.on( 'disconnect', function() {
             phoneManager.delSimulation( phone );
             console.log( 'user disconnected' );
         });
 
-        socket.on( 'slidestop', function( data ){
+        socket.on( 'slidestop', function( data ) {
             phone.target[ data.slider ] = data.value;
         });
 
