@@ -1,16 +1,19 @@
 
 
 //Expands expandbox:s when '.more-info' is clicked.
-$(".more-info").on("click", function () {
+function addListener() {
+  $(".more-info").on("click", function () {
+    var sensor = $(this).parent();
+    var sensorInfo = sensor.children(".info");
+    var arrow = $(this).children(".arrow");
 
-  var sensor     = $(this).parent();
-  var sensorInfo = sensor.children(".info");
-  var arrow      = $(this).children(".arrow");
+    sensorInfo.toggleClass("maximized");
+    arrow.toggleClass("rotated");
 
-  sensorInfo.toggleClass("maximized");
-  arrow.toggleClass("rotated");
+  });
+}
+addListener();
 
-});
 
 
 //Click outside expandbox:s invokes this function. Minimizes all expandbox:s.

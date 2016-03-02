@@ -63,7 +63,7 @@ router.post('/search_alarms', function(req, res){
 });
 
 router.post('/all_alarms', function(req, res){
-  var sql = "SELECT phones.firstName, phones.lastName, events.time, events.type " +
+  var sql = "SELECT phones.firstName, phones.lastName, events.time, events.type, events.eventId " +
       "FROM phones INNER JOIN events ON phones.mac=events.phones_mac";
   connection.query(sql, function(err, rows){
     console.log(err);
@@ -86,6 +86,15 @@ router.post('/search_workers_one_name', function(req, res){
   var sql = "SELECT * FROM phones WHERE firstName LIKE ? OR lastName LIKE ?";
   var arr = [req.body.Name+"%",req.body.Name+"%"];
   sql = connection.format(sql, arr);
+  connection.query(sql, function(err, rows){
+    console.log(err);
+    res.json(rows);
+  });
+});
+
+router.post('/get_alarm_data', function(req, res){
+  var sql = "SELECT * FROM sensors WHERE ?";
+  sql = connection.format(sql, req.body.eventId);
   connection.query(sql, function(err, rows){
     console.log(err);
     res.json(rows);
