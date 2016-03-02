@@ -7,7 +7,7 @@ var prefix = '/ltu';
 
 module.exports = function() {
     var relay = ccnjs.Relay();
-    var route;
+    var routes = {};
 
     return {
         post: function( req, res ) {
