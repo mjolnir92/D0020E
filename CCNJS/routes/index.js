@@ -9,9 +9,43 @@ var controllers = {
 router.post( '/events', controllers.events.post );
 
 router.get( '/users', function( req, res ) {
-    connection.query( 'SELECT * FROM `phones`', function( err, rows ) {
-        res.render( 'users', { rows: rows } );
-    } );
+    res.render( 'users' );
+});
+
+router.post( '/users', function( req, res ) {
+    var names = req.body.name.split(/[ ,]+/);
+    console.log( names );
+    var sql = '';
+    var arr = [];
+
+    if ( names.length > 1){
+
+        sql = "SELECT * FROM phones WHERE (firstName LIKE ? OR firstName LIKE ?) " +
+            "AND (lastName LIKE ? OR lastName LIKE ?) ";
+
+        arr = [
+            names[0] + "%",
+            names[1] + "%",
+            names[1] + "%",
+            names[0] + "%"
+        ];
+
+    } else {
+        sql = "SELECT * FROM phones WHERE firstName LIKE ?";
+        arr = [
+            names + "%"
+        ];
+    }
+
+    if ( sql !== '') {
+        sql = connection.format( sql, arr );
+        console.log( sql );
+        connection.query( sql, function( err, rows ) {
+            console.log( err );
+            console.log( rows );
+            res.render( 'users', { rows: rows } );
+        } );
+    }
 } );
 
 router.get( '/sensors*', function( req, res ) {

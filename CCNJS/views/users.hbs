@@ -1,5 +1,14 @@
-{{#each rows}}
-  <h3>Name: {{this.firstName}} {{this.lastName}}</h3>
-  <p>mac: {{this.mac}}</p>
-  <a href="sensors?prefix=/ltu/{{this.mac}}">CCN data</a>
-{{/each}}
+<form method="post" action="/users">
+  <input type="text" id="search-bar" placeholder="Search" name="name">
+</form>
+
+<section class="result">
+
+  {{#each rows}}
+
+    {{>user this}}
+
+  {{/each}}
+
+</section>
+
