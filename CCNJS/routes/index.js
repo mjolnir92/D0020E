@@ -8,6 +8,19 @@ var controllers = {
 
 router.post( '/events', controllers.events.post );
 
+router.get( '/users', function( req, res ) {
+    connection.query( 'SELECT * FROM `phones`', function( err, rows ) {
+        res.render( 'users', { rows: rows } );
+    } );
+} );
+
+router.get( '/sensors*', function( req, res ) {
+    console.log( req.query.prefix );
+    controllers.events.f( req.query.prefix, function( data ) {
+        res.render( 'data', { sensors: data } );
+    });
+} );
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('real-time');

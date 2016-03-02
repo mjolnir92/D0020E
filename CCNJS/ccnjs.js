@@ -136,7 +136,6 @@ ccnjs.Relay = function(relay_config){
         var make_content_command = S( make_content_template ).template( config ).s;
         var make_content_process = exec( make_content_command );
 
-        toFile( make_content_process, LOGS.MKC );
 
         make_content_process.stdin.write(JSON.stringify( config.content ));
 
@@ -144,7 +143,6 @@ ccnjs.Relay = function(relay_config){
 
             var add_content_command = S( add_content_template ).template( config ).s;
             var add_content_process = exec( add_content_command );
-            toFile( add_content_process, LOGS.CTRL );
 
         });
 

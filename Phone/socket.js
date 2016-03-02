@@ -12,7 +12,7 @@ var LENGTH = 40;
 
 module.exports = function( io, protocol ) {
     var phoneManager = PhoneManager();
-    var relay = ccnjs.Relay();
+    var relay = ccnjs.Relay( { udp: '9998', socket: '/tmp/b.sock', tcp: '8888'} );
 
     phoneManager.start( 5000 );
 

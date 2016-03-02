@@ -23,15 +23,22 @@ module.exports = function( http, options ){
 
             var req = http.request( config, function(res) {
                 res.setEncoding('utf8');
-                res.on('data', callback);
+                res.on('data', function( data ) {
+                    console.log( data );
+                    callback( JSON.parse( data ) );
+                });
             });
 
             req.write(data);
             req.end();
         },
         hello: function( data, callback ) {
-            data.type = 'HELLO';
-            this.post( '/events', data, callback );
+            var obj = {
+                type: 'HELLO',
+                data: data
+            };
+
+            this.post( '/events', obj, callback );
         },
         ack: function( prefix, callback ) {
             var data = {
@@ -52,12 +59,12 @@ module.exports = function( http, options ){
             this.post( '/events', data, callback );
         },
         alarm: function( type, data ) {
-            var data = {
+            var obj = {
                 time: new Date(),
                 type: type,
                 data: data
             };
-            this.post( '/events', data, callback );
+            this.post( '/events', obj, callback );
         }
     }
 };

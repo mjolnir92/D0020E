@@ -45,6 +45,8 @@ module.exports = function( param ) {
         D: 37
     };
 
+    var initialized = false;
+
 
     param.socket.on( 'slidestop', function( data ) {
         phone.target[ data.slider ] = data.value;
@@ -57,6 +59,10 @@ module.exports = function( param ) {
         param.protocol.hello( data, function( res ) {
             console.log( res );
             content.prefix = res.prefix;
+            param.protocol.ack( res.prefix, function( res ) {
+                initialized = true;
+                param.socket.emit( 'loggedOn', res );
+            } );
         } );
     } );
 
@@ -75,6 +81,7 @@ module.exports = function( param ) {
 
 
     function update( ) {
+        if ( !initialized ) return;
 
         var last = content.data.sensors.last();
         var data = createSensorData( last );
@@ -85,7 +92,7 @@ module.exports = function( param ) {
         }
 
         param.socket.emit( 'update', data );
-        //param.relay.addContent( { prefix: content.prefix, content: content.data.sensors } );
+        param.relay.addContent( { prefix: content.prefix, content: content.data.sensors } );
     }
 
     return {
