@@ -5,7 +5,7 @@ $(document).ready( function() {
 
 
 //Expands expandbox:s when '.more-info' is clicked on real time page.
-    $(".more-real-time").on("click", function () {
+    $(".users-info").on("click", function () {
 
         var sensor = $(this).parent();
         var that = $(this);
