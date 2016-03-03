@@ -39,6 +39,15 @@ path {
     .expandbox .info .preview {
       height: 160px;
       padding: 10px; }
+  .expandbox .info-alarms {
+    transition: max-height .6s ease;
+    overflow: hidden;
+    max-height: 160px;
+    padding: 0 0;
+    transition: all 0.5s ease; }
+    .expandbox .info-alarms .preview-alarms {
+      height: 160px;
+      padding: 10px; }
   .expandbox .maximized {
     transition: all 0.5s ease;
     max-height: 3000px;

@@ -3,7 +3,7 @@ var realTime = function(d3){
 
   var sensor = "pulse";
 
-  $(".more-info").on("click", function () {
+ /* $(".more-info").on("click", function () {
 
     sensor = $(this).parent().attr("data-id");
     var gArea = $(this).parent().children(".details").children("#graphArea");
@@ -34,7 +34,7 @@ var realTime = function(d3){
     $('#myModal').modal('toggle');
     $('.modal-title').html(sensor);
 
-  });
+  });*/
 
 
 /*************
@@ -95,7 +95,7 @@ $("#search-bar").keyup(function(event){
     }
 });
 
-function printPersons(result) {
+/*function printPersons(result) {
   result.forEach(function(item) {
 
     var wrapperDiv = document.createElement("div");
@@ -133,11 +133,16 @@ function printPersons(result) {
     $(".result").append(wrapperDiv);
 
   });
-}
-
-  function makeLineGraphArray(data, sensorOriginal){
-      $("#graph-area").html("");
-      if(sensorOriginal == "bodyTemp"){
+}*/
+/*
+draws a linear graph,
+data: array with data,
+sensor: which sensor from data it should show,
+gArea: which div to draw the graph in.
+ */
+  function makeLineGraphArray(data, sensor, gArea){
+      $(gArea).html("");
+      /*if(sensorOriginal == "bodyTemp"){
           var sensor = "A";
       }
       else if(sensorOriginal == "envTemp"){
@@ -148,7 +153,7 @@ function printPersons(result) {
       }
       else if(sensorOriginal == "co2"){
           var sensor = "D";
-      }
+      }*/
       var defaults = {
           bodyTemp:{
               min: 29,
@@ -202,7 +207,7 @@ function printPersons(result) {
           .y(function(d) { return y(d[sensor]); });
 
 
-      var svg = d3.select("#graph-area") //create the svg in the modal-body
+      var svg = d3.select(gArea) //create the svg in the modal-body
           .append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
@@ -313,5 +318,5 @@ function printPersons(result) {
       $("#phoneId").html("id = " +phoneData.phoneId);
   } );
 
-  return {};
+  return {makeLineGraphArray: makeLineGraphArray};
 }(d3);
