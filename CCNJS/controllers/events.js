@@ -29,15 +29,29 @@ module.exports = function() {
                     break;
                 }
                 case 'BYE': {
-                    //TODO remove user from database
+                    var phoneData = phones[ event.data.prefix ];
+                    phoneData.online = 0;
+                    var sql = 'INSERT INTO `phones` ' +
+                        'SET ? ' +
+                        'ON DUPLICATE KEY UPDATE ?';
+
+                    sql = db.format( sql, [phoneData, phoneData] );
+
+                    db.query( sql, function( err, result ) {
+                        res.json( { msg: 'goodbye!' } );
+                    } );
                     break;
                 }
                 case 'ACK': {
                     var phoneData = phones[ event.data.prefix ];
+                    phoneData.online = 1;
                     console.log( phoneData );
                     //TODO insert update user
-                    var sql = 'INSERT INTO `phones` SET ?';
-                    sql = db.format( sql, phoneData );
+                    var sql = 'INSERT INTO `phones` ' +
+                        'SET ? ' +
+                        'ON DUPLICATE KEY UPDATE ?';
+
+                    sql = db.format( sql, [phoneData, phoneData] );
 
                     db.query( sql, function( err, result ) {
                         res.json( { msg: 'welcome' } );
