@@ -40,6 +40,7 @@ var client = function( socket, http, d3 ) {
     return {
         logon: function( form ) {
             var json = $( form).serializeJSON();
+            json.mac = localStorage.mac;
             socket.emit( 'logon', json );
         }
     }

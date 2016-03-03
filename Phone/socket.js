@@ -7,6 +7,7 @@ var PhoneManager = require( './PhoneManager' );
 var Phone = require( './Phone' );
 var ccnjs = require( './ccnjs' );
 var protocol = require( './protocol' );
+var path = require('path');
 
 var LENGTH = 40;
 
@@ -37,8 +38,9 @@ module.exports = function( io, protocol ) {
         phoneManager.addSimulation( phone );
 
         socket.on( 'disconnect', function() {
-            phoneManager.delSimulation( phone );
-            console.log( 'user disconnected' );
+            phone.close( function( data ) {
+                phoneManager.delSimulation( phone );
+            } );
         });
     })
 };

@@ -26,7 +26,7 @@ String.prototype.hashCode = function() {
  * @param {object} param.relay ccnjs Relay
  * @param {object} param.protocol server protocol
  * @param {string} param.mac mac-address
- * @returns {{update: update}}
+ * @returns {{mac: {string}, update: update}}
  * @constructor
  */
 module.exports = function( param ) {
@@ -50,7 +50,7 @@ module.exports = function( param ) {
 
     param.socket.on( 'slidestop', function( data ) {
         phone.target[ data.slider ] = data.value;
-    });
+    } );
 
     param.socket.on( 'logon', function( data ) {
         console.log( 'logon' );
@@ -95,8 +95,13 @@ module.exports = function( param ) {
         param.relay.addContent( { prefix: content.prefix, content: content.data.sensors } );
     }
 
+    function close( callback ) {
+        param.protocol.bye( content.prefix, callback );
+    }
+
     return {
         mac: param.mac,
+        close: close,
         update: update
     };
 };
