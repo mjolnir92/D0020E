@@ -30,6 +30,7 @@ module.exports = function() {
                 }
                 case 'BYE': {
                     var phoneData = phones[ event.data.prefix ];
+                    console.log( event.data );
                     phoneData.online = 0;
                     var sql = 'INSERT INTO `phones` ' +
                         'SET ? ' +
@@ -46,7 +47,6 @@ module.exports = function() {
                     var phoneData = phones[ event.data.prefix ];
                     phoneData.online = 1;
                     console.log( phoneData );
-                    //TODO insert update user
                     var sql = 'INSERT INTO `phones` ' +
                         'SET ? ' +
                         'ON DUPLICATE KEY UPDATE ?';
