@@ -13,9 +13,9 @@ var alarms = function() {
             $(wrapperDiv).append(infoDiv);
                 var previewDiv = document.createElement("div");
                 $(previewDiv).attr("class", "preview-alarms");
-                var previewString = "<h2>Name: "+name+"<br>" +
+                var previewString = "<h3>Name: "+name+"<br>" +
                     "Type: "+type +"<br>" +
-                    "Time: "+time +"</h2>";
+                    "Time: "+time +"</h3>";
                 $(previewDiv).html(previewString);
                 $(infoDiv).append(previewDiv);
                 var detailDiv = document.createElement("div");
@@ -35,16 +35,16 @@ var alarms = function() {
                 $(moreDiv).append(arrowDiv);
         $(wrapperDiv).append(moreDiv);
 
-        $("#mainDiv").append(wrapperDiv);
+        $(".result").append(wrapperDiv);
     }
 /*
 search for workers with names starting with text in searchfield.
 Display those on page.
 
  */
-    $("#alarms_search_field").keyup(function(event){
+    $("#search-div").keyup(function(event){
         if(event.keyCode == 13){
-            var name = $("#workers-alarms").val();
+            var name = $(this).children(".workers-alarms").val();
             $('.wDiv').remove();
             name = name.split(" ");
             allAlarms.forEach(function(item){
@@ -83,6 +83,7 @@ Display those on page.
             result.forEach(function(item){
                 makeAlarmBox(item.firstName+" "+item.lastName, item.time, item.type, item.eventId);
             });
+            //realTime.drawGraphOnClick();
     }});
 
 
@@ -95,7 +96,6 @@ Display those on page.
                 dataType: "json",
                 data: {eventId: eventID},
                 success: function(result){
-                    //console.log(result[0]);
                     var sensor = $(div).parent();
                     var sensorInfo = sensor.children(".info-alarms");
                     var arrow = $(div).children(".arrow");
@@ -103,19 +103,16 @@ Display those on page.
                     arrow.toggleClass("rotated");
                     var graphMore = $(detailDiv).children(".sensor").children(".more-info");
                     $(graphMore).click(function(){
-                        var sensor = $(graphMore).parent();
-                        var sensorInfo = sensor.children(".info-alarms");
-                        var arrow = $(graphMore).children(".arrow");
+                        var sensor = $(this).parent();
+                        var sensorInfo = sensor.children(".info");
+                        var arrow = $(this).children(".arrow");
                         sensorInfo.toggleClass("maximized");
                         arrow.toggleClass("rotated");
                         var sensorId = sensor.attr("data-id");
                         console.log(sensorId);
-                        var gArea = $(graphMore).parent().children(".info").children(".details").children(".graph-area");
-                        //realTime.makeLineGraphArray(result, sensorId, gArea); //gives error
-                    });
-                    result.forEach(function(item){
-                        console.log(item);
-
+                        var gArea = $(this).parent().children(".info").children(".details").children(".graph-area");
+                        $(gArea).html("");
+                        realTime.makeLineGraphArray(result, sensorId, gArea); //gives error
                     });
                 }});
         });
@@ -140,7 +137,7 @@ sensor: which sensor is this box for?
             var sensorIcon = "CO";
         }
         var wrapperDiv = document.createElement("div");
-        $(wrapperDiv).attr("class", "expandbox sensor");
+        $(wrapperDiv).attr("class", "expandbox sensor alarm-sensor");
         $(wrapperDiv).attr("data-id", sensor);
             var infoDiv = document.createElement("div");
             $(infoDiv).attr("class", "info");
@@ -168,7 +165,6 @@ sensor: which sensor is this box for?
 
                 var detailDiv = document.createElement("div");
                 $(detailDiv).attr("class", "details");
-                $(detailDiv).html("Graph");
                     var graphDiv = document.createElement("div");
                     $(graphDiv).attr("class", "graph-area");
 

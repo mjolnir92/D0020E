@@ -2,40 +2,43 @@ var realTime = function(d3){
 
 
   var sensor = "pulse";
+  /*function drawGraphOnClick() {
+      $(".alarm-sensor").on("click", function () {
 
- /* $(".more-info").on("click", function () {
+          sensor = $(this).parent().attr("data-id");
+          console.log(sensor);
+          var gArea = $(this).parent().children(".details").children(".graphArea");
+          console.log(gArea);
+          //var gArea = $("#mainDiv");
+          console.log("hej");
+          //Server call to get data from sensor (AJAX?)
+          var firstValue = {
+              T: new Date("October 13, 2014 11:13:00"), //time
+              L: "Here", //location
+              A: 39.5, //sensor A
+              B: 20.0, // ...
+              C: 68.0,
+              D: 30.0
+          };
+          var secondValue = {
+              T: new Date(), //time
+              L: "Here", //location
+              A: 31.5, //sensor A
+              B: 24.0, // ...
+              C: 62.0,
+              D: 33.0
+          };
 
-    sensor = $(this).parent().attr("data-id");
-    var gArea = $(this).parent().children(".details").children("#graphArea");
-
-    //Server call to get data from sensor (AJAX?)
-    var firstValue = {
-        T:  new Date("October 13, 2014 11:13:00") , //time
-        L: "Here", //location
-        A: 39.5, //sensor A
-        B: 20.0, // ...
-        C: 68.0,
-        D: 30.0
-    };
-    var secondValue = {
-        T:  new Date() , //time
-        L: "Here", //location
-        A: 31.5, //sensor A
-        B: 24.0, // ...
-        C: 62.0,
-        D: 33.0
-    };
-
-    var someArray = [firstValue, secondValue];
-    makeLineGraphArray(someArray, sensor);
+          var someArray = [firstValue, secondValue];
+          makeLineGraphArray(someArray, "A", gArea);
 
 
-    //display data in graph
-    $('#myModal').modal('toggle');
-    $('.modal-title').html(sensor);
+          //display data in graph
+          //$('#myModal').modal('toggle');
+          //$('.modal-title').html(sensor);
 
-  });*/
-
+      });
+  }*/
 
 /*************
 SEARCH FOR WORKERS
@@ -141,7 +144,7 @@ sensor: which sensor from data it should show,
 gArea: which div to draw the graph in.
  */
   function makeLineGraphArray(data, sensor, gArea){
-      $(gArea).html("");
+      //$(gArea).html("");
       /*if(sensorOriginal == "bodyTemp"){
           var sensor = "A";
       }
@@ -155,19 +158,19 @@ gArea: which div to draw the graph in.
           var sensor = "D";
       }*/
       var defaults = {
-          bodyTemp:{
+          A:{
               min: 29,
               max: 40
           },
-          envTemp:{
+          B:{
               min: -20,
               max: 160
           },
-          pulse: {
+          C: {
               min: 40,
               max: 160
           },
-          co2:{
+          D:{
               min: 0,
               max: 100
           }
@@ -207,7 +210,7 @@ gArea: which div to draw the graph in.
           .y(function(d) { return y(d[sensor]); });
 
 
-      var svg = d3.select(gArea) //create the svg in the modal-body
+      var svg = d3.select($(gArea).get(0)) //create the svg in the modal-body
           .append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
@@ -221,7 +224,7 @@ gArea: which div to draw the graph in.
       });
 
       x.domain(d3.extent(data, function(d) { return d.T; }));
-      y.domain([defaults[sensorOriginal].min, defaults[sensorOriginal].max]);
+      y.domain([defaults[sensor].min, defaults[sensor].max]);
 
       svg.append("defs").append("clipPath")
           .attr("id", "clip")

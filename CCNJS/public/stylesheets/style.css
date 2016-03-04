@@ -42,11 +42,11 @@ path {
   .expandbox .info-alarms {
     transition: max-height .6s ease;
     overflow: hidden;
-    max-height: 160px;
+    max-height: 120px;
     padding: 0 0;
     transition: all 0.5s ease; }
     .expandbox .info-alarms .preview-alarms {
-      height: 160px;
+      height: 120px;
       padding: 10px; }
   .expandbox .maximized {
     transition: all 0.5s ease;
