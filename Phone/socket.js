@@ -9,7 +9,6 @@ var ccnjs = require( './ccnjs' );
 var protocol = require( './protocol' );
 var path = require('path');
 
-var LENGTH = 40;
 
 module.exports = function( io, protocol ) {
     var phoneManager = PhoneManager();
@@ -19,28 +18,20 @@ module.exports = function( io, protocol ) {
 
     io.on( 'connection', function( socket ) {
 
-        function randomMac() {
-            return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
-                return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
-            });
-        }
 
         var param = {
-            length: LENGTH,
             socket: socket,
             relay: relay,
             protocol: protocol,
-            mac: randomMac()
+            manager: phoneManager
         };
 
         var phone = new Phone( param );
-
         phoneManager.addSimulation( phone );
 
         socket.on( 'disconnect', function() {
-            phone.close( function( data ) {
-                phoneManager.delSimulation( phone );
-            } );
-        });
+            phoneManager.delSimulation( phone );
+        } );
+
     })
 };

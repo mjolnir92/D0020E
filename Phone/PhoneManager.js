@@ -4,6 +4,7 @@
 module.exports = function( ) {
     var simulations = {};
     var intervalId = 0;
+    var autoInc = 0;
 
     function start( interval, callback ) {
         intervalId = setInterval(function( ) {
@@ -23,11 +24,12 @@ module.exports = function( ) {
     }
 
     function addSimulation( simulation ) {
-        simulations[ simulation.mac ] = simulation;
+        simulation.index = autoInc++;
+        simulations[ simulation.index ] = simulation;
     }
 
     function delSimulation( simulation ) {
-        delete simulations[ simulation.mac ];
+        delete simulations[ simulation.index ];
     }
 
     return {

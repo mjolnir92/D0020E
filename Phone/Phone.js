@@ -7,29 +7,19 @@ Array.prototype.last = function(){
     return this[ this.length - 1 ];
 };
 
-String.prototype.hashCode = function() {
-    var hash = 0, i, chr, len;
-    if (this.length === 0) return hash;
-    for (i = 0, len = this.length; i < len; i++) {
-        chr   = this.charCodeAt(i);
-        hash  = ((hash << 5) - hash) + chr;
-        hash |= 0; // Convert to 32bit integer
-    }
-    return hash;
-};
 /**
  *
  * @param param Simulation options
  * @param {string} [param.prefix] Prefix of ccn-node.
- * @param {number} [param.length] Amount of data elements to keep
  * @param {object} param.socket Socket.io socket
  * @param {object} param.relay ccnjs Relay
  * @param {object} param.protocol server protocol
- * @param {string} param.mac mac-address
  * @returns {{mac: {string}, update: update}}
  * @constructor
  */
 module.exports = function( param ) {
+    var length = 40;
+
     var content = {
         prefix: '',
         data: {
@@ -48,23 +38,22 @@ module.exports = function( param ) {
     var initialized = false;
 
 
+
     param.socket.on( 'slidestop', function( data ) {
-        phone.target[ data.slider ] = data.value;
+        console.log( data );
+        target[ data.slider ] = data.value;
     } );
 
     param.socket.on( 'logon', function( data ) {
-        console.log( 'logon' );
-        data.mac = param.mac;
-        console.log( data );
         param.protocol.hello( data, function( res ) {
-            console.log( res );
             content.prefix = res.prefix;
             param.protocol.ack( res.prefix, function( res ) {
-                initialized = true;
                 param.socket.emit( 'loggedOn', res );
+                initialized = true;
             } );
         } );
     } );
+
 
 
     function createSensorData( last ) {
@@ -87,7 +76,7 @@ module.exports = function( param ) {
         var data = createSensorData( last );
 
         content.data.sensors.push( data );
-        if( content.data.sensors.length > param.length ) {
+        if( content.data.sensors.length > length ) {
             content.data.sensors.shift();
         }
 
@@ -95,13 +84,8 @@ module.exports = function( param ) {
         param.relay.addContent( { prefix: content.prefix, content: content.data.sensors } );
     }
 
-    function close( callback ) {
-        param.protocol.bye( content.prefix, callback );
-    }
-
     return {
         mac: param.mac,
-        close: close,
         update: update
     };
 };

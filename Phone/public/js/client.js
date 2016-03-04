@@ -3,14 +3,22 @@
  * Created by magnusbjork on 2/25/16.
  */
 
-var client = function( socket, http, d3 ) {
+var client = function( socket, d3 ) {
+    function randomMac() {
+        return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
+            return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
+        });
+    }
+
     $(document).ready( function() {
 
+        console.log( 'constructor' );
         $('.slider').on( "slidestop", function( event ){
             var data = {
                 slider: event.target.name,
                 value: event.target.value
             };
+            console.log( data );
             socket.emit( 'slidestop', data );
         });
 
@@ -34,16 +42,18 @@ var client = function( socket, http, d3 ) {
 
         console.log( data );
     } );
+    function logon( form ) {
 
+        var json = $( form).serializeJSON();
+        localStorage.mac = localStorage.mac || randomMac();
+        json.mac = localStorage.mac;
+        socket.emit( 'logon', json );
+    }
 
 
     return {
-        logon: function( form ) {
-            var json = $( form).serializeJSON();
-            json.mac = localStorage.mac;
-            socket.emit( 'logon', json );
-        }
+        logon: logon
     }
 
-}( io(), null, d3 );
+}( io(), d3 );
 
