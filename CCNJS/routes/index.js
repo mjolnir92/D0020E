@@ -82,6 +82,8 @@ router.get('/alarms', function(req, res, next){
 });
 
 //-----SQL------
+/*
+
 router.post('/search_alarms', function(req, res){
   var sql = "SELECT mac FROM phones WHERE ?";
   sql = connection.format(sql, req.body);
@@ -95,7 +97,11 @@ router.post('/search_alarms', function(req, res){
   });
 
 });
+*/
 
+/*
+returns json object of all alarms
+ */
 router.post('/all_alarms', function(req, res){
   var sql = "SELECT phones.firstName, phones.lastName, events.time, events.type, events.eventId " +
       "FROM phones INNER JOIN events ON phones.mac=events.phones_mac";
@@ -125,7 +131,10 @@ router.post('/search_workers_one_name', function(req, res){
     res.json(rows);
   });
 });
+/*
+returns json object with sensor data from alarm matching eventId.
 
+ */
 router.post('/get_alarm_data', function(req, res){
   var sql = "SELECT * FROM sensors WHERE ?";
   sql = connection.format(sql, req.body.eventId);

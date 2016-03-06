@@ -1,10 +1,9 @@
 var alarms = function() {
     var allAlarms;      // holds info on all alarms in database.
 
-
-
-
-// Display the data on website. repeat function for all alarms.
+/*
+  Display the data on website. repeat function for all alarms.
+ */
     function makeAlarmBox(name, time, type, id){
         var wrapperDiv = document.createElement("div");
         $(wrapperDiv).attr("class", "expandbox wDiv");

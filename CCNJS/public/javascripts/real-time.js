@@ -1,45 +1,6 @@
 var realTime = function(d3){
 
 
-  var sensor = "pulse";
-  /*function drawGraphOnClick() {
-      $(".alarm-sensor").on("click", function () {
-
-          sensor = $(this).parent().attr("data-id");
-          console.log(sensor);
-          var gArea = $(this).parent().children(".details").children(".graphArea");
-          console.log(gArea);
-          //var gArea = $("#mainDiv");
-          console.log("hej");
-          //Server call to get data from sensor (AJAX?)
-          var firstValue = {
-              T: new Date("October 13, 2014 11:13:00"), //time
-              L: "Here", //location
-              A: 39.5, //sensor A
-              B: 20.0, // ...
-              C: 68.0,
-              D: 30.0
-          };
-          var secondValue = {
-              T: new Date(), //time
-              L: "Here", //location
-              A: 31.5, //sensor A
-              B: 24.0, // ...
-              C: 62.0,
-              D: 33.0
-          };
-
-          var someArray = [firstValue, secondValue];
-          makeLineGraphArray(someArray, "A", gArea);
-
-
-          //display data in graph
-          //$('#myModal').modal('toggle');
-          //$('.modal-title').html(sensor);
-
-      });
-  }*/
-
 /*************
 SEARCH FOR WORKERS
 **************/
@@ -144,19 +105,6 @@ sensor: which sensor from data it should show,
 gArea: which div to draw the graph in.
  */
   function makeLineGraphArray(data, sensor, gArea){
-      //$(gArea).html("");
-      /*if(sensorOriginal == "bodyTemp"){
-          var sensor = "A";
-      }
-      else if(sensorOriginal == "envTemp"){
-          var sensor = "B";
-      }
-      else if(sensorOriginal == "pulse"){
-          var sensor = "C";
-      }
-      else if(sensorOriginal == "co2"){
-          var sensor = "D";
-      }*/
       var defaults = {
           A:{
               min: 29,
@@ -308,18 +256,6 @@ gArea: which div to draw the graph in.
           $("#health-status").html("Health status <b>not</b> OK!");
       }
   }
-
-  client.socket.on( 'phoneData', function(phoneData){
-      makeRealTimeGraph(phoneData, sensor);
-      var len = phoneData.sensorData.length;
-      setIconColor(phoneData);
-      $("#pulse").html(Math.round(phoneData.sensorData[len-1]['pulse']) + "BPM");
-      $("#co2").html(Math.round(phoneData.sensorData[len-1]['co2']) + "PPM");
-      $("#envTemp").html(Math.round(phoneData.sensorData[len-1]['envTemp']) + "C°");
-      $("#bodyTemp").html(Math.round(phoneData.sensorData[len-1]['bodyTemp']) + "C°");
-      $(".time-stamp").html(phoneData.sensorData[len-1]['time']);
-      $("#phoneId").html("id = " +phoneData.phoneId);
-  } );
 
   return {makeLineGraphArray: makeLineGraphArray};
 }(d3);
