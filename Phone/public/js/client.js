@@ -14,6 +14,7 @@ var client = function( socket, d3 ) {
 
         console.log( 'constructor' );
         $('.slider').on( "slidestop", function( event ){
+            console.log( 'slidestop' );
             var data = {
                 slider: event.target.name,
                 value: event.target.value
@@ -21,12 +22,6 @@ var client = function( socket, d3 ) {
             console.log( data );
             socket.emit( 'slidestop', data );
         });
-
-        d3.select('#d3').append('svg')
-            .attr( "width", "100%" )
-            .attr( "height", "100%" )
-            .attr( "background", 'red');
-
     } );
 
     socket.on( 'update', function( data ) {

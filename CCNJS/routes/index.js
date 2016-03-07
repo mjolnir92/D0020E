@@ -6,6 +6,8 @@ var controllers = {
     events: require( '../controllers/events.js' )()
 };
 
+router.post( '/events', controllers.events.post );
+
 
 
 /*
