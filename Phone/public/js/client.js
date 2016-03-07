@@ -3,26 +3,32 @@
  * Created by magnusbjork on 2/25/16.
  */
 
-var client = function( socket, d3 ) {
+var client = function( socket ) {
     function randomMac() {
         return "XX:XX:XX:XX:XX:XX".replace(/X/g, function() {
             return "0123456789ABCDEF".charAt(Math.floor(Math.random() * 16))
         });
     }
 
-    $(document).ready( function() {
-
-        console.log( 'constructor' );
-        $('.slider').on( "slidestop", function( event ){
-            console.log( 'slidestop' );
+    $( document ).on( "pageinit", "#page2", function( event ) {
+        $('.slider').on( 'slidestop', function( event ){
             var data = {
                 slider: event.target.name,
                 value: event.target.value
             };
-            console.log( data );
             socket.emit( 'slidestop', data );
         });
-    } );
+
+        $('#alarm01').bind( 'click', function( event, ui ) {
+            console.log( 'click!' );
+            var info = {
+                eventType: 'SEVERE',
+                eventTime: new Date()
+            };
+
+            socket.emit( 'alarm', info );
+        } );
+    });
 
     socket.on( 'update', function( data ) {
         console.log( data );
@@ -34,7 +40,6 @@ var client = function( socket, d3 ) {
 
     socket.on( 'loggedOn', function( data ) {
         $.mobile.changePage( "#page2", { transition: 'slideup' } );
-
         console.log( data );
     } );
     function logon( form ) {
@@ -50,5 +55,5 @@ var client = function( socket, d3 ) {
         logon: logon
     }
 
-}( io(), d3 );
+}( io() );
 

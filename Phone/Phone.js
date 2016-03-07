@@ -37,11 +37,29 @@ module.exports = function( param ) {
 
     var initialized = false;
 
-
-
     param.socket.on( 'slidestop', function( data ) {
         console.log( data );
         target[ data.slider ] = data.value;
+    } );
+
+    param.socket.on( 'error', function( data ) {
+        console.log( data );
+    } );
+
+    param.socket.on( 'alarm', function( data ) {
+        console.log( data );
+        data.sensors = content.data.sensors;
+
+        var packet = {
+            prefix: content.prefix,
+            time: new Date(),
+            type: 'ALARM',
+            data: data
+        };
+
+        param.protocol.alarm( packet, function( data ) {
+            console.log( data );
+        } );
     } );
 
     param.socket.on( 'logon', function( data ) {

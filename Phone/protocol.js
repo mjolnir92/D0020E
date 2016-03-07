@@ -24,8 +24,9 @@ module.exports = function( http, options ){
             var req = http.request( config, function(res) {
                 res.setEncoding('utf8');
                 res.on('data', function( data ) {
-                    console.log( data );
-                    callback( JSON.parse( data ) );
+                    if( callback ) {
+                        callback( JSON.parse( data ) );
+                    }
                 });
             });
 
@@ -58,13 +59,8 @@ module.exports = function( http, options ){
             };
             this.post( '/events', data, callback );
         },
-        alarm: function( type, data ) {
-            var obj = {
-                time: new Date(),
-                type: type,
-                data: data
-            };
-            this.post( '/events', obj, callback );
+        alarm: function( data, callback ) {
+            this.post( '/events', data, callback );
         }
     }
 };
