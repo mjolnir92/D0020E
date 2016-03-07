@@ -20,9 +20,14 @@ module.exports = function() {
             switch( event.type ) {
                 case 'HELLO': {
                     var phonePrefix = path.join( prefix, event.data.mac );
+
+                    //TODO FIX THIS!!
+                    event.data.mac = phonePrefix;
+
                     var response = {
                         prefix: phonePrefix
                     };
+
                     phones[ phonePrefix ] = event.data;
 
                     res.json( response );
@@ -59,14 +64,33 @@ module.exports = function() {
                     break;
                 }
                 case 'ALARM': {
+                    console.log( req.body );
+                    var sql = 'INSERT INTO `events` SET ?';
+                    var _event = {
+                        time: event.data.eventTime,
+                        type: event.data.eventType,
+                        phones_mac: event.prefix
+                    };
+
+                    sql = db.format( sql, _event );
+
+                    db.query( sql, function( err, result ) {
+                        var insertId = result.insertId;
+                        event.data.sensors.forEach( function( element ) {
+                            var sql = 'INSERT INTO `sensors` SET ?';
+                            element.events_eventId = insertId;
+
+                            sql = db.format( sql, element );
+                            console.log( sql );
+
+                        } );
+
+                        res.json( { msg: 'Sending help right away!' } );
+
+                    } );
                     break;
                 }
             }
-
-            console.log( event );
-            console.log( req.ip );
-
-
         },
         f: function(prefix, callback){
             relay.getContent( prefix, callback );
