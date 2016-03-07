@@ -6,12 +6,35 @@ var controllers = {
     events: require( '../controllers/events.js' )()
 };
 
-router.post( '/events', controllers.events.post );
+
+
+/*
+ ==========================
+ GET PAGES
+ ==========================
+ */
+router.get('/', function(req, res, next) {
+    res.render('users');
+});
 
 router.get( '/users', function( req, res ) {
     res.render( 'users' );
 });
 
+router.get('/alarms', function(req, res, next){
+    res.render('alarms');
+});
+
+
+
+/*
+ ==========================
+ PAGE - USERS
+ ==========================
+ */
+/**
+ * (comment here)
+ */
 router.post( '/getSensorData', function( req, res ) {
     var mac = req.body.mac;
     console.log( mac );
@@ -21,6 +44,9 @@ router.post( '/getSensorData', function( req, res ) {
     } );
 } );
 
+/**
+ * Script for search-bar (explain more here..)
+  */
 router.post( '/users', function( req, res ) {
     var names = req.body.name.split(/[ ,]+/);
     console.log( names );
@@ -57,6 +83,9 @@ router.post( '/users', function( req, res ) {
     }
 } );
 
+/**
+ * (comment here)
+ */
 router.get( '/sensors*', function( req, res ) {
     console.log( req.query.prefix );
     controllers.events.f( req.query.prefix, function( data ) {
@@ -64,43 +93,16 @@ router.get( '/sensors*', function( req, res ) {
     });
 } );
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('real-time');
-});
 
-router.get('/storedData', function(req, res, next){
-  res.render('storedData');
-});
 
-router.get('/real-time', function(req, res, next){
-  res.render('real-time');
-});
-
-router.get('/alarms', function(req, res, next){
-  res.render('alarms');
-});
-
-//-----SQL------
 /*
-
-router.post('/search_alarms', function(req, res){
-  var sql = "SELECT mac FROM phones WHERE ?";
-  sql = connection.format(sql, req.body);
-  connection.query(sql , function(err, rows){
-    var c = {phones_mac: rows[0]["mac"]};
-    var sql2 = "SELECT * FROM events WHERE ?";
-    sql2 = connection.format(sql2, c);
-    connection.query(sql2 , function(err, rows){
-      res.json(rows);
-    });
-  });
-
-});
+==========================
+PAGE - ALARMS
+==========================
 */
 
-/*
-returns json object of all alarms
+/**
+ * returns json object of all alarms
  */
 router.post('/all_alarms', function(req, res){
   var sql = "SELECT phones.firstName, phones.lastName, events.time, events.type, events.eventId " +
@@ -111,29 +113,9 @@ router.post('/all_alarms', function(req, res){
   });
 });
 
-router.post('/search_workers_two_names', function(req, res){
-  var sql = "SELECT * FROM phones WHERE (firstName LIKE ? OR firstName LIKE ?) " +
-      "AND (lastName LIKE ? OR lastName LIKE ?) ";
-  var arr = [req.body.firstName+"%", req.body.lastName+"%", req.body.lastName+"%", req.body.firstName+"%"];
-  sql = connection.format(sql, arr);
-  connection.query( sql, function( err, rows ){
-    console.log( err );
-    res.json( rows );
-  } );
-} );
 
-router.post('/search_workers_one_name', function(req, res){
-  var sql = "SELECT * FROM phones WHERE firstName LIKE ? OR lastName LIKE ?";
-  var arr = [req.body.Name+"%",req.body.Name+"%"];
-  sql = connection.format(sql, arr);
-  connection.query(sql, function(err, rows){
-    console.log(err);
-    res.json(rows);
-  });
-});
-/*
-returns json object with sensor data from alarm matching eventId.
-
+/**
+ * returns json object with sensor data from alarm matching eventId.
  */
 router.post('/get_alarm_data', function(req, res){
   var sql = "SELECT * FROM sensors WHERE ?";
