@@ -39,9 +39,7 @@ router.get('/alarms', function(req, res, next){
  */
 router.post( '/getSensorData', function( req, res ) {
     var mac = req.body.mac;
-    console.log( mac );
-    var prefix = '/ltu/' + mac;
-    controllers.events.f( prefix, function( data ) {
+    controllers.events.f( mac, function( data ) {
         res.json( data );
     } );
 } );
@@ -84,17 +82,6 @@ router.post( '/users', function( req, res ) {
         } );
     }
 } );
-
-/**
- * (comment here)
- */
-router.get( '/sensors*', function( req, res ) {
-    console.log( req.query.prefix );
-    controllers.events.f( req.query.prefix, function( data ) {
-        res.render( 'data', { sensors: data } );
-    });
-} );
-
 
 
 /*

@@ -30,9 +30,9 @@ module.exports = function( param ) {
     var target = {
         L: 0,
         A: 37,
-        B: 37,
-        C: 37,
-        D: 37
+        B: 0,
+        C: 0,
+        D: 0
     };
 
     var initialized = false;
