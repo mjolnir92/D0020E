@@ -10,25 +10,51 @@ var client = function( socket ) {
         });
     }
 
-    $( document ).on( "pageinit", "#page2", function( event ) {
-        $('.slider').on( 'slidestop', function( event ){
-            var data = {
-                slider: event.target.name,
-                value: event.target.value
-            };
-            socket.emit( 'slidestop', data );
-        });
+    $( document )
+        .on( "pageinit", "#page1", function( event ) {
 
-        $('#alarm01').bind( 'click', function( event, ui ) {
-            console.log( 'click!' );
-            var info = {
-                eventType: 'SEVERE',
-                eventTime: new Date()
-            };
+        } )
+        .on( "pageinit", "#page2", function( event ) {
+            $('.slider').on( 'slidestop', function( event ){
 
-            socket.emit( 'alarm', info );
+                var data = {
+                    slider: event.target.name,
+                    value: event.target.value
+                };
+                socket.emit( 'slidestop', data );
+
+            } );
+
+            $('#setValues').bind( 'click', function( event, ui ) {
+
+                $.mobile.changePage( "#page3", { transition: 'slideup' } );
+
+            } );
+        } )
+        .on( "pageinit", "#page3", function( event ) {
+            $('#sendValues').bind( 'click', function( event, ui ) {
+
+                var alarm = {
+                    eventType: $( '#alarmType').find(':radio:checked').val(),
+                    eventTime: new Date(),
+                    eventDesc: $( '#alarmDesc').val()
+                };
+
+                socket.emit( 'alarm', alarm );
+                $.mobile.changePage( "#page2", { transition: 'slideup' } );
+
+            } );
         } );
-    });
+
+
+
+
+
+
+
+
+
+
 
     socket.on( 'update', function( data ) {
         console.log( data );
@@ -42,6 +68,7 @@ var client = function( socket ) {
         $.mobile.changePage( "#page2", { transition: 'slideup' } );
         console.log( data );
     } );
+
     function logon( form ) {
 
         var json = $( form).serializeJSON();
