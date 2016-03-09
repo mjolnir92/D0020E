@@ -54,6 +54,7 @@ path {
     background-color: #EFEFEF; }
   .expandbox .more-info {
     display: flex;
+    background-color: #FFF;
     justify-content: center;
     height: 35px;
     width: 100px;
@@ -169,10 +170,12 @@ path {
         margin: 0; }
       .sensor .info .preview .data {
         margin-left: 20px;
-        font-size: 0.8em; }
+        font-size: 0.8em;
+        display: flex;
+        align-items: center; }
         .sensor .info .preview .data .main {
           font-size: 3em;
-          width: 180px; }
+          width: 120px; }
         .sensor .info .preview .data .time-stamp {
           font-size: 1.1em;
           color: #666;

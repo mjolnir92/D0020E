@@ -21,6 +21,7 @@
     "jquery": "~2.2.0",
     "bootstrap-sass-official": "~3.3.6",
     "toastr": "~2.1.2",
-    "handlebars": "^4.0.5"
+    "handlebars": "^4.0.5",
+    "socket.io-client": "~1.4.5"
   }
 }
