@@ -18,7 +18,7 @@ Array.prototype.last = function(){
  * @constructor
  */
 module.exports = function( param ) {
-    var length = 4;
+    var length = 40;
 
     var content = {
         prefix: '',

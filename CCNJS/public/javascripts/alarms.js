@@ -93,8 +93,10 @@ Display those on page.
                 url: "/get_alarm_data",
                 type: "POST",
                 dataType: "json",
-                data: {eventId: eventID},
+                data: {events_eventId: eventID},
                 success: function(result){
+                    console.log(result);
+
                     var sensor = $(div).parent();
                     var sensorInfo = sensor.children(".info-alarms");
                     var arrow = $(div).children(".arrow");

@@ -108,7 +108,8 @@ module.exports = function( io ) {
      */
     router.post('/get_alarm_data', function(req, res){
         var sql = "SELECT * FROM sensors WHERE ?";
-        sql = connection.format( sql, req.body.eventId );
+        sql = connection.format( sql, req.body );
+        console.log( sql );
         connection.query( sql, function( err, rows ){
             console.log( err );
             res.json( rows );
