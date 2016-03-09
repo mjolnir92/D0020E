@@ -6,15 +6,28 @@ SEARCH FOR WORKERS
 **************/
 
 socket.on('notification', function(id){
-    console.log("Alarm");
 
+    var type = id.type;
     console.log(id);
 
-    toastr.warning('An alarm has been set!', {onclick: function() {
-
+    if(type === "INFO"){
+        toastr.info( "Id: " + id.id, "Info", {onclick: function () {
+            //TODO: Go to event
+        }});
     }
-    });
+    else if(type === "MINOR"){
+        toastr.warning( "Id: " + id.id, "Warning", {onclick: function () {
+            //TODO: Go to event
+        }});
+    }
+    else if(type === "MAJOR"){
+        toastr.error( "Id: " + id.id, "Error", {onclick: function () {
+            //TODO: Go to event
+        }});
+    }
+
 });
+
 
 socket.on('login', function(id){
     console.log("Login");

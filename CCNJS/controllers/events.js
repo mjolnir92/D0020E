@@ -77,12 +77,14 @@ module.exports = function( io ) {
                     sql = db.format( sql, _event );
 
                     db.query( sql, function( err, result ) {
-                        var insertId = {id: result.insertId,
+                        var eventInfo = {
+                                        id: result.insertId,
                                         type: _event.type,
-                                        time: _event.time};
+                                        time: _event.time
+                                        };
                         event.data.sensors.forEach( function( element ) {
                             var sql = 'INSERT INTO `sensors` SET ?';
-                            element.events_eventId = insertId;
+                            element.events_eventId = eventInfo.id;
                             sql = db.format( sql, element );
 
                             db.query( sql, function( err, result ) {
@@ -90,7 +92,7 @@ module.exports = function( io ) {
                             } )
                         } );
 
-                        io.sockets.emit('notification', insertId);
+                        io.sockets.emit('notification', eventInfo);
                         res.json( { msg: 'Sending help right away!' } );
                     } );
                     break;
