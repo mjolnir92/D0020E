@@ -11,6 +11,21 @@ var LOGS = {
     MKC   : 'mkC'
 };
 
+var CONTENT = path.join( __dirname, 'ndntlv' );
+
+function fileExists( filePath ){
+    try{
+        fs.statSync( filePath );
+    }catch(err){
+        if( err.code == 'ENOENT' ) {
+            return false;
+        }
+    }
+    return true;
+}
+
+var counter = 0;
+
 
 var ccnjs = ccnjs || {};
 
@@ -19,9 +34,11 @@ ccnjs.DOCKER = false;
 /**
  * @param {object} [relay_config] Relay connection config.
  * @param {String} [relay_config.debug] Debug level.
+ * @param {Boolean}[relay_config.keepAlive] Should relay restart on crash.
  * @param {String} [relay_config.udp] UDP Port.
  * @param {String} [relay_config.tcp] TCP Port for Web-server.
  * @param {String} [relay_config.socket] UNIX-socket.
+ * @param {Boolean} [relay_config.content] Should relay add content objects at creation
  * @returns {{addRoute: addRoute, addContent: addContent, getContent: getContent, close: close}}
  * @constructor
  */
@@ -33,9 +50,8 @@ ccnjs.Relay = function(relay_config){
      */
     function toFile(process, file_name){
         var flags = { flags: 'a' };
-        var now = new Date().toString();
-        var out_path = path.join(__dirname, 'public/logs/', file_name + now + local.udp + '.log' );
-        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name + now + local.udp + '.log' );
+        var out_path = path.join(__dirname, 'public/logs/', file_name + local.udp + '.log' );
+        var err_path = path.join(__dirname, 'public/logs/', 'err_' + file_name + local.udp + '.log' );
         var stdout = fs.createWriteStream(out_path, flags);
         var stderr = fs.createWriteStream(err_path, flags);
 
@@ -52,8 +68,11 @@ ccnjs.Relay = function(relay_config){
         debug  : relay_config.debug  || 'debug',
         udp    : relay_config.udp    || '9999',
         socket : relay_config.socket || '/tmp/mgmt-relay-a.sock',
-        tcp    : relay_config.tcp    || '6363'
+        tcp    : relay_config.tcp    || '6363',
+        content: relay_config.content|| false
     };
+
+    function start
 
     var template = "$CCNL_HOME/bin/ccn-lite-relay -v " +
         "{{debug}} -s ndn2013 -u " +
@@ -61,14 +80,19 @@ ccnjs.Relay = function(relay_config){
         "{{tcp}} -x " +
         "{{socket}}";
 
+    if ( local.content ) {
+        template += " -d " + CONTENT;
+    }
+
     var command = S( template ).template( local ).s;
     var process = exec( command );
     toFile( process, LOGS.RELAY );
+    console.log( command );
 
-    process.on('close', function( code ){
+    process.on('close', function( err, code ){
         console.log('closing with code: ' + code);
     });
-    process.on('exit', function( code ){
+    process.on('exit', function( err, code ){
         console.log('exiting with code: ' + code);
     });
 
@@ -121,31 +145,31 @@ ccnjs.Relay = function(relay_config){
      * @param {object} config.content JSON-object
      */
     function addContent( config ){
-        config.file_name = config.prefix.replace(/\//g,"");
+        var filePath = config.prefix.replace(/\//g,"");
+        config.file_name = path.join( CONTENT, filePath ) + '.ndntlv';
         config.socket = local.socket;
 
+        console.log( 'Counter: ' + ++counter);
+
         var make_content_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "' +
-            '{{prefix}}" > $CCNL_HOME/' +
-            '{{file_name}}.ndntlv';
-
-        var add_content_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x ' +
-            '{{socket}} addContentToCache $CCNL_HOME/' +
-            '{{file_name}}.ndntlv | $CCNL_HOME/bin/ccn-lite-ccnb2xml';
-
+            '{{prefix}}" > ' +
+            '{{file_name}}';
 
         var make_content_command = S( make_content_template ).template( config ).s;
         var make_content_process = exec( make_content_command );
 
-
         make_content_process.stdin.write(JSON.stringify( config.content ));
+        toFile( make_content_process, LOGS.MKC );
 
         make_content_process.on('close', function(){
+            var add_content_template   = '$CCNL_HOME/bin/ccn-lite-ctrl -x ' +
+                '{{socket}} addContentToCache ' +
+                '{{file_name}}';//| $CCNL_HOME/bin/ccn-lite-ccnb2xml';
 
             var add_content_command = S( add_content_template ).template( config ).s;
             var add_content_process = exec( add_content_command );
-
+            toFile( add_content_process, LOGS.CTRL );
         });
-
     }
 
     function getContent(prefix, callback){
