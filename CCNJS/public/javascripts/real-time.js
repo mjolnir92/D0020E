@@ -17,13 +17,13 @@ socket.on('notification', function(id){
         }});
     }
     else if(type === "MINOR"){
-        toastr.warning( "Id: " + id.id, "Warning", {onclick: function () {
+        toastr.warning( "Id: " + id.id, "Minor accident", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
     }
     else if(type === "MAJOR"){
-        toastr.error( "Id: " + id.id, "Error", {onclick: function () {
+        toastr.error( "Id: " + id.id, "MAJOR ACCIDENT", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
