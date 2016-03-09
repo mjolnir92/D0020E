@@ -4,26 +4,26 @@
     1. Install ```npm```
 
     1. Install ```bower``` from npm with
-    ```
-    npm install bower -g
-    ```
+        ```
+        npm install bower -g
+        ```
 
     1. Navigate to project root.
 
     1. In both the ```Phone``` & ```CCNJS``` folders, run
-    ```
-    npm install
-    ```
+        ```
+        npm install
+        ```
     as well as
-    ```
-    bower install
-    ```
+        ```
+        bower install
+        ```
 
     1. Download [CCN-Lite](https://github.com/cn-uofbasel/ccn-lite) to your ```HOME``` folder and build it by running
-    ```
-    make clean install
-    ```
-    inside the ```src``` folder.
+        ```
+        make clean install
+        ```
+        inside the ```src``` folder.
 
     1. Add CCN-Lite to your PATH.
 
@@ -32,24 +32,24 @@
     1. Navigate to project root.
 
     1. To start the phone simulator run
-    ```
-    node bin/www
-    ```
-    in ```Phone```.
+        ```
+        node bin/www
+        ```
+        in ```Phone```.
 
     1. To start the server run
-    ```
-    node bin/www
-    ```
-    in ```CCNJS```.
+        ```
+        node bin/www
+        ```
+        in ```CCNJS```.
 
 1. Use
 
     1. When running Ubuntu it is possible to connect via `localhost`. OSX has `192.168.99.100` as default address.
 
-    1. Connect to ```address:3000``` to connect to the server.
+    1. Connect to ```<address>:3000``` to connect to the server.
 
-       Connect to ```address:4000``` to connect to the phone simulator.
+       Connect to ```<address>:4000``` to connect to the phone simulator.
 
 1. Connected to phone simulator
 
