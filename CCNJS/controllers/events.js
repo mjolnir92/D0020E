@@ -80,7 +80,8 @@ module.exports = function( io ) {
                         var eventInfo = {
                                         id: result.insertId,
                                         type: _event.type,
-                                        time: _event.time
+                                        time: _event.time,
+                                        msg: event.data.eventDesc
                                         };
                         event.data.sensors.forEach( function( element ) {
                             var sql = 'INSERT INTO `sensors` SET ?';

@@ -11,19 +11,19 @@ socket.on('notification', function(id){
     console.log(id);
 
     if(type === "INFO"){
-        toastr.info( "Id: " + id.id, "Info", {onclick: function () {
+        toastr.info( "Id: " + id.id+"\n"+id.msg, "Info", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
     }
     else if(type === "MINOR"){
-        toastr.warning( "Id: " + id.id, "Minor accident", {onclick: function () {
+        toastr.warning( "Id: " + id.id+"\n"+id.msg, "Minor accident", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
     }
     else if(type === "MAJOR"){
-        toastr.error( "Id: " + id.id, "MAJOR ACCIDENT", {onclick: function () {
+        toastr.error( "Id: " + id.id+"\n"+id.msg, "MAJOR ACCIDENT", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
