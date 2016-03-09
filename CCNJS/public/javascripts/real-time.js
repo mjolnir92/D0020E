@@ -31,10 +31,6 @@ socket.on('notification', function(id){
 
 });
 
-function goToAlarm(){
-
-}
-
 
 socket.on('login', function(id){
     console.log("Login");
@@ -52,25 +48,6 @@ socket.on('login', function(id){
 * gArea: which div to draw the graph in.
  */
   function makeLineGraphArray(data, sensor, gArea){
-      var defaults = {
-          A:{
-              min: 40,
-              max: 160
-
-          },
-          B:{
-              min: -20,
-              max: 160
-          },
-          C: {
-              min: 29,
-              max: 40
-          },
-          D:{
-              min: 0,
-              max: 100
-          }
-      };
 
       var margin = {
               top: 30,
@@ -120,8 +97,12 @@ socket.on('login', function(id){
       });
 
       x.domain(d3.extent(data, function(d) { return d.T; }));
-      y.domain([defaults[sensor].min, defaults[sensor].max]);
+      var dom = d3.extent(data, function(d) { return d[sensor]; });
+      dom[0] -= 2;
+      dom[1] += 2;
+      y.domain(dom);
 
+      //y.domain([defaults[sensor].min, defaults[sensor].max]);
       svg.append("defs").append("clipPath")
           .attr("id", "clip")
           .append("rect")
@@ -147,7 +128,7 @@ socket.on('login', function(id){
           .attr("d", valueline(data));
   }
 
-  function setIconColor(phoneData){
+  /*function setIconColor(phoneData){
       var warnings = {
           bodyTemp:{
               min: 34,
@@ -204,7 +185,7 @@ socket.on('login', function(id){
       else{
           $("#health-status").html("Health status <b>not</b> OK!");
       }
-  }
+  }*/
 
   return {makeLineGraphArray: makeLineGraphArray};
 }(d3, io());
