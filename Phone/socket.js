@@ -14,10 +14,9 @@ module.exports = function( io, protocol ) {
     var phoneManager = PhoneManager();
     var relay = ccnjs.Relay( { udp: '9998', socket: '/tmp/b.sock', tcp: '8888', content: true} );
 
-    phoneManager.start( 1000 );
+    phoneManager.start( 500 );
 
     io.on( 'connection', function( socket ) {
-
 
         var param = {
             socket: socket,

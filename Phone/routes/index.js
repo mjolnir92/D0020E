@@ -6,9 +6,6 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 
-
-
-
 router.post( '/events', function( req, res ) {
     console.log( req.body );
     console.log( "host:" + req.body );
