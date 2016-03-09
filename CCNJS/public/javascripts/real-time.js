@@ -13,20 +13,27 @@ socket.on('notification', function(id){
     if(type === "INFO"){
         toastr.info( "Id: " + id.id, "Info", {onclick: function () {
             //TODO: Go to event
+            window.location = "/alarms";
         }});
     }
     else if(type === "MINOR"){
         toastr.warning( "Id: " + id.id, "Warning", {onclick: function () {
             //TODO: Go to event
+            window.location = "/alarms";
         }});
     }
     else if(type === "MAJOR"){
         toastr.error( "Id: " + id.id, "Error", {onclick: function () {
             //TODO: Go to event
+            window.location = "/alarms";
         }});
     }
 
 });
+
+function goToAlarm(){
+
+}
 
 
 socket.on('login', function(id){

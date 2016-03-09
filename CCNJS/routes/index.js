@@ -94,7 +94,8 @@ module.exports = function( io ) {
      */
     router.post('/all_alarms', function(req, res){
         var sql = "SELECT phones.firstName, phones.lastName, events.time, events.type, events.eventId " +
-            "FROM phones INNER JOIN events ON phones.mac=events.phones_mac";
+            "FROM phones INNER JOIN events ON phones.mac=events.phones_mac" +
+            " ORDER BY events.time DESC";
 
         connection.query( sql, function( err, rows ){
             console.log(err);
