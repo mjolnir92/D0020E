@@ -78,7 +78,6 @@ Display those on page.
         dataType: "json",
         success: function(result){
             allAlarms = result;
-            console.log(result[0]);
             result.forEach(function(item){
                 makeAlarmBox(item.firstName+" "+item.lastName, item.time, item.type, item.eventId);
             });
@@ -95,7 +94,6 @@ Display those on page.
                 dataType: "json",
                 data: {events_eventId: eventID},
                 success: function(result){
-                    console.log(result);
 
                     var sensor = $(div).parent();
                     var sensorInfo = sensor.children(".info-alarms");
@@ -110,10 +108,12 @@ Display those on page.
                         sensorInfo.toggleClass("maximized");
                         arrow.toggleClass("rotated");
                         var sensorId = sensor.attr("data-id");
-                        console.log(sensorId);
                         var gArea = $(this).parent().children(".info").children(".details").children(".graph-area");
                         $(gArea).html("");
-                        realTime.makeLineGraphArray(result, sensorId, gArea); //gives error
+                        if($(sensorInfo).hasClass("maximized")){
+                            realTime.makeLineGraphArray(result, sensorId, gArea); //gives error
+                        }
+
                     });
                 }});
         });
@@ -129,13 +129,13 @@ sensor: which sensor is this box for?
             var sensorIcon = "heartrate";
         }
         else if(sensor == "B"){
-            var sensorIcon = "temperature";
+            var sensorIcon = "CO";
         }
         else if(sensor == "C"){
             var sensorIcon = "temperature";
         }
         else if(sensor == "D"){
-            var sensorIcon = "CO";
+            var sensorIcon = "battery";
         }
         var wrapperDiv = document.createElement("div");
         $(wrapperDiv).attr("class", "expandbox sensor alarm-sensor");
@@ -150,14 +150,14 @@ sensor: which sensor is this box for?
                     //icon for sensor
                     var iconDiv = document.createElement("div");
                     $(iconDiv).attr("class", "icon");
-                        var heartRateDiv = document.createElement("div");
-                        $(heartRateDiv).attr("class", sensorIcon);
-                    $(iconDiv).append(heartRateDiv);
+                        var sensorNameDiv = document.createElement("div");
+                        $(sensorNameDiv).attr("class", sensorIcon);
+                    $(iconDiv).append(sensorNameDiv);
 
                     var dataDiv = document.createElement("div");
                     $(dataDiv).attr("class", "data");
                         var mDiv = document.createElement("div");
-                        $(mDiv).attr("class", "main"); //TODO make variable for pulse?
+                        $(mDiv).attr("class", "main");
                         $(mDiv).html(sensorIcon);
                     $(dataDiv).append(mDiv);
 

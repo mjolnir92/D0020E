@@ -25,19 +25,53 @@ $(document).ready( function() {
                 success: function( data ) {
 
                     var template = Handlebars.templates['sensor.hbs'];
-
-                    var obj = {
-                        sensorType: 'heartrate',
-                        data: data[0].A
+                    var strings = {
+                        A: 'heartrate',
+                        B: 'CO',
+                        C: 'temperature',
+                        D: 'battery'
                     };
 
-                    console.log(template(obj));
+                    var html = '';
+                    var last = data[ data.length - 1 ];
 
-                    details.html( template( obj ) );
+                    for ( key in last ) {
+                        if (  key !== 'T' && key !== 'L' ){
+                            var tempObj = {
+                                sensorKey: key,
+                                sensorType: strings[ key ],
+                                data: last[ key ]
+                            };
+                            html += template( tempObj );
+                        }
+                    }
+
+                    details.html( html );
+                    $('.expand-details').bind( 'click', function( event, ui ) {
+                        var $info = $(this).parent();
+                        var $arrow = $(this).children( '.arrow');
+                        var $graphArea = $(this).siblings('.details').children('.graph-area');
+                        var sensorKey = $(this).attr('data-key');
+
+                        if( $graphArea.children().length == 0 ){
+
+                            realTime.makeLineGraphArray( data, sensorKey, $graphArea );
+                            $info.addClass( 'maximized' );
+                            $arrow.addClass('rotated');
+
+                        } else {
+
+                            $graphArea.html( '' );
+                            $info.removeClass("maximized");
+                            $arrow.removeClass("rotated");
+
+                        }
+                    } );
+
                     info.addClass("maximized");
                     arrow.addClass("rotated");
 
-                },
+                }
             });
 
         } else {

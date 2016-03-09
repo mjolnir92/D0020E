@@ -160,7 +160,7 @@ path {
   .sensor .info {
     transition: max-height .6s ease;
     overflow: hidden;
-    max-height: 60px;
+    max-height: 150px;
     padding: 0 20px; }
     .sensor .info .preview {
       height: 55px;
