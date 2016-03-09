@@ -77,7 +77,9 @@ module.exports = function( io ) {
                     sql = db.format( sql, _event );
 
                     db.query( sql, function( err, result ) {
-                        var insertId = result.insertId;
+                        var insertId = {id: result.insertId,
+                                        type: _event.type,
+                                        time: _event.time};
                         event.data.sensors.forEach( function( element ) {
                             var sql = 'INSERT INTO `sensors` SET ?';
                             element.events_eventId = insertId;
