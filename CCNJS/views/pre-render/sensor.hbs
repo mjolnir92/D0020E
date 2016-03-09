@@ -1,15 +1,18 @@
 <div class="expandbox sensor" data-id="pulse">
-  <div class="info">
-    <div class="preview">
-      <div class="icon">
-        <div class="{{sensorType}}"></div>
-      </div>
-      <div class="data">
-        <div class="main" id="pulse">
-          {{data}}
+    <div class="info">
+        <div class="preview">
+            <div class="icon">
+                <div class="{{sensorType}}"></div>
+            </div>
+            <div class="data">
+                <div class="main" id="pulse">
+                  {{data}}
+                </div>
+                <span class="status">Status: OK</span>
+            </div>
         </div>
-        <span class="status">Status: OK</span>
-      </div>
+        <div class="more-info users-info" data-id="{{this.mac}}">
+            <div class="arrow"></div>
+        </div>
     </div>
-  </div>
 </div>

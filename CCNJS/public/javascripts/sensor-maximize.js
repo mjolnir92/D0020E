@@ -4,66 +4,98 @@ $(document).ready( function() {
 
 
 
-//Expands expandbox:s when '.more-info' is clicked on real time page.
+    //Expands expandbox:s when '.more-info' is clicked on real time page.
     $(".users-info").on("click", function () {
 
-        var sensor = $(this).parent();
-        var that = $(this);
-        var mac = $(this).attr( 'data-id' );
+        var expandbox   = $(this).parent().parent();
+        var info        = $(this).parent();
+        var arrow       = info.find(".arrow");
+        var details     = info.children(".details");
+        var mac         = $(this).attr( 'data-id' );
 
+        if(expandbox.hasClass("expandbox") && details.children().length == 0){
 
-        $.ajax({
-            type: "POST",
-            url: "/getSensorData",
-            data: {
-                mac: mac
-            },
-            success: function( data ) {
+            $.ajax({
+                type: "POST",
+                url: "/getSensorData",
+                dataType: 'json',
+                data: {
+                    mac: mac
+                },
+                success: function( data ) {
 
-                var template = Handlebars.templates['sensor.hbs'];
-                var sensorInfo = sensor.children(".info");
-                var arrow = that.children(".arrow");
-                var details = that.parent().children(".details");
+                    var template = Handlebars.templates['sensor.hbs'];
 
-                var obj = {
-                    sensorType: 'hearthrate',
-                    data: data[0].A
-                };
+                    var obj = {
+                        sensorType: 'heartrate',
+                        data: data[0].A
+                    };
 
-                details.html( template( obj ) );
-                sensorInfo.toggleClass("maximized");
-                arrow.toggleClass("rotated");
-            },
-            dataType: 'json'
-        });
+                    console.log(template(obj));
+
+                    details.html( template( obj ) );
+                    info.addClass("maximized");
+                    arrow.addClass("rotated");
+
+                },
+            });
+
+        } else {
+
+            if(details.find(".sensor").length > 0)
+                details.empty();
+
+            info.removeClass("maximized");
+            arrow.removeClass("rotated");
+
+        }
 
     });
 
 
-//Click outside expandbox:s invokes this function. Minimizes all expandbox:s.
+    /**
+     * Minimize if click outside expandbox
+     */
     $(document).on('click', function(event) {
 
-        if (!$(event.target).closest('.expandbox').length) {
+        if (!$(event.target).closest('.expandbox').length)
+            minimizeAllExpandbox();
 
-            var sensorInfo = $(this).find(".maximized");
-
-            if(sensorInfo.hasClass("maximized")){
-                sensorInfo.removeClass("maximized");
-                $(this).find(".arrow").removeClass("rotated");
-            }
-        }
     });
 
 
-//ESC invokes this function. Minimizes all expandbox:s
+    /**
+     * Minimize if ESC i pressed
+     */
     $(document).keyup(function(e) {
-        if (e.keyCode == 27) {
-            var sensorInfo = $(".result").find(".maximized");
-            if(sensorInfo.hasClass("maximized")){
-                sensorInfo.removeClass("maximized");
-                $(this).find(".arrow").removeClass("rotated");
-            }
-        }
+
+        if (e.keyCode == 27)
+            minimizeAllExpandbox();
+
     });
+
+    /**
+     * Minimizes all expandboxes recursively
+     */
+    function minimizeAllExpandbox(){
+        var info = $(".result").find(".maximized");
+        var details = info.children(".details");
+
+        if(info.hasClass("maximized")){
+
+            if(details.find(".sensor").length > 0)
+                details.empty();
+
+            info.removeClass("maximized");
+            $(".result").find(".arrow").removeClass("rotated");
+        }
+    }
+
+
+
+
+
+
+
 
 });
