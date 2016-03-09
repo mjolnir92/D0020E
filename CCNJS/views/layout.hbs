@@ -26,13 +26,24 @@
   <script src="javascripts/sensor.js" charset="utf-8"></script>
   <script src="javascripts/sensor-maximize.js" charset="utf-8"></script>
 
+  <script>
+  $.ajax({
+        url: "/all_alarms",
+        type: "POST",
+        dataType: "json",
+        success: function(result){
+            allAlarms = result;
+            $("#alarmAmount").html(allAlarms.length);
+  }});
+  </script>
+
     <div id="indexMeny">
         <div id="logo">
             <h2>LogoType</h2>
         </div>
         <ul class="nav nav-pills nav-stacked nav-index" role="tablist">
             <li><a href="/users">Users</a></li>
-            <li><a href="/alarms">Alarms <span class="badge">42</span></a></li>
+            <li><a href="/alarms">Alarms <span class="badge" id="alarmAmount"></span></a></li>
         </ul>
     </div>
     <div id="mainDiv">

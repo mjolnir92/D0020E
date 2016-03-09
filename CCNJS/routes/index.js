@@ -28,6 +28,7 @@ module.exports = function( io ) {
         res.render( 'alarms' );
     } );
 
+
     /*
      ==========================
      PAGE - USERS
