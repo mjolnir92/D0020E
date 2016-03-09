@@ -73,30 +73,34 @@ ccnjs.Relay = function(relay_config){
     };
 
     function start() {
+        var template = "$CCNL_HOME/bin/ccn-lite-relay -v " +
+            "{{debug}} -s ndn2013 -u " +
+            "{{udp}} -t " +
+            "{{tcp}} -x " +
+            "{{socket}}";
 
+        if ( local.content ) {
+            template += " -d " + CONTENT;
+        }
+
+        var command = S( template ).template( local ).s;
+        var process = exec( command );
+        toFile( process, LOGS.RELAY );
+        console.log( command );
+
+        process.on('close', function( err, code ){
+            console.log('closing with code: ' + code);
+            if ( relay_config.keepAlive && code == 'SIGTERM' ) {
+                start();
+            }
+        });
+        process.on('exit', function( err, code ){
+            console.log('exiting with code: ' + code);
+        });
     }
 
-    var template = "$CCNL_HOME/bin/ccn-lite-relay -v " +
-        "{{debug}} -s ndn2013 -u " +
-        "{{udp}} -t " +
-        "{{tcp}} -x " +
-        "{{socket}}";
+    start();
 
-    if ( local.content ) {
-        template += " -d " + CONTENT;
-    }
-
-    var command = S( template ).template( local ).s;
-    var process = exec( command );
-    toFile( process, LOGS.RELAY );
-    console.log( command );
-
-    process.on('close', function( err, code ){
-        console.log('closing with code: ' + code);
-    });
-    process.on('exit', function( err, code ){
-        console.log('exiting with code: ' + code);
-    });
 
     function close( callback ){
         var template = "$CCNL_HOME/bin/ccn-lite-ctrl -x " +

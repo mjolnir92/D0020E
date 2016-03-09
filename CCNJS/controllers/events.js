@@ -79,10 +79,11 @@ module.exports = function( io ) {
                         event.data.sensors.forEach( function( element ) {
                             var sql = 'INSERT INTO `sensors` SET ?';
                             element.events_eventId = insertId;
-
                             sql = db.format( sql, element );
-                            console.log( sql );
 
+                            db.query( sql, function( err, result ) {
+                                console.log( sql );
+                            } )
                         } );
 
                         io.sockets.emit('notification', insertId);
