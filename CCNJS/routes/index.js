@@ -2,11 +2,6 @@ var express = require('express');
 var router = express.Router();
 var path = require('path');
 var connection = require('../tests/testingSQL');
-var controllers = {
-    events: require( '../controllers/events.js' )()
-};
-
-router.post( '/events', controllers.events.post );
 
 
 
@@ -115,4 +110,14 @@ router.post('/get_alarm_data', function(req, res){
   });
 });
 
-module.exports = router;
+module.exports = function( app ) {
+    var io = require( 'socket.io' )( app );
+
+    var controllers = {
+        events: require( '../controllers/events.js' )( io )
+    };
+
+    router.post( '/events', controllers.events.post );
+
+    return router;
+};

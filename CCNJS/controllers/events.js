@@ -7,7 +7,7 @@ var ccnjs = require( '../ccnjs' );
 var db = require( '../db' );
 var prefix = '/ltu';
 
-module.exports = function() {
+module.exports = function( io ) {
     var relay = ccnjs.Relay();
     var phones = {};
     var routes = {};
@@ -86,7 +86,6 @@ module.exports = function() {
                         } );
 
                         res.json( { msg: 'Sending help right away!' } );
-
                     } );
                     break;
                 }

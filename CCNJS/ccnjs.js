@@ -72,7 +72,9 @@ ccnjs.Relay = function(relay_config){
         content: relay_config.content|| false
     };
 
-    function start
+    function start() {
+
+    }
 
     var template = "$CCNL_HOME/bin/ccn-lite-relay -v " +
         "{{debug}} -s ndn2013 -u " +
