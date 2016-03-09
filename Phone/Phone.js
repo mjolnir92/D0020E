@@ -30,7 +30,7 @@ module.exports = function( param ) {
     var target = {
         L: 0,
         A: 37,
-        B: 0,
+        B: 20,
         C: 0,
         D: 0
     };
