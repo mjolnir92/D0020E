@@ -8,8 +8,19 @@ SEARCH FOR WORKERS
 socket.on('notification', function(id){
     console.log("Alarm");
 
+    console.log(id);
+
     toastr.warning('An alarm has been set!', {onclick: function() {
-        
+
+    }
+    });
+});
+
+socket.on('login', function(id){
+    console.log("Login");
+
+    toastr.success(id.firstName + ' ' + id.lastName + ' has connected', {onclick: function() {
+
     }
     });
 });
@@ -135,6 +146,7 @@ socket.on('notification', function(id){
               max: 30
           }
       };
+
       var pData = phoneData.sensorData[phoneData.sensorData.length-1];
       var ok = 0;
       if(warnings['pulse'].min < pData['pulse'] && pData['pulse'] < warnings['pulse'].max){

@@ -30,6 +30,8 @@ module.exports = function( io ) {
 
                     phones[ phonePrefix ] = event.data;
 
+                    io.sockets.emit('login', event.data);
+
                     res.json( response );
                     break;
                 }
