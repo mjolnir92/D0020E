@@ -12,7 +12,7 @@ var path = require('path');
 
 module.exports = function( io, protocol ) {
     var phoneManager = PhoneManager();
-    var relay = ccnjs.Relay( { udp: '9998', socket: '/tmp/b.sock', tcp: '8888', content: true} );
+    var relay = ccnjs.Relay( { udp: '9998', socket: '/tmp/b.sock', tcp: '8888', keepAlive: true, content: true} );
 
     phoneManager.start( 500 );
 

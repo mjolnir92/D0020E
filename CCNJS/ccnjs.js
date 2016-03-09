@@ -13,20 +13,6 @@ var LOGS = {
 
 var CONTENT = path.join( __dirname, 'ndntlv' );
 
-function fileExists( filePath ){
-    try{
-        fs.statSync( filePath );
-    }catch(err){
-        if( err.code == 'ENOENT' ) {
-            return false;
-        }
-    }
-    return true;
-}
-
-var counter = 0;
-
-
 var ccnjs = ccnjs || {};
 
 ccnjs.DOCKER = false;
@@ -38,7 +24,7 @@ ccnjs.DOCKER = false;
  * @param {String} [relay_config.udp] UDP Port.
  * @param {String} [relay_config.tcp] TCP Port for Web-server.
  * @param {String} [relay_config.socket] UNIX-socket.
- * @param {Boolean} [relay_config.content] Should relay add content objects at creation
+ * @param {Boolean} [relay_config.content] Should the relay add content-objects at creation
  * @returns {{addRoute: addRoute, addContent: addContent, getContent: getContent, close: close}}
  * @constructor
  */
@@ -60,7 +46,6 @@ ccnjs.Relay = function(relay_config){
 
         return process;
     }
-
 
     relay_config = relay_config || {};
 
@@ -86,16 +71,12 @@ ccnjs.Relay = function(relay_config){
         var command = S( template ).template( local ).s;
         var process = exec( command );
         toFile( process, LOGS.RELAY );
-        console.log( command );
 
         process.on('close', function( err, code ){
-            console.log('closing with code: ' + code);
+            console.log('RESTARTING CCN-RELAY');
             if ( relay_config.keepAlive && code == 'SIGTERM' ) {
                 start();
             }
-        });
-        process.on('exit', function( err, code ){
-            console.log('exiting with code: ' + code);
         });
     }
 
@@ -154,8 +135,6 @@ ccnjs.Relay = function(relay_config){
         var filePath = config.prefix.replace(/\//g,"");
         config.file_name = path.join( CONTENT, filePath ) + '.ndntlv';
         config.socket = local.socket;
-
-        console.log( 'Counter: ' + ++counter);
 
         var make_content_template = '$CCNL_HOME/bin/ccn-lite-mkC -s ndn2013 "' +
             '{{prefix}}" > ' +

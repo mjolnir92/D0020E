@@ -80,7 +80,7 @@ module.exports = function( param ) {
         var element = { };
 
         for( var k in last ) {
-            element[k] = Math.round(.7 * last[k] + .3 * target[k]);
+            element[k] = Math.round( .7 * last[k] + .3 * target[k] );
         }
         element.T = new Date();
         return element;
