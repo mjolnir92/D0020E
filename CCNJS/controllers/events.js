@@ -85,6 +85,7 @@ module.exports = function( io ) {
 
                         } );
 
+                        io.sockets.emit('notification', insertId);
                         res.json( { msg: 'Sending help right away!' } );
                     } );
                     break;

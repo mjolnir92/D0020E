@@ -1,15 +1,24 @@
-var realTime = function(d3){
+var realTime = function(d3, socket){
 
 
 /*************
 SEARCH FOR WORKERS
 **************/
 
-/*
-draws a linear graph,
-data: array with data,
-sensor: which sensor from data it should show,
-gArea: which div to draw the graph in.
+socket.on('notification', function(id){
+    console.log("Alarm");
+
+    toastr.warning('An alarm has been set!', {onclick: function() {
+        
+    }
+    });
+});
+
+/**
+* draws a linear graph,
+* data: array with data,
+* sensor: which sensor from data it should show,
+* gArea: which div to draw the graph in.
  */
   function makeLineGraphArray(data, sensor, gArea){
       var defaults = {
@@ -166,4 +175,4 @@ gArea: which div to draw the graph in.
   }
 
   return {makeLineGraphArray: makeLineGraphArray};
-}(d3);
+}(d3, io());
