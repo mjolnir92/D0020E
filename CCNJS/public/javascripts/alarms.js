@@ -183,8 +183,7 @@ sensor: which sensor is this box for?
 
         $(div).append(wrapperDiv);
     }
-
-
+    
 
 }();
 
