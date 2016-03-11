@@ -2,7 +2,6 @@
  * Created by magnusbjork on 2/25/16.
  */
 
-
 Array.prototype.last = function(){
     return this[ this.length - 1 ];
 };
