@@ -93,7 +93,7 @@ module.exports = function( io ) {
                             } )
                         } );
 
-                        io.sockets.emit('notification', eventInfo);
+                        io.sockets.emit('notification', eventInfo); //sends notification to website about alarm.
                         res.json( { msg: 'Sending help right away!' } );
                     } );
                     break;

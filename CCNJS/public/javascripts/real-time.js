@@ -1,29 +1,30 @@
 var realTime = function(d3, socket){
 
 
-/*************
-SEARCH FOR WORKERS
-**************/
+    /**
+     * when an alarm is set, show notification with description
+     * @params id: alarm info
+     */
 
-socket.on('notification', function(id){
+socket.on('notification', function(eventInfo){
 
-    var type = id.type;
-    console.log(id);
+    var type = eventInfo.type;
+    console.log(eventInfo);
 
     if(type === "INFO"){
-        toastr.info( "Id: " + id.id+"\n"+id.msg, "Info", {onclick: function () {
+        toastr.info( "Id: " + eventInfo.id+" \n"+eventInfo.msg, "Info", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
     }
     else if(type === "MINOR"){
-        toastr.warning( "Id: " + id.id+"\n"+id.msg, "Minor accident", {onclick: function () {
+        toastr.warning( "Id: " + eventInfo.id+" \n"+eventInfo.msg, "Minor accident", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
     }
     else if(type === "MAJOR"){
-        toastr.error( "Id: " + id.id+"\n"+id.msg, "MAJOR ACCIDENT", {onclick: function () {
+        toastr.error( "Id: " + eventInfo.id+" \n"+eventInfo.msg, "MAJOR ACCIDENT", {onclick: function () {
             //TODO: Go to event
             window.location = "/alarms";
         }});
@@ -83,7 +84,7 @@ socket.on('login', function(id){
           .y(function(d) { return y(d[sensor]); });
 
 
-      var svg = d3.select($(gArea).get(0)) //create the svg in the modal-body
+      var svg = d3.select($(gArea).get(0)) //create the svg in the selected area
           .append("svg")
           .attr("width", width + margin.left + margin.right)
           .attr("height", height + margin.top + margin.bottom)
@@ -95,21 +96,20 @@ socket.on('login', function(id){
           d.T = parseDate(d.T);
           d[sensor] = +d[sensor];
       });
-
+    //scale x and y axis after data.
       x.domain(d3.extent(data, function(d) { return d.T; }));
       var dom = d3.extent(data, function(d) { return d[sensor]; });
       dom[0] -= 2;
       dom[1] += 2;
       y.domain(dom);
 
-      //y.domain([defaults[sensor].min, defaults[sensor].max]);
       svg.append("defs").append("clipPath")
           .attr("id", "clip")
           .append("rect")
           .attr("width", width)
           .attr("height", height);
 
-      var x_handle = svg.append("g")			// Add the X Axis
+      svg.append("g")			// Add the X Axis
           .attr("clip-path", "url(#clip)")
           .attr("class", "x axis")
           .attr("transform", "translate(0," + height + ")")
@@ -127,65 +127,6 @@ socket.on('login', function(id){
           .attr("class", "line")
           .attr("d", valueline(data));
   }
-
-  /*function setIconColor(phoneData){
-      var warnings = {
-          bodyTemp:{
-              min: 34,
-              max: 37
-          },
-          envTemp:{
-              min: -7,
-              max: 45
-          },
-          pulse: {
-              min: 50,
-              max: 145
-          },
-          co2:{
-              min: 10,
-              max: 30
-          }
-      };
-
-      var pData = phoneData.sensorData[phoneData.sensorData.length-1];
-      var ok = 0;
-      if(warnings['pulse'].min < pData['pulse'] && pData['pulse'] < warnings['pulse'].max){
-          $("#pulse-icon").css("background", "green");
-          ok += 1;
-      }
-      else{
-          $("#pulse-icon").css("background", "red");
-      }
-      if(warnings['bodyTemp'].min < pData['bodyTemp'] && pData['bodyTemp'] < warnings['bodyTemp'].max){
-          $("#bodyTemp-icon").css("background", "green");
-          ok += 1;
-      }
-      else{
-          $("#bodyTemp-icon").css("background", "red");
-      }
-      if(warnings['envTemp'].min < pData['envTemp'] && pData['envTemp'] < warnings['envTemp'].max){
-          $("#envTemp-icon").css("background", "green");
-          ok += 1;
-      }
-      else{
-          $("#envTemp-icon").css("background", "red");
-      }
-      if(pData['co2'] < warnings['co2'].max){
-          $("#co2-icon").css("background", "green");
-          ok += 1;
-      }
-      else{
-          $("#co2-icon").css("background", "red");
-
-      }
-      if(ok == 4){
-          $("#health-status").html("Health status OK!");
-      }
-      else{
-          $("#health-status").html("Health status <b>not</b> OK!");
-      }
-  }*/
 
   return {makeLineGraphArray: makeLineGraphArray};
 }(d3, io());

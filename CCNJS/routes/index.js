@@ -45,7 +45,8 @@ module.exports = function( io ) {
     } );
 
     /**
-     * Script for search-bar (explain more here..)
+     * Script for search-bar.
+     * Search for parts of first and last name will return all matching workers. Then render users page with those.
      */
     router.post( '/users', function( req, res ) {
         var names = req.body.name.split(/[ ,]+/);

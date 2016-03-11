@@ -1,9 +1,14 @@
 var alarms = function() {
     var allAlarms;      // holds info on all alarms in database.
 
-/*
-  Display the data on website. repeat function for all alarms.
- */
+    /**
+     * Make an expandbox for a alarm. Inside that box 4 expandboxes for different sensors are drawn.
+     * An clicklistener is added to all 5 expandboxes.
+     * @param name  who is the alarm for?
+     * @param time  when did alarm happen?
+     * @param type  severity of alarm
+     * @param id    id of alarm
+     */
     function makeAlarmBox(name, time, type, id){
         var wrapperDiv = document.createElement("div");
         $(wrapperDiv).attr("class", "expandbox wDiv");
@@ -36,11 +41,11 @@ var alarms = function() {
 
         $(".result").append(wrapperDiv);
     }
-/*
-search for workers with names starting with text in searchfield.
-Display those on page.
 
- */
+    /**
+     * search for workers with names starting with text in searchfield.
+     * Display those on page.
+     */
     $("#search-div").keyup(function(event){
         if(event.keyCode == 13){
             var name = $(this).children(".workers-alarms").val();
@@ -68,10 +73,10 @@ Display those on page.
     });
 
 
-/*
- get all alarms from database.
- Display those on page.
-  */
+    /**
+     * get all alarms from database.
+     * Display those on page.
+     */
     $.ajax({
         url: "/all_alarms",
         type: "POST",
@@ -81,11 +86,15 @@ Display those on page.
             result.forEach(function(item){
                 makeAlarmBox(item.firstName+" "+item.lastName, item.time, item.type, item.eventId);
             });
-            //realTime.drawGraphOnClick();
     }});
 
 
-//Get sensor data to alarms from database, and display it when more info is clicked on alarm.
+    /**
+     * Get sensor data to alarms from database, and display it when more info is clicked on alarm.
+     * @param eventID
+     * @param div   which div to add det click listener to
+     * @param detailDiv 
+     */
     function addListenerMoreInfo(eventID, div, detailDiv){
         $(div).click(function(){
             $.ajax({
@@ -119,11 +128,12 @@ Display those on page.
         });
 
     }
-/*
-creates a box for the sensors in the alarms div "details"
-div: where to put the box,
-sensor: which sensor is this box for?
- */
+
+    /**
+     * creates a box for the sensors in the alarms div "details"
+     * @param div   where to put the box
+     * @param sensor    which sensor is this box for?
+     */
     function drawSensorDivs(div, sensor){
         if(sensor == "A"){
             var sensorIcon = "heartrate";
