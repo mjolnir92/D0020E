@@ -2,6 +2,8 @@
 /**
  *
  * Created by magnusbjork on 1/27/16.
+ * Discontinued.
+ *
  */
 
 var ccn = require("./../ccnjs.js");

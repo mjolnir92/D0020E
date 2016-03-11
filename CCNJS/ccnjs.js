@@ -15,7 +15,7 @@ var CONTENT = path.join( __dirname, 'ndntlv' );
 
 var ccnjs = ccnjs || {};
 
-ccnjs.DOCKER = false;
+ccnjs.network_interface = 'en0'; //mac: en0, ubuntu: eth0 etc.
 
 /**
  * @param {object} [relay_config] Relay connection config.
@@ -158,8 +158,7 @@ ccnjs.Relay = function(relay_config){
     }
 
     function getContent(prefix, callback){
-        var inter = ( ccnjs.DOCKER ) ? 'eth0' : 'en0';
-        networkInterfaces[ inter ].forEach(function(iface){
+        networkInterfaces[ ccnjs.network_interface ].forEach(function(iface){
 
             if ('IPv4' === iface.family && iface.internal === false) {
 
