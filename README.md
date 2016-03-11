@@ -25,9 +25,17 @@
         ```
         inside the ```src``` folder.
 
-    1. Add CCN-Lite to your PATH.
+    1. Add CCN-Lite to your PATH like this:
+        ```
+        export CCNL_HOME="$HOME/ccn-lite"
+export PATH=$PATH:"$CCNL_HOME/bin"
+        ```
 
 1. Run
+
+    1. Go to ```ccnjs.js``` and change ```ccnjs.network_interface``` to whatever your network interface is.
+
+        1. Your network interface can be found by running ```ifconfig```. The leftmost name of your current network is your network interface.
 
     1. Navigate to project root.
 
