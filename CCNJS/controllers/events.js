@@ -7,6 +7,11 @@ var ccnjs = require( '../ccnjs' );
 var db = require( '../db' );
 var prefix = '/ltu';
 
+/**
+ * Protocol for communication with phone.
+ * @param io
+ * @returns {{post: post, f: f}}
+ */
 module.exports = function( io ) {
     var relay = ccnjs.Relay();
     var phones = {};

@@ -3,7 +3,7 @@ module.exports = function( io ) {
     var express = require('express');
     var router = express.Router();
     var path = require('path');
-    var connection = require('../tests/testingSQL');
+    var connection = require('../db.js');
 
     var controllers = {
         events: require( '../controllers/events.js' )( io )
@@ -35,7 +35,7 @@ module.exports = function( io ) {
      ==========================
      */
     /**
-     * (comment here)
+     * Fetches data with ccn-lite from given prefix.
      */
     router.post( '/getSensorData', function( req, res ) {
         var mac = req.body.mac;
